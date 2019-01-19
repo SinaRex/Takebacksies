@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public bool isPlayer1 = false;
     float smooth = 7.0f;
     float tiltAngle = -30.0f;
+    private Canvas canvas;
 
     private float horizontalDirection = 0;
     private float tiltAroundZ;
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
+        canvas.enabled = false;
         m_rewinders = FindObjectsOfType<Rewind3DObject>();
         playerBody = gameObject.GetComponent<Rigidbody>();
 
@@ -87,6 +90,7 @@ public class Player : MonoBehaviour
         if (isRewinding == false)
         {
             isRewinding = true;
+            canvas.enabled = true;
 
             //send start rewind for all rewind object in the current scene
             foreach (Rewind3DObject rewinder in m_rewinders)
@@ -103,6 +107,7 @@ public class Player : MonoBehaviour
     {
         if (isRewinding == true)
         {
+            canvas.enabled = false;
             isRewinding = false;
 
             //send stop rewind for all rewind object in the current scene
