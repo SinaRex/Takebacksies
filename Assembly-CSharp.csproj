@@ -69,6 +69,8 @@
     <Compile Include="Assets\Scripts\Player.cs" />
     <None Include="Assets\Extensions\Super Time Rewinder\Doc\ChangeLog.txt" />
     <None Include="Assets\Extensions\Super Time Rewinder\ReadMe.txt" />
+    <None Include="Assets\Meshtint Free Knight\www.meshtint.com.txt" />
+    <None Include="Assets\Meshtint Free Knight\Read me.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>/Users/Inos/Desktop/gits/Takebacksies/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
