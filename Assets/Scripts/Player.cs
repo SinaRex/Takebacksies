@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LunarCatsStudio.SuperRewinder;
 
 public class Player : MonoBehaviour
 {
+    public Rewind3DObject rewinder;
     public float jumpSpeed = 4;
     public float movementSpeed = 2;
     public float groundingDistance = 1f;
+    private bool isRewinding;
     float smooth = 7.0f;
     float tiltAngle = -30.0f;
 
@@ -17,15 +20,15 @@ public class Player : MonoBehaviour
 
     private Rigidbody playerBody;
 
-
     // Start is called before the first frame update
     void Start()
     {
+        rewinder = FindObjectOfType<Rewind3DObject>();
         playerBody = gameObject.GetComponent<Rigidbody>();
 
+        isRewinding = false;
         //Control the fall speed
         Physics.gravity = new Vector3(0, -15.0F, 0);
-
     }
 
     // Update is called once per frame
@@ -47,6 +50,15 @@ public class Player : MonoBehaviour
             playerBody.velocity = (Vector3.up*jumpSpeed);
         }
 
+        if (Input.GetKeyDown(KeyCode.C) && !isRewinding)
+        {
+            rewinder.StartRewind();
+            isRewinding = true;
+        } else if (Input.GetKeyDown(KeyCode.C))
+        {
+            rewinder.StopRewind();
+            isRewinding = false;
+        }
 
         // Add real looking tilt physics
         if (transform.rotation.z <= 20)

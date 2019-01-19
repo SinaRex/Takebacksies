@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -368,6 +368,7 @@ GameObject:
   - component: {fileID: 1562951708}
   - component: {fileID: 1562951707}
   - component: {fileID: 1562951712}
+  - component: {fileID: 1562951713}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -479,3 +480,18 @@ MonoBehaviour:
   jumpSpeed: 4
   movementSpeed: 10
   groundingDistance: 1
+--- !u!114 &1562951713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562951706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469d1c5b0929817429b431da3069b418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_applyChilds: 0
+  m_recordTime: 5
+  m_keepVelocity: 1

@@ -1,17 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeBacksies", "TakeBacksies.csproj", "{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeBacksies", "TakeBacksies.csproj", "{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeBacksies", "TakeBacksies.csproj", "{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeBacksies.Editor", "TakeBacksies.Editor.csproj", "{81E889AF-1051-A345-5BFF-062C0FDF4939}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeBacksies.Editor", "TakeBacksies.Editor.csproj", "{81E889AF-1051-A345-5BFF-062C0FDF4939}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeBacksies.Editor", "TakeBacksies.Editor.csproj", "{81E889AF-1051-A345-5BFF-062C0FDF4939}"
+# Visual Studio for Mac
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{E6812D1B-88C7-0415-E842-B8B502A0A6C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,30 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC7FF6AC-D9F4-84AC-F37B-D018F365BF29}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81E889AF-1051-A345-5BFF-062C0FDF4939}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6812D1B-88C7-0415-E842-B8B502A0A6C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6812D1B-88C7-0415-E842-B8B502A0A6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6812D1B-88C7-0415-E842-B8B502A0A6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6812D1B-88C7-0415-E842-B8B502A0A6C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
