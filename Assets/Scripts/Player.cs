@@ -36,14 +36,14 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         // Smoothly tilts a transform towards a target rotation.
-        tiltAroundZ = Input.GetAxis("Horizontal") * tiltAngle;
-        horizontalDirection = Input.GetAxis("Horizontal");
+        tiltAroundZ = Input.GetAxis("Horizontal1") * tiltAngle;
+        horizontalDirection = Input.GetAxis("Horizontal1");
    
         Quaternion target = Quaternion.Euler(0, 0, tiltAroundZ);
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance); 
 
-        if (isGrounded && Input.GetAxis("Jump") > 0.01) {
+        if (isGrounded && Input.GetAxis("Jump1") > 0.01) {
             playerBody.velocity = (Vector3.up*jumpSpeed);
         }
 
