@@ -1,0 +1,16 @@
+Version 1.0 / 01-07-2018 
+  * Initial release
+Version 1.1 / 03-08-2018 
+  * Available to use of the Super Combiner script for animated objects
+  * Add new demo scene with rewind on animated character (unity ThirdPersonController)
+  * Add ability to apply SuperCombiner component on all childs
+  * Clean code and add comments
+  * Recast of the "SuperCombiner" editor view
+Version 1.2 / 07-03-2018 
+  * Add 2D animation management
+  * Rework scripts for beter performances
+  * Add new demo scene for 2D animation
+  * Add in demo scenes, rewind's time duration
+  * remove auto stop rewind when buffer is empty. now manager need to stop rewind
+  * Add hierarchy for structur that store objects properties.
+ 
