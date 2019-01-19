@@ -5,7 +5,7 @@ using LunarCatsStudio.SuperRewinder;
 
 public class Player : MonoBehaviour
 {
-    public Rewind3DObject rewinder;
+    private Rewind3DObject[] m_rewinders;
     public float jumpSpeed = 4;
     public float movementSpeed = 10;
     public float groundingDistance = 1f;
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rewinder = FindObjectOfType<Rewind3DObject>();
+        m_rewinders = FindObjectsOfType<Rewind3DObject>();
         playerBody = gameObject.GetComponent<Rigidbody>();
 
         isRewinding = false;
@@ -56,14 +56,12 @@ public class Player : MonoBehaviour
             playerBody.velocity = (Vector3.up*jumpSpeed);
         }
 
-        if (Input.GetKeyDown(KeyCode.C) && !isRewinding)
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            rewinder.StartRewind();
-            isRewinding = true;
+            StartRewind();
         } else if (Input.GetKeyDown(KeyCode.C))
         {
-            rewinder.StopRewind();
-            isRewinding = false;
+            StopRewind();
         }
 
         // Add real looking tilt physics
@@ -77,9 +75,41 @@ public class Player : MonoBehaviour
         else
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(20, 0, 0), Time.fixedDeltaTime * smooth);
 
-
-
         playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f);
 
+    }
+
+    /// <summary>
+    /// Starts the rewind for all RewindObject in scene.
+    /// </summary>
+    void StartRewind()
+    {
+        if (isRewinding == false)
+        {
+            isRewinding = true;
+
+            //send start rewind for all rewind object in the current scene
+            foreach (Rewind3DObject rewinder in m_rewinders)
+            {
+                rewinder.StartRewind();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Stops the rewind for all RewindObject in scene.
+    /// </summary>
+    void StopRewind()
+    {
+        if (isRewinding == true)
+        {
+            isRewinding = false;
+
+            //send stop rewind for all rewind object in the current scene
+            foreach (Rewind3DObject rewinder in m_rewinders)
+            {
+                rewinder.StopRewind();
+            }
+        }
     }
 }
