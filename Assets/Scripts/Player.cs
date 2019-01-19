@@ -7,16 +7,18 @@ public class Player : MonoBehaviour
 {
     public Rewind3DObject rewinder;
     public float jumpSpeed = 4;
-    public float movementSpeed = 2;
+    public float movementSpeed = 10;
     public float groundingDistance = 1f;
-    private bool isRewinding;
+    public bool isPlayer1 = false;
     float smooth = 7.0f;
     float tiltAngle = -30.0f;
 
     private float horizontalDirection = 0;
     private float tiltAroundZ;
+    private float isJumping;
 
     private bool isGrounded;
+    private bool isRewinding;
 
     private Rigidbody playerBody;
 
@@ -31,22 +33,26 @@ public class Player : MonoBehaviour
         Physics.gravity = new Vector3(0, -15.0F, 0);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     private void FixedUpdate()
     {
         // Smoothly tilts a transform towards a target rotation.
-        tiltAroundZ = Input.GetAxis("Horizontal1") * tiltAngle;
-        horizontalDirection = Input.GetAxis("Horizontal1");
-   
+        if (isPlayer1)
+        {
+            tiltAroundZ = Input.GetAxis("Horizontal1") * tiltAngle;
+            horizontalDirection = Input.GetAxis("Horizontal1");
+            isJumping = Input.GetAxis("Jump1"); 
+        }
+        else {
+            tiltAroundZ = Input.GetAxis("Horizontal2") * tiltAngle;
+            horizontalDirection = Input.GetAxis("Horizontal2");
+            isJumping = Input.GetAxis("Jump2");
+        }
+
         Quaternion target = Quaternion.Euler(0, 0, tiltAroundZ);
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance); 
 
-        if (isGrounded && Input.GetAxis("Jump1") > 0.01) {
+        if (isGrounded && isJumping > 0.01) {
             playerBody.velocity = (Vector3.up*jumpSpeed);
         }
 
