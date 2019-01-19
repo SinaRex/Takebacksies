@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -368,6 +368,7 @@ GameObject:
   - component: {fileID: 934184045}
   - component: {fileID: 934184044}
   - component: {fileID: 934184043}
+  - component: {fileID: 934184049}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Untagged
@@ -387,7 +388,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d12d8194ba3b4d4685ba370e266295e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rewinder: {fileID: 0}
   jumpSpeed: 4
   movementSpeed: 10
   groundingDistance: 0.35754
@@ -429,7 +429,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934184042}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -477,10 +477,26 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.77, y: 1.1633184, z: -5.45}
   m_LocalScale: {x: 0.35754, y: 0.35754, z: 0.35754}
-  m_Children: []
+  m_Children:
+  - {fileID: 1809783379}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &934184049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934184042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469d1c5b0929817429b431da3069b418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_applyChilds: 0
+  m_recordTime: 5
+  m_keepVelocity: 1
 --- !u!1 &1562951706
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +556,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562951706}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -588,7 +604,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.11, y: 1.1633184, z: -5.45}
   m_LocalScale: {x: 0.35754, y: 0.35754, z: 0.35754}
-  m_Children: []
+  m_Children:
+  - {fileID: 1997825045}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -604,7 +621,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d12d8194ba3b4d4685ba370e266295e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rewinder: {fileID: 0}
   jumpSpeed: 4
   movementSpeed: 10
   groundingDistance: 0.35754
@@ -624,3 +640,137 @@ MonoBehaviour:
   m_applyChilds: 0
   m_recordTime: 5
   m_keepVelocity: 1
+--- !u!1001 &1809783378
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 934184048}
+    m_Modifications:
+    - target: {fileID: 100002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_Name
+      value: Meshtint Free Knight@Battle Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0c7e3518cd06bd499fe69cdba52c9e6, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: db4eaab5d375e8844851ce3cf2165adc, type: 3}
+--- !u!4 &1809783379 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400002, guid: db4eaab5d375e8844851ce3cf2165adc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1809783378}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1997825045 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc,
+    type: 3}
+  m_PrefabInstance: {fileID: 2116767406}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2116767406
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1562951711}
+    m_Modifications:
+    - target: {fileID: 100000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_Name
+      value: Meshtint Free Knight
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0c7e3518cd06bd499fe69cdba52c9e6, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 445581dbfbbea06408d552fa1aca77fc, type: 3}
