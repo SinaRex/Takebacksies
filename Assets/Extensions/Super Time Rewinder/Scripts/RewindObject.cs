@@ -102,10 +102,14 @@ namespace LunarCatsStudio.SuperRewinder {
 				LoadKeyPoint ();
 
 				m_pointsInTime.RemoveAt(0); // delete used point
-			} 
+                if(m_pointsInTime.Count > 1)
+                {
+                    m_pointsInTime.RemoveAt(0);
+                }
+            } 
 		}
 			
-
+        
 		/// <summary>
 		/// Record process.
 		/// </summary>

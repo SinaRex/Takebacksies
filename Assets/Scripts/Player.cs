@@ -62,7 +62,8 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             StartRewind();
-        } else if (Input.GetKeyDown(KeyCode.C))
+        }
+        if (Input.GetKeyUp(KeyCode.X))
         {
             StopRewind();
         }
@@ -87,7 +88,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void StartRewind()
     {
-        if (isRewinding == false)
+        if (!isRewinding)
         {
             isRewinding = true;
             canvas.enabled = true;
@@ -105,7 +106,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void StopRewind()
     {
-        if (isRewinding == true)
+        if (isRewinding)
         {
             canvas.enabled = false;
             isRewinding = false;
