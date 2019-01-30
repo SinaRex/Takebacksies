@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     private Canvas canvas;
 
     private float horizontalDirection = 0;
-    private float tiltAroundZ;
     private float isJumping;
 
     private bool isGrounded;
@@ -38,27 +37,22 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Smoothly tilts a transform towards a target rotation.
+        // Movement Inputs
         if (isPlayer1)
         {
-            tiltAroundZ = Input.GetAxis("Horizontal1") * tiltAngle;
             horizontalDirection = Input.GetAxis("Horizontal1");
-            isJumping = Input.GetAxis("Jump1"); 
+            isJumping = Input.GetAxis("Jump1");
+
+            //Attack Inputs
+            if (Input.GetKeyDown(KeyCode.E))
+                Attack();
         }
         else {
-            tiltAroundZ = Input.GetAxis("Horizontal2") * tiltAngle;
             horizontalDirection = Input.GetAxis("Horizontal2");
             isJumping = Input.GetAxis("Jump2");
         }
 
-        Quaternion target = Quaternion.Euler(0, 0, tiltAroundZ);
-
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance); 
-
-        if (isGrounded && isJumping > 0.01) {
-            playerBody.velocity = (Vector3.up*jumpSpeed);
-        }
-
+        //Time travel Inputs
         if (Input.GetKeyDown(KeyCode.X))
         {
             StartRewind();
@@ -68,19 +62,16 @@ public class Player : MonoBehaviour
             StopRewind();
         }
 
-        // Add real looking tilt physics
-        if (transform.rotation.z <= 20)
-            transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.fixedDeltaTime * smooth);
-        else
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 20), Time.fixedDeltaTime * smooth);
-    
-        if (transform.rotation.x <= 20)
-            transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.fixedDeltaTime * smooth);
-        else
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(20, 0, 0), Time.fixedDeltaTime * smooth);
+
+
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance); 
+
+        if (isGrounded && isJumping > 0.01) {
+            playerBody.velocity  = (Vector3.up*jumpSpeed);
+        }
 
         playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f);
-
+        //playerBody.AddForce (new Vector3(horizontalDirection * movementSpeed, 0f, 0f));
     }
 
     /// <summary>
@@ -117,5 +108,36 @@ public class Player : MonoBehaviour
                 rewinder.StopRewind();
             }
         }
+    }
+
+    void Attack() {
+        Vector3 hitboxPosition = transform.position;
+        Vector3 hitboxSize = new Vector3(1f,0.5f,0.1f);
+        Quaternion hitboxRotation = transform.rotation;
+
+        Collider[] colliders = Physics.OverlapBox(hitboxPosition, hitboxSize, hitboxRotation, LayerMask.GetMask("Hurtbox"));
+
+        foreach (Collider c in colliders) {
+            if (c.transform.root == transform)
+                continue;
+
+            //for now, just apply knock back, will compartmentalize this later
+            Debug.Log(c.name);
+            c.transform.root.GetComponent<Rigidbody>().velocity = new Vector3(10,10,0);
+            //c.transform.root.GetComponent<Rigidbody>().AddForce( new Vector3(100, 100, 0));
+
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        Vector3 hitboxPosition = transform.position;
+        Vector3 hitboxSize = new Vector3(1f, 0.5f, 0.1f);
+        Quaternion hitboxRotation = transform.rotation;
+
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
+        Gizmos.DrawCube(Vector3.zero, new Vector3(hitboxSize.x * 2/transform.localScale.x, hitboxSize.y * 2 / transform.localScale.y, hitboxSize.z * 2));
     }
 }

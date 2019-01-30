@@ -76,11 +76,11 @@ C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEdi
 C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll
 C:/Program Files/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll
 C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll
-D:/CSC404/a/Takebacksies/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll
-D:/CSC404/a/Takebacksies/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll
-D:/CSC404/a/Takebacksies/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll
-D:/CSC404/a/Takebacksies/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll
-D:/CSC404/a/Takebacksies/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll
+D:/CSC404/TakeBacksies/Main/Takebacksies/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll
+D:/CSC404/TakeBacksies/Main/Takebacksies/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll
+D:/CSC404/TakeBacksies/Main/Takebacksies/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll
+D:/CSC404/TakeBacksies/Main/Takebacksies/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll
+D:/CSC404/TakeBacksies/Main/Takebacksies/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll
 C:\Program Files\Unity\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll
 C:\Program Files\Unity\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\Microsoft.Win32.Primitives.dll
 C:\Program Files\Unity\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.AppContext.dll

@@ -628,10 +628,13 @@
     <Compile Include="Assets\Extensions\Super Time Rewinder\Scripts\TimeKeyPoint2D.cs" />
     <Compile Include="Assets\Extensions\Super Time Rewinder\Scripts\TimeKeyPoint3D.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\StartGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Extensions\Super Time Rewinder\Doc\ChangeLog.txt" />
     <None Include="Assets\Extensions\Super Time Rewinder\ReadMe.txt" />
+    <None Include="Assets\Meshtint Free Knight\Read me.txt" />
+    <None Include="Assets\Meshtint Free Knight\www.meshtint.com.txt" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryCommon.uss" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryDark.uss" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryLight.uss" />
