@@ -45,7 +45,10 @@ public class Player : MonoBehaviour
 
             //Attack Inputs
             if (Input.GetKeyDown(KeyCode.E))
-                Attack();
+                GetComponent<Hitbox>().startHitbox(Vector3.zero, transform.rotation, new Vector3(1f, 0.3f, 0.1f));
+
+            if (Input.GetKeyDown(KeyCode.Q))
+                GetComponent<Hitbox>().startHitbox(Vector3.zero, transform.rotation, new Vector3(0.2f, 2f, 0.1f));
         }
         else {
             horizontalDirection = Input.GetAxis("Horizontal2");
@@ -110,34 +113,4 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Attack() {
-        Vector3 hitboxPosition = transform.position;
-        Vector3 hitboxSize = new Vector3(1f,0.5f,0.1f);
-        Quaternion hitboxRotation = transform.rotation;
-
-        Collider[] colliders = Physics.OverlapBox(hitboxPosition, hitboxSize, hitboxRotation, LayerMask.GetMask("Hurtbox"));
-
-        foreach (Collider c in colliders) {
-            if (c.transform.root == transform)
-                continue;
-
-            //for now, just apply knock back, will compartmentalize this later
-            Debug.Log(c.name);
-            c.transform.root.GetComponent<Rigidbody>().velocity = new Vector3(10,10,0);
-            //c.transform.root.GetComponent<Rigidbody>().AddForce( new Vector3(100, 100, 0));
-
-        }
-    }
-
-    void OnDrawGizmos()
-    {
-        Vector3 hitboxPosition = transform.position;
-        Vector3 hitboxSize = new Vector3(1f, 0.5f, 0.1f);
-        Quaternion hitboxRotation = transform.rotation;
-
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.yellow;
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
-        Gizmos.DrawCube(Vector3.zero, new Vector3(hitboxSize.x * 2/transform.localScale.x, hitboxSize.y * 2 / transform.localScale.y, hitboxSize.z * 2));
-    }
 }
