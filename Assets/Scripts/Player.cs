@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+
         // Movement Inputs
         if (isPlayer1)
         {
@@ -112,5 +113,6 @@ public class Player : MonoBehaviour
             }
         }
     }
+
 
 }
