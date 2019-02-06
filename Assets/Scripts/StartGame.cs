@@ -7,7 +7,7 @@ public class StartGame : MonoBehaviour
 {
    public void ChangeScene()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("FightScene");
     }
 
 }
