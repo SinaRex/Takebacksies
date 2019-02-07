@@ -53,8 +53,18 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(2);
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None | 
             RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
-        GameObject platform = Instantiate(respawnPlatform, new Vector3(0, 6, -5.45f), Quaternion.identity);
-        transform.position = platform.transform.position + new Vector3(0,1,0);
+        GameObject platform;
+
+       if (GameObject.Find("Player2").GetComponent<PlayerManager>().state == PlayerState.Respawning && GetComponent<Player>().isPlayer1)
+        {
+            platform = Instantiate(respawnPlatform, new Vector3(-2, 6, -5.45f), Quaternion.identity);
+            transform.position = platform.transform.position + new Vector3(0, 1, 0);
+        }
+        else
+        {
+            platform = Instantiate(respawnPlatform, new Vector3(0, 6, -5.45f), Quaternion.identity);
+            transform.position = platform.transform.position + new Vector3(0, 1, 0);
+        }
         platform.GetComponent<Rigidbody>().isKinematic = false;
         
         for (int i = 0; i < 30; i++)
