@@ -66,7 +66,7 @@
     <Compile Include="Assets\Extensions\Super Time Rewinder\Scripts\TimeKeyPoint.cs" />
     <Compile Include="Assets\Extensions\Super Time Rewinder\Scripts\TimeKeyPoint2D.cs" />
     <Compile Include="Assets\Extensions\Super Time Rewinder\Scripts\TimeKeyPoint3D.cs" />
-    <Compile Include="Assets\Hitbox.cs" />
+    <Compile Include="Assets\Scripts\Hitbox.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\StartGame.cs" />

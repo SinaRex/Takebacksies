@@ -20,7 +20,7 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // stop
+        goUntransparent();
     }
 
     // Update is called once per frame
@@ -47,16 +47,27 @@ public class PlayerManager : MonoBehaviour
     private IEnumerator Respawn()
     {
         //Make it flashing
-        StartCoroutine(Flash());
+        //InvokeRepeating("blink", 0, 0.16f);
+        StartCoroutine(Testing());
 
         state = PlayerState.Respawning;
         yield return new WaitForSeconds(2);
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None | 
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None |
             RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
-        GameObject platform = Instantiate(respawnPlatform, new Vector3(0, 6, -5.45f), Quaternion.identity);
-        transform.position = platform.transform.position + new Vector3(0,1,0);
+        GameObject platform;
+
+       if (GameObject.Find("Player2").GetComponent<PlayerManager>().state == PlayerState.Respawning && GetComponent<Player>().isPlayer1)
+        {
+            platform = Instantiate(respawnPlatform, new Vector3(-2, 6, -5.45f), Quaternion.identity);
+            transform.position = platform.transform.position + new Vector3(0, 1, 0);
+        }
+        else
+        {
+            platform = Instantiate(respawnPlatform, new Vector3(0, 6, -5.45f), Quaternion.identity);
+            transform.position = platform.transform.position + new Vector3(0, 1, 0);
+        }
         platform.GetComponent<Rigidbody>().isKinematic = false;
-        
+
         for (int i = 0; i < 30; i++)
         {
             yield return new WaitForFixedUpdate();
@@ -72,19 +83,35 @@ public class PlayerManager : MonoBehaviour
         Destroy(platform);
 
         state = PlayerState.Alive;
+        //CancelInvoke("blink");
 
         //Make them not colide
 
 
+
+    }
+    private IEnumerator Testing()
+    {
+        Debug.Log("Start");
+        for (int i = 0; i < 16; i++)
+        {
+            yield return new WaitForSeconds(0.125f);
+            goTransparent();
+            yield return new WaitForSeconds(0.125f);
+            goUntransparent();
+
+        }
+        Debug.Log("Done");
     }
 
 
     private IEnumerator Flash()
     {
-        material.color = new Color(material.color.r, material.color.g, material.color.b, 1f);
-        yield return new WaitForSecondsRealtime(5);
-        material.color = new Color(material.color.r, material.color.g, material.color.b, 1);
-
+        material.color = new Color(material.color.r, material.color.g, material.color.b, 0f);
     }
 
+    void goUntransparent()
+    {
+        material.color = new Color(material.color.r, material.color.g, material.color.b, 1f);
+    }
 }
