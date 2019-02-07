@@ -79,7 +79,6 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-
     private IEnumerator Flash()
     {
         material.color = new Color(material.color.r, material.color.g, material.color.b, 1f);

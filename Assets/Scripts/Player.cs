@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 
     private bool isGrounded;
     private bool isRewinding;
+    private bool canDoubleJump;
 
     private Rigidbody playerBody;
 
@@ -33,6 +34,8 @@ public class Player : MonoBehaviour
         isRewinding = false;
         //Control the fall speed
         Physics.gravity = new Vector3(0, -15.0F, 0);
+
+        canDoubleJump = false;
     }
 
     private void FixedUpdate()
@@ -41,8 +44,13 @@ public class Player : MonoBehaviour
         // Movement Inputs
         if (isPlayer1)
         {
+
             horizontalDirection = Input.GetAxis("Horizontal1");
             isJumping = Input.GetAxis("Jump1");
+            if (Input.GetButtonDown("Jump1"))
+            {
+                Jump();
+            }
 
             //Attack Inputs
             if (Input.GetKeyDown(KeyCode.E))
@@ -64,14 +72,6 @@ public class Player : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.X))
         {
             StopRewind();
-        }
-
-
-
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance); 
-
-        if (isGrounded && isJumping > 0.01) {
-            playerBody.velocity  = (Vector3.up*jumpSpeed);
         }
 
         playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f);
@@ -114,5 +114,19 @@ public class Player : MonoBehaviour
         }
     }
 
+    void Jump()
+    {
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance);
 
+        if (isGrounded)
+        {
+            playerBody.velocity = (Vector3.up * jumpSpeed*1.3f);
+            canDoubleJump = true;
+        } 
+        else if (canDoubleJump)
+        {
+            playerBody.velocity = (Vector3.up * jumpSpeed*1.3f);
+            canDoubleJump = false;
+        }
+    }
 }
