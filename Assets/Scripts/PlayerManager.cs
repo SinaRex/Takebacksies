@@ -16,12 +16,11 @@ public class PlayerManager : MonoBehaviour
     public ParticleSystem deathParticle;
     public GameObject respawnPlatform;
     public Material material;
-    private int blinkingDelay;
 
     // Start is called before the first frame update
     void Start()
     {
-        blinkingDelay = 0;
+        goUntransparent();
     }
 
     // Update is called once per frame
@@ -48,14 +47,25 @@ public class PlayerManager : MonoBehaviour
     private IEnumerator Respawn()
     {
         //Make it flashing
-        InvokeRepeating("blink", 0, 0.16f);
+        //InvokeRepeating("blink", 0, 0.16f);
+        StartCoroutine(Testing());
 
         state = PlayerState.Respawning;
         yield return new WaitForSeconds(2);
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None |
             RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
-        GameObject platform = Instantiate(respawnPlatform, new Vector3(0, 6, -5.45f), Quaternion.identity);
-        transform.position = platform.transform.position + new Vector3(0, 1, 0);
+        GameObject platform;
+
+       if (GameObject.Find("Player2").GetComponent<PlayerManager>().state == PlayerState.Respawning && GetComponent<Player>().isPlayer1)
+        {
+            platform = Instantiate(respawnPlatform, new Vector3(-2, 6, -5.45f), Quaternion.identity);
+            transform.position = platform.transform.position + new Vector3(0, 1, 0);
+        }
+        else
+        {
+            platform = Instantiate(respawnPlatform, new Vector3(0, 6, -5.45f), Quaternion.identity);
+            transform.position = platform.transform.position + new Vector3(0, 1, 0);
+        }
         platform.GetComponent<Rigidbody>().isKinematic = false;
 
         for (int i = 0; i < 30; i++)
@@ -73,26 +83,36 @@ public class PlayerManager : MonoBehaviour
         Destroy(platform);
 
         state = PlayerState.Alive;
-        CancelInvoke("blink");
+        //CancelInvoke("blink");
+
         //Make them not colide
 
 
 
     }
-
-    void blink()
+    private IEnumerator Testing()
     {
-        Invoke("goTransparent", 0f);
-        Invoke("goUntransparent", 0.08f);
+        Debug.Log("Start");
+        for (int i = 0; i < 16; i++)
+        {
+            yield return new WaitForSeconds(0.125f);
+            goTransparent();
+            yield return new WaitForSeconds(0.125f);
+            goUntransparent();
+
+        }
+        Debug.Log("Done");
     }
+
+
 
     void goTransparent()
     {
-        material.color = new Color(material.color.r, material.color.g, material.color.b, 1f);
+        material.color = new Color(material.color.r, material.color.g, material.color.b, 0f);
     }
 
     void goUntransparent()
     {
-        material.color = new Color(material.color.r, material.color.g, material.color.b, 0f);
+        material.color = new Color(material.color.r, material.color.g, material.color.b, 1f);
     }
 }
