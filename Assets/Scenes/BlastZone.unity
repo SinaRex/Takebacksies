@@ -803,6 +803,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 558055992}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!198 &679892731 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7131768858175234664, guid: 0670903a914684a329c34691591da457,
+    type: 3}
+  m_PrefabInstance: {fileID: 447620277}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &784300068
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,14 +1105,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 934184042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02e94e33589aa4d9dba981dae2671542, type: 3}
+  m_Script: {fileID: 11500000, guid: d01c4821131dd4660b2595dc29beec22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  deathParticle: {fileID: 0}
+  deathParticle: {fileID: 679892731}
   respawnPlatform: {fileID: 3759870204494753658, guid: 5274b55039606469eb0fe939689879e6,
     type: 3}
-  material: {fileID: 2100000, guid: ad825a3090d184f368567397e7bdd864, type: 2}
+  material: {fileID: 2100000, guid: cd15c80e1ac3a45598b9c9bc7fa33d90, type: 2}
 --- !u!1 &1210482729
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,8 +1284,8 @@ GameObject:
   - component: {fileID: 1562951707}
   - component: {fileID: 1562951712}
   - component: {fileID: 1562951713}
-  - component: {fileID: 1562951714}
   - component: {fileID: 1562951715}
+  - component: {fileID: 1562951714}
   m_Layer: 9
   m_Name: Player1
   m_TagString: Untagged
@@ -1431,7 +1437,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1562951706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02e94e33589aa4d9dba981dae2671542, type: 3}
+  m_Script: {fileID: 11500000, guid: d01c4821131dd4660b2595dc29beec22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0

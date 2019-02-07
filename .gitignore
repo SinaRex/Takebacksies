@@ -46,3 +46,8 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# remove this if things break
+Assembly-CSharp.dll
+Assembly-CSharp.pdb
+assetDatabase3
