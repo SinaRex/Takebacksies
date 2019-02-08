@@ -37,13 +37,39 @@ public class PlayerManager : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-
         if (other.gameObject.CompareTag("PlayZone") && state != PlayerState.Respawning)
         {
             state = PlayerState.Dead;
         }
     }
-
+    private void OnTriggerEnter(Collider other)
+    {
+        string BlastSelect;
+        if (GetComponent<Player>().isPlayer1)
+        {
+            BlastSelect = "blast1";
+        }
+        else
+        {
+            BlastSelect = "blast2";
+        }
+        GameObject.FindWithTag(BlastSelect).transform.rotation = Quaternion.identity;
+        if (other.gameObject.CompareTag("LeftWall")) {
+            GameObject.FindWithTag(BlastSelect).transform.Rotate(new Vector3(45, 90, 0));
+        }
+        else if (other.gameObject.CompareTag("RightWall"))
+        {
+            GameObject.FindWithTag(BlastSelect).transform.Rotate(new Vector3(-45, -90, 0));
+        }
+        else if (other.gameObject.CompareTag("TopWall"))
+        {
+            GameObject.FindWithTag(BlastSelect).transform.Rotate(new Vector3(90, 0, 0));
+        }
+        else if (other.gameObject.CompareTag("ButtomWall"))
+        {
+            GameObject.FindWithTag(BlastSelect).transform.Rotate(new Vector3(-90, 0, 0));
+        }
+    }
     private IEnumerator Respawn()
     {
         //Make it flashing
