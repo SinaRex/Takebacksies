@@ -55,7 +55,7 @@ public class PlayerManager : MonoBehaviour
         }
         GameObject.FindWithTag(BlastSelect).transform.rotation = Quaternion.identity;
         if (other.gameObject.CompareTag("LeftWall")) {
-            GameObject.FindWithTag(BlastSelect).transform.Rotate(new Vector3(45, 90, 0));
+            GameObject.FindWithTag(BlastSelect).transform.Rotate(new Vector3(-45, 90, 0));
         }
         else if (other.gameObject.CompareTag("RightWall"))
         {
@@ -131,13 +131,18 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    private IEnumerator Flash()
-    {
-        material.color = new Color(material.color.r, material.color.g, material.color.b, 0f);
-    }
+    //private IEnumerator Flash()
+    //{
+    //    material.color = new Color(material.color.r, material.color.g, material.color.b, 0f);
+    //}
 
     void goUntransparent()
     {
         material.color = new Color(material.color.r, material.color.g, material.color.b, 1f);
     }
+    void goTransparent()
+    {
+        material.color = new Color(material.color.r, material.color.g, material.color.b, 0f);
+    }
+
 }
