@@ -9,35 +9,45 @@ public enum ColliderState
 
 public class Hitbox : MonoBehaviour
 {
-    //Hitbox Dimensions
-    Vector3 hitboxPosition;
-    Vector3 hitboxSize;
-    Quaternion hitboxRotation;
+    //Input Variables for tracking size
+    private List<Vector3> hitboxSizeList;
+    private List<Quaternion> hitboxRotOffset;
+    private List<Vector3> hitboxPosOffset;
+
+    //Other input Hitbox Variables
+    private List<float> hitboxTimer = new List<float>() { 0f };
+
+    //Used for when we have a dynamic/moving hitbox
+    private int hitboxNumStates = 1;
+    private int hitboxIndex = 0;
+
+
+    //Local position/size of the hitbox, defined relative to the player
+    private Vector3 hitboxPosition = Vector3.zero;
+    private Vector3 hitboxSize = Vector3.zero;
+    private Quaternion hitboxRotation = Quaternion.identity;
 
     //Hitbox State
     private ColliderState _state;
 
-    //Other Hitbox Variables
-    private float hitboxTimer = 0f;
-
-    //Input Variables for tracking location
-    private Vector3    hitboxPosOffset;
-
 
     // Activate the hitbox with the given parameters
-    public void startHitbox(Vector3 posOffsetIn, Quaternion rotationIn, Vector3 sizeIn)
+    public void startHitbox(List<Vector3> posOffsetIn, List<Quaternion> rotationIn, List<Vector3> sizeIn, List<float> timersIn, int numStatesIn)
     {
         // If a hitbox is already active, return
         if (_state == ColliderState.Open || _state == ColliderState.Colliding) return;
 
+        //Reset the index 
+        hitboxIndex = 0;
+        hitboxNumStates = numStatesIn;
+
         //Set hitbox shape and relative position
+        hitboxSizeList  = sizeIn;
+        hitboxRotOffset = rotationIn;
         hitboxPosOffset = posOffsetIn;
 
-        hitboxPosition = transform.position + hitboxPosOffset;
-        hitboxRotation = rotationIn;
-        hitboxSize = sizeIn;
-
-        hitboxTimer = 0.2f;
+        //Set hitbox timer
+        hitboxTimer = timersIn;
 
         _state = ColliderState.Open;
     }
@@ -47,25 +57,39 @@ public class Hitbox : MonoBehaviour
     void endHitbox() {
 
         //Reset Hitbox Size
-        hitboxPosition = transform.position;
         hitboxSize = new Vector3(0.1f, 0.1f, 0.1f);
         hitboxRotation = transform.rotation;
-        hitboxTimer = 2f;
+        hitboxPosition = transform.position;
 
-        _state = ColliderState.Closed;
+        //Reset dynamic hitbox counter
+        hitboxIndex = 0;
+        hitboxNumStates = 0;
+
+        //Reset input matrices
+        hitboxSizeList = new List<Vector3>() { new Vector3(0.1f, 0.1f, 0.1f) };
+        hitboxRotOffset = new List<Quaternion>() { Quaternion.identity};
+        hitboxPosOffset = new List<Vector3>() { Vector3.zero};
+        hitboxTimer = new List<float>() { 0f };
+
+    _state = ColliderState.Closed;
     }
 
 
     private void Update()
     {
-        if (_state == ColliderState.Closed) return;
+        if (_state == ColliderState.Closed)
+        {
+            endHitbox();
+            return;
+        }
 
-        //Update Hitbox location to follow player
-        hitboxPosition = transform.position + hitboxPosOffset;
-        hitboxRotation = transform.rotation;
+        //Update Hitbox location and orientation to follow player
+        hitboxPosition = transform.position + hitboxPosOffset[hitboxIndex];
+        hitboxRotation = hitboxRotOffset[hitboxIndex];
+        hitboxSize     = hitboxSizeList[hitboxIndex];  
 
         //Decrement move up-time timer
-        hitboxTimer -= Time.deltaTime;
+        hitboxTimer[hitboxIndex] = hitboxTimer[hitboxIndex] - Time.deltaTime;
 
         //Check for collision
         Collider[] colliders = Physics.OverlapBox(hitboxPosition, hitboxSize, hitboxRotation, LayerMask.GetMask("Hurtbox"));
@@ -82,15 +106,17 @@ public class Hitbox : MonoBehaviour
             _state = ColliderState.Colliding;
 
             Debug.Log(c.name);
-            c.transform.root.GetComponent<Rigidbody>().velocity = new Vector3(10, 10, 0);
+            //c.transform.root.GetComponent<Rigidbody>().velocity = new Vector3(10, 10, 0);
+            c.transform.root.GetComponent<Rigidbody>().AddForce(new Vector3(30, 30, 0));
+
         }
 
 
         //Check if move is finished
-        if (hitboxTimer <= 0f)
+        if (hitboxTimer[hitboxIndex] <= 0f)
         {
-            endHitbox();
-            hitboxTimer = 0f;
+            if (hitboxIndex >= hitboxNumStates - 1 ) endHitbox();
+            else hitboxIndex++;
         }
     }
 
@@ -114,7 +140,7 @@ public class Hitbox : MonoBehaviour
                 break;
         }
 
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
+        Gizmos.matrix = Matrix4x4.TRS(hitboxPosition, hitboxRotation, transform.localScale);
         Gizmos.DrawCube(Vector3.zero, new Vector3(hitboxSize.x * 2 / transform.localScale.x, hitboxSize.y * 2 / transform.localScale.y, hitboxSize.z * 2));
     }
 }
