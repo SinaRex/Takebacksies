@@ -7,6 +7,12 @@ TagManager:
   - Canvas
   - PlayZone
   - Body1
+  - blast1
+  - LeftWall
+  - RightWall
+  - TopWall
+  - ButtomWall
+  - blast2
   layers:
   - Default
   - TransparentFX
