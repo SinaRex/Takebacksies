@@ -52,12 +52,16 @@ public class Player : MonoBehaviour
                 Jump();
             }
 
-            //Attack Inputs
-            if (Input.GetKeyDown(KeyCode.E))
-                GetComponent<Hitbox>().startHitbox(Vector3.zero, transform.rotation, new Vector3(1f, 0.3f, 0.1f));
-
             if (Input.GetKeyDown(KeyCode.Q))
-                GetComponent<Hitbox>().startHitbox(Vector3.zero, transform.rotation, new Vector3(0.2f, 2f, 0.1f));
+                GetComponent<Hitbox>().startHitbox(new List<Vector3>() { Vector3.zero }, new List<Quaternion>() { transform.rotation },
+                    new List<Vector3>() { new Vector3(1f, 0.3f, 0.1f) }, new List<float>() { 0.2f }, 0);
+
+            if (Input.GetAxis("Fire1") > 0 || Input.GetKeyDown(KeyCode.E))
+                GetComponent<Hitbox>().startHitbox(new List<Vector3>() { Vector3.zero, Vector3.zero, Vector3.zero },
+                    new List<Quaternion>() { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
+                    new List<Vector3>() { new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f) },
+                    new List<float>() { 0.1f, 0.1f, 0.1f }, 3);
+        
         }
         else {
             horizontalDirection = Input.GetAxis("Horizontal2");
@@ -74,8 +78,8 @@ public class Player : MonoBehaviour
             StopRewind();
         }
 
-        playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f);
-        //playerBody.AddForce (new Vector3(horizontalDirection * movementSpeed, 0f, 0f));
+        //playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f);
+        playerBody.AddForce (new Vector3(horizontalDirection, 0f, 0f), ForceMode.VelocityChange);
     }
 
     /// <summary>
