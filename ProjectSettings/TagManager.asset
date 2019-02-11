@@ -13,6 +13,10 @@ TagManager:
   - TopWall
   - ButtomWall
   - blast2
+  - Player1
+  - Player2
+  - Hurt1
+  - Hurt2
   layers:
   - Default
   - TransparentFX

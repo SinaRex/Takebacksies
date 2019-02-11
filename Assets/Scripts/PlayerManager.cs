@@ -20,7 +20,7 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        goUntransparent();
+        GoUntransparent();
     }
 
     // Update is called once per frame
@@ -122,9 +122,9 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < 16; i++)
         {
             yield return new WaitForSeconds(0.125f);
-            goTransparent();
+            GoTransparent();
             yield return new WaitForSeconds(0.125f);
-            goUntransparent();
+            GoUntransparent();
 
         }
         Debug.Log("Done");
@@ -136,11 +136,11 @@ public class PlayerManager : MonoBehaviour
     //    material.color = new Color(material.color.r, material.color.g, material.color.b, 0f);
     //}
 
-    void goUntransparent()
+    void GoUntransparent()
     {
         material.color = new Color(material.color.r, material.color.g, material.color.b, 1f);
     }
-    void goTransparent()
+    void GoTransparent()
     {
         material.color = new Color(material.color.r, material.color.g, material.color.b, 0f);
     }

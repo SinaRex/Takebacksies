@@ -30,6 +30,9 @@ public class Hitbox : MonoBehaviour
     //Hitbox State
     private ColliderState _state;
 
+    //For health counting
+    public int attackDamage = 1;
+    PlayerHealth playerHealth;
 
     // Activate the hitbox with the given parameters
     public void startHitbox(List<Vector3> posOffsetIn, List<Quaternion> rotationIn, List<Vector3> sizeIn, List<float> timersIn, int numStatesIn)
@@ -109,6 +112,9 @@ public class Hitbox : MonoBehaviour
             //c.transform.root.GetComponent<Rigidbody>().velocity = new Vector3(10, 10, 0);
             c.transform.root.GetComponent<Rigidbody>().AddForce(new Vector3(30, 30, 0));
 
+            //Health update
+            playerHealth = c.transform.root.GetComponent<PlayerHealth>();
+            playerHealth.TakeDamage(attackDamage);
         }
 
 
