@@ -14,12 +14,15 @@ public class Player : MonoBehaviour
     float tiltAngle = -30.0f;
     private Canvas canvas;
 
-    private float horizontalDirection = 0;
-    private float isJumping;
+    //Player Character Variables
+    private float playerPercent = 0f;
+    private float hitStunTimer = 0f;
 
+    //Movement Variables
     private bool isGrounded;
     private bool isRewinding;
-    private bool canDoubleJump;
+    private float horizontalDirection = 0;
+    private int extraJumpsLeft = 2;
 
     private Rigidbody playerBody;
 
@@ -34,38 +37,44 @@ public class Player : MonoBehaviour
         isRewinding = false;
         //Control the fall speed
         Physics.gravity = new Vector3(0, -15.0F, 0);
-
-        canDoubleJump = false;
     }
 
     private void FixedUpdate()
     {
+
+        //Basic hitstun
+        if (hitStunTimer > 0f) hitStunTimer -= Time.deltaTime;
+        else if (hitStunTimer < 0) hitStunTimer = 0;
+
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance);
+        if (isGrounded) extraJumpsLeft = 2;
 
         // Movement Inputs
         if (isPlayer1)
         {
 
             horizontalDirection = Input.GetAxis("Horizontal1");
-            isJumping = Input.GetAxis("Jump1");
-            if (Input.GetButtonDown("Jump1"))
+            if (Input.GetButtonDown("Jump1") && (extraJumpsLeft > 0))
             {
-                Jump();
+                //Limit extra jumps in the air
+                if (!isGrounded) extraJumpsLeft--;
+                //FIXME: Make paramterizable
+                playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
             }
 
-            if (Input.GetKeyDown(KeyCode.Q))
-                GetComponent<Hitbox>().startHitbox(new List<Vector3>() { Vector3.zero }, new List<Quaternion>() { transform.rotation },
-                    new List<Vector3>() { new Vector3(1f, 0.3f, 0.1f) }, new List<float>() { 0.2f }, 0);
+            if (Input.GetKeyDown(KeyCode.E))
+                transform.GetComponent<MoveList>().jab();
 
-            if (Input.GetAxis("Fire1") > 0 || Input.GetKeyDown(KeyCode.E))
-                GetComponent<Hitbox>().startHitbox(new List<Vector3>() { Vector3.zero, Vector3.zero, Vector3.zero },
-                    new List<Quaternion>() { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
-                    new List<Vector3>() { new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f) },
-                    new List<float>() { 0.1f, 0.1f, 0.1f }, 3);
-        
+
+            if (Input.GetAxis("Fire1") > 0 || Input.GetKeyDown(KeyCode.Q))
+                transform.GetComponent<MoveList>().Up_Normal();
+
+            if (Input.GetKeyDown(KeyCode.R))
+                transform.GetComponent<MoveList>().Forward_Normal();
+
         }
         else {
             horizontalDirection = Input.GetAxis("Horizontal2");
-            isJumping = Input.GetAxis("Jump2");
         }
 
         //Time travel Inputs
@@ -78,13 +87,11 @@ public class Player : MonoBehaviour
             StopRewind();
         }
 
-        //playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f);
-        playerBody.AddForce (new Vector3(horizontalDirection, 0f, 0f), ForceMode.VelocityChange);
+        if (hitStunTimer <= 0) playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f);
+        else playerBody.AddForce (new Vector3(horizontalDirection/5, 0f, 0f), ForceMode.Impulse);
     }
 
-    /// <summary>
-    /// Starts the rewind for all RewindObject in scene.
-    /// </summary>
+    // Starts the rewind for all RewindObject in scene.
     void StartRewind()
     {
         if (!isRewinding)
@@ -100,9 +107,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Stops the rewind for all RewindObject in scene.
-    /// </summary>
+    // Stops the rewind for all RewindObject in scene.
     void StopRewind()
     {
         if (isRewinding)
@@ -118,19 +123,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Jump()
-    {
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance);
+    //Getters, Setters, and incrementers
+    public void setHitStun(float inputStun) {
+        hitStunTimer = inputStun;
+    }
 
-        if (isGrounded)
-        {
-            playerBody.velocity = (Vector3.up * jumpSpeed*1.3f);
-            canDoubleJump = true;
-        } 
-        else if (canDoubleJump)
-        {
-            playerBody.velocity = (Vector3.up * jumpSpeed*1.3f);
-            canDoubleJump = false;
-        }
+    public void addDamage(float inputDamage) {
+        playerPercent += inputDamage;
     }
 }

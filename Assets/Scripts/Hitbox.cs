@@ -4,8 +4,9 @@ using UnityEngine;
 
 public enum ColliderState
 {
-    Closed, Open, Colliding
+    Closed, Open, Colliding, Inactive
 }
+
 
 public class Hitbox : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class Hitbox : MonoBehaviour
     private int hitboxNumStates = 1;
     private int hitboxIndex = 0;
 
+    //Name of the triggering move
+    string moveName;
 
     //Local position/size of the hitbox, defined relative to the player
     private Vector3 hitboxPosition = Vector3.zero;
@@ -30,9 +33,18 @@ public class Hitbox : MonoBehaviour
     //Hitbox State
     private ColliderState _state;
 
+    //Reference back to the attacks creating these hitboxes
+    private IHitboxResponder _responder = null;
+
+    //Setter for hitbox responder
+    public void setResponder(IHitboxResponder responder)
+    {
+        _responder = responder;
+
+    }
 
     // Activate the hitbox with the given parameters
-    public void startHitbox(List<Vector3> posOffsetIn, List<Quaternion> rotationIn, List<Vector3> sizeIn, List<float> timersIn, int numStatesIn)
+    public void startHitbox(List<Vector3> posOffsetIn, List<Quaternion> rotationIn, List<Vector3> sizeIn, List<float> timersIn, int numStatesIn, string moveNameIn)
     {
         // If a hitbox is already active, return
         if (_state == ColliderState.Open || _state == ColliderState.Colliding) return;
@@ -48,6 +60,9 @@ public class Hitbox : MonoBehaviour
 
         //Set hitbox timer
         hitboxTimer = timersIn;
+
+        //Set name of triggering move
+        moveName = moveNameIn;
 
         _state = ColliderState.Open;
     }
@@ -71,7 +86,7 @@ public class Hitbox : MonoBehaviour
         hitboxPosOffset = new List<Vector3>() { Vector3.zero};
         hitboxTimer = new List<float>() { 0f };
 
-    _state = ColliderState.Closed;
+        _state = ColliderState.Closed;
     }
 
 
@@ -84,8 +99,8 @@ public class Hitbox : MonoBehaviour
         }
 
         //Update Hitbox location and orientation to follow player
-        hitboxPosition = transform.position + hitboxPosOffset[hitboxIndex];
-        hitboxRotation = hitboxRotOffset[hitboxIndex];
+        hitboxPosition = transform.position + Quaternion.Euler(0, 0, 0) * hitboxPosOffset[hitboxIndex];
+        hitboxRotation = Quaternion.Euler(0, 0, 0) * transform.rotation*hitboxRotOffset[hitboxIndex];
         hitboxSize     = hitboxSizeList[hitboxIndex];  
 
         //Decrement move up-time timer
@@ -103,20 +118,34 @@ public class Hitbox : MonoBehaviour
                 continue;
 
             //FIXME: for now, just apply knock back, will compartmentalize this later
-            _state = ColliderState.Colliding;
+            if (_state == ColliderState.Colliding)
+                _state = ColliderState.Inactive;
+            else
+                _state = ColliderState.Colliding;
 
-            Debug.Log(c.name);
-            //c.transform.root.GetComponent<Rigidbody>().velocity = new Vector3(10, 10, 0);
-            c.transform.root.GetComponent<Rigidbody>().AddForce(new Vector3(30, 30, 0));
 
+            if (_responder != null && _state == ColliderState.Colliding)
+                _responder.collisionedWith(c, moveName);
+                
+            //FIXME: This is what you're going to need to change if you want 1 hitbox to affect more than one person
+
+//            c.transform.root.GetComponent<Player>().hitStunTimer = 1f;
+//            c.transform.root.GetComponent<Rigidbody>().AddForce(new Vector3(30, 30, 0));
         }
 
 
         //Check if move is finished
         if (hitboxTimer[hitboxIndex] <= 0f)
         {
-            if (hitboxIndex >= hitboxNumStates - 1 ) endHitbox();
-            else hitboxIndex++;
+            //Out of hitboxes, this move is done
+            if (hitboxIndex >= hitboxNumStates - 1)
+                endHitbox();
+            
+            //Still more hitboxes, make sure each hitbox hits only once 
+            else{
+                hitboxIndex++;
+                if (_state == ColliderState.Inactive) _state = ColliderState.Open;
+            }
         }
     }
 
@@ -128,6 +157,10 @@ public class Hitbox : MonoBehaviour
         switch (_state)
         {
             case ColliderState.Closed:
+                Gizmos.color = Color.yellow;
+                break;
+
+            case ColliderState.Inactive:
                 Gizmos.color = Color.yellow;
                 break;
 
@@ -143,4 +176,6 @@ public class Hitbox : MonoBehaviour
         Gizmos.matrix = Matrix4x4.TRS(hitboxPosition, hitboxRotation, transform.localScale);
         Gizmos.DrawCube(Vector3.zero, new Vector3(hitboxSize.x * 2 / transform.localScale.x, hitboxSize.y * 2 / transform.localScale.y, hitboxSize.z * 2));
     }
+
+
 }
