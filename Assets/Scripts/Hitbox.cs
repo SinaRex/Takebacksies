@@ -123,7 +123,6 @@ public class Hitbox : MonoBehaviour
             else
                 _state = ColliderState.Colliding;
 
-
             if (_responder != null && _state == ColliderState.Colliding)
                 _responder.collisionedWith(c, moveName);
                 
