@@ -11,6 +11,12 @@ public enum PlayerState
     Dead, Respawning, Invincible
 }
 
+public enum Orientation
+{
+    Right = 0,
+    Left = 180
+}
+
 public class PlayerManager : MonoBehaviour
 { 
     //State Variables
@@ -23,10 +29,13 @@ public class PlayerManager : MonoBehaviour
     private float hitStunTimer = 0f;
     private float attackingTimer = 0f;
 
+    //Movement Variables
     private bool isGrounded;
     private float horizontalInput;
+    private Orientation playerOrientation;
 
     private bool canRespawn = false;
+    
     //Static Variables
     private static float threshold = 0.5f;
 
@@ -42,6 +51,10 @@ public class PlayerManager : MonoBehaviour
         //-------  Character/Input Management ------//
 
         horizontalInput = transform.GetComponent<Player>().getHorizontalInput();
+
+        //FIXME: This is jank
+        if (horizontalInput > 0) playerOrientation = Orientation.Right;
+        else if (horizontalInput < 0) playerOrientation = Orientation.Left;
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<Player>().groundingDistance, LayerMask.GetMask("Stage"));
 
@@ -163,4 +176,7 @@ public class PlayerManager : MonoBehaviour
         canRespawn = true;
     }
 
+    public Orientation getPlayerOrientation(){
+        return playerOrientation;
+    }
 }

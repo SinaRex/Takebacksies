@@ -36,6 +36,9 @@ public class Hitbox : MonoBehaviour
     //Reference back to the attacks creating these hitboxes
     private IHitboxResponder _responder = null;
 
+    //Player orientation Tracker
+    private Orientation playerOrientation;
+
     //Setter for hitbox responder
     public void setResponder(IHitboxResponder responder)
     {
@@ -98,9 +101,11 @@ public class Hitbox : MonoBehaviour
             return;
         }
 
+        playerOrientation = transform.GetComponent<PlayerManager>().getPlayerOrientation();
+
         //Update Hitbox location and orientation to follow player
-        hitboxPosition = transform.position + Quaternion.Euler(0, 0, 0) * hitboxPosOffset[hitboxIndex];
-        hitboxRotation = Quaternion.Euler(0, 0, 0) * transform.rotation*hitboxRotOffset[hitboxIndex];
+        hitboxPosition = transform.position + Quaternion.Euler(0, (float)playerOrientation, 0) * hitboxPosOffset[hitboxIndex];
+        hitboxRotation = Quaternion.Euler(0, (float)playerOrientation, 0) * transform.rotation*hitboxRotOffset[hitboxIndex];
         hitboxSize     = hitboxSizeList[hitboxIndex];  
 
         //Decrement move up-time timer
