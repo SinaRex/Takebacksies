@@ -69,7 +69,7 @@ public class Hitbox : MonoBehaviour
 
 
     // Called when hitbox deactivated
-    void endHitbox() {
+    public void endHitbox() {
 
         //Reset Hitbox Size
         hitboxSize = new Vector3(0.1f, 0.1f, 0.1f);

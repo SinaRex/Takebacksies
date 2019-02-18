@@ -10,13 +10,8 @@ public class Player : MonoBehaviour
     public float movementSpeed = 10;
     public float groundingDistance = 1f;
     public bool isPlayer1 = false;
-    float smooth = 7.0f;
-    float tiltAngle = -30.0f;
     private Canvas canvas;
 
-    //Player Character Variables
-    private float playerPercent = 0f;
-    private float hitStunTimer = 0f;
 
     //Movement Variables
     private bool isGrounded;
@@ -25,6 +20,7 @@ public class Player : MonoBehaviour
     private int extraJumpsLeft = 2;
 
     private Rigidbody playerBody;
+    private PlayerManager playerManager;
 
     // Start is called before the first frame update
     void Start()
@@ -42,11 +38,9 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
 
-        //Basic hitstun
-        if (hitStunTimer > 0f) hitStunTimer -= Time.deltaTime;
-        else if (hitStunTimer < 0) hitStunTimer = 0;
+        playerManager = transform.GetComponent<PlayerManager>();
 
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Stage"));
         if (isGrounded) extraJumpsLeft = 2;
 
         // Movement Inputs
@@ -87,8 +81,12 @@ public class Player : MonoBehaviour
             StopRewind();
         }
 
-        if (hitStunTimer <= 0) playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f);
-        else playerBody.AddForce (new Vector3(horizontalDirection/5, 0f, 0f), ForceMode.Impulse);
+        //Different Movemetn options depending on player state
+        if (playerManager.GetState() == PlayerState.InHitStun) playerBody.AddForce(new Vector3(horizontalDirection / 5, 0f, 0f), ForceMode.VelocityChange); //DI
+        else if (playerManager.GetState() == PlayerState.GroundAttack) playerBody.velocity = Vector3.zero; // Can't move while attacking
+        else if (playerManager.GetState() == PlayerState.Airborne || playerManager.GetState() == PlayerState.ArialAttack) playerBody.AddForce(new Vector3(horizontalDirection / 3, 0f, 0f), ForceMode.Impulse);
+        else playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f); // Move normally
+
     }
 
     // Starts the rewind for all RewindObject in scene.
@@ -123,12 +121,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    //Getters, Setters, and incrementers
-    public void setHitStun(float inputStun) {
-        hitStunTimer = inputStun;
-    }
 
-    public void addDamage(float inputDamage) {
-        playerPercent += inputDamage;
+    //Getters and Setters
+    public float getHorizontalInput() {
+        return horizontalDirection;
     }
 }
