@@ -24,7 +24,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     IDictionary<string, moveData> moveDictionary = new Dictionary<string, moveData>() {
 
         {"Jab",             new moveData(new Vector3(10f, 20f, 0), 1.0f, 1.0f, "default")},
-        {"Forward-Normal",  new moveData(new Vector3(600, 30, 0), 1.0f, 1.0f, "default")},
+        {"Forward-Normal",  new moveData(new Vector3(600, 300, 0), 1.0f, 1.0f, "default")},
         {"Down-Normal",     new moveData(Vector3.zero, 1.0f, 1.0f, "default")},
         {"Up-Normal",       new moveData(new Vector3(30, 30, 0), 1.0f, 1.0f, "default")},
 
@@ -86,7 +86,11 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     //Used to apply the effects of an attack that connected with the opponent
     //Currently applies same effects for each move, but if we add some weirder moves this could be useful
     public void collisionedWith(Collider collider, string move) {
-        collider.transform.root.GetComponent<Hurtbox>().getHitBy(moveDictionary[move]);
+
+        //FIXME: Lazy Way of making knockback apply in the correct direction
+        moveData inputData = moveDictionary[move];
+        inputData.knockBack = Quaternion.Euler(0, (float)transform.GetComponent<PlayerManager>().getPlayerOrientation(), 0) * inputData.knockBack;
+        collider.transform.root.GetComponent<Hurtbox>().getHitBy(inputData);
     }
 
 }

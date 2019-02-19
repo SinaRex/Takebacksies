@@ -65,6 +65,10 @@ public class PlayerManager : MonoBehaviour
         if (attackingTimer > 0f) attackingTimer -= Time.deltaTime;
         else attackingTimer = 0;
 
+
+        //Other Player Managings
+        transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, (float)playerOrientation, 0));
+
         //--------- Player State Machine-----------//
         //Update Next State
         _state = nextState;
@@ -147,7 +151,7 @@ public class PlayerManager : MonoBehaviour
         //Debug.Log(_state);
 
     }
-    
+
 
     //-------External Functions------//
 

@@ -105,7 +105,7 @@ public class Hitbox : MonoBehaviour
 
         //Update Hitbox location and orientation to follow player
         hitboxPosition = transform.position + Quaternion.Euler(0, (float)playerOrientation, 0) * hitboxPosOffset[hitboxIndex];
-        hitboxRotation = Quaternion.Euler(0, (float)playerOrientation, 0) * transform.rotation*hitboxRotOffset[hitboxIndex];
+        hitboxRotation = Quaternion.Euler(0, (float)playerOrientation, 0) * hitboxRotOffset[hitboxIndex];
         hitboxSize     = hitboxSizeList[hitboxIndex];  
 
         //Decrement move up-time timer
