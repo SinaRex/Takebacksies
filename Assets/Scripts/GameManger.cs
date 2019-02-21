@@ -13,6 +13,9 @@ public class GameManger : MonoBehaviour
     /* Respawn Duration*/
     public int respawnDuration = 2;
 
+    /* Invinciblity Duration*/
+    public int invincibeDuration = 2;
+
     /* List of players GameObject*/
     private List<GameObject> players = new List<GameObject>();
 
@@ -21,10 +24,6 @@ public class GameManger : MonoBehaviour
 
     /* Respawn Platform (DRAG AND DROP)*/
     public GameObject respawnPlatform;
-
-    /* Flags to help for things to happen only once */
-    private bool isRespawning = false;
-    private bool isDead = false;
 
     /* Enum */
     private enum whichPlayer {Player1, Player2, Echo1, Echo2}
@@ -51,29 +50,39 @@ public class GameManger : MonoBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
+
             switch (players[i].GetComponent<PlayerManager>().GetState())
             {
                 case PlayerState.Dead:
-                    if (!isDead)
+                    if (!players[i].GetComponent<PlayerManager>().IsDying())
                     {
-                        Debug.Log("Dead in GameManager");
                         players[i].GetComponent<PlayerManager>().Respawn();
-                        // TODO: decrease the lives
-                        isDead = true;
-                       
+                        // TODO: decrease the lives only once!
+
+                        players[i].GetComponent<PlayerManager>().SetIsDying(true);
+
                     }
                     break;
 
                 case PlayerState.Respawning:
-                    if (!isRespawning)
+                    if (!players[i].GetComponent<PlayerManager>().IsRespawning())
                     {
-                        Debug.Log("Respawning in GameManager");
-                        StartCoroutine(RespawnPlayer(players[i]));
-                        isRespawning = true;
+                        StartCoroutine(RespawnPlayer(players[i])); // Respawn only once and make it goinvincible there
+                        StartCoroutine(StartFlashing(players[i]));// Also start flashing
+
+                        players[i].GetComponent<PlayerManager>().SetIsRespawning(true);
                     }
-                   
                     break;
+
                 case PlayerState.Invincible:
+                    // Reset the triggers
+                    players[i].GetComponent<PlayerManager>().SetIsDying(false);
+                    players[i].GetComponent<PlayerManager>().SetIsRespawning(false);
+
+
+                    break;
+                default:
+
                     break;
             }
         }
@@ -119,17 +128,19 @@ public class GameManger : MonoBehaviour
         player.GetComponentInChildren<ParticleSystem>().Play();
         //StartCoroutine(MakePlayerInvincible());
 
-        // Wait two (or customized) second before respawning.
-        yield return new WaitForSeconds(respawnDuration);
+        // Wait two (or customized) seconds before respawning.
+        yield return new WaitForSeconds(respawnDuration - 0.5f);
 
         GameObject platform = MakeRespawnPlatform(player); 
 
-        if (platform)
+        if (platform) // if it's not the echo player
         {
             player.transform.position = platform.transform.position + new Vector3(0, player.transform.localScale.y, 0);
             player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None |
             RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
             platform.GetComponent<Rigidbody>().isKinematic = false;
+
+            // Move the player and platform down!
             for (int i = 0; i < 30; i++)
             {
                 yield return new WaitForFixedUpdate();
@@ -139,6 +150,7 @@ public class GameManger : MonoBehaviour
             platform.GetComponent<Rigidbody>().isKinematic = true;
 
             yield return new WaitForSeconds(0.5f);
+
             platform.GetComponent<BoxCollider>().enabled = false;
             player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None |
                 RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
@@ -181,10 +193,23 @@ public class GameManger : MonoBehaviour
         }
     }
 
-    //private IEnumerator MakePlayerInvincible()
-    //{
+    private IEnumerator StartFlashing(GameObject player)
+    {
+        float totalDuration = Mathf.Ceil((respawnDuration + invincibeDuration) / 0.25f);
+        int i = 0;
+        while (i < totalDuration && 
+            (player.GetComponent<PlayerManager>().GetState() == PlayerState.Invincible || 
+            player.GetComponent<PlayerManager>().GetState() == PlayerState.Respawning))
+        {
+            yield return new WaitForSeconds(0.125f);
+            player.GetComponent<Renderer>().enabled = false; // FIXME: replace the rendered with tag
+            yield return new WaitForSeconds(0.125f);
+            player.GetComponent<Renderer>().enabled = true; // FIXME: replace it with tag
+            i++;
+        }
 
-    //}
+
+    }
 
 
     /** =============== START: PlayZone & BlastZone Logic =================*/

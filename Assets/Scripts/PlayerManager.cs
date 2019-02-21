@@ -43,7 +43,13 @@ public class PlayerManager : MonoBehaviour
 
     private bool canRespawn = false;
     private bool isDead = false;
-    private bool canBeInvinvible = false;
+    private bool canBeInvincible = false;
+
+    // Current state flags for GameManager so that it is a trigger 
+    // and not a state
+    private bool isDying = false;
+    private bool isRespawning = false;
+    private bool isInvincible = false;
 
     //Static Variables
     private static float threshold = 0.5f;
@@ -158,12 +164,11 @@ public class PlayerManager : MonoBehaviour
 
             case PlayerState.Respawning:
                 //Debug.Log("he is Respawning");
-                if (canBeInvinvible) nextState = PlayerState.Invincible;
+                if (canBeInvincible) nextState = PlayerState.Invincible;
                 else nextState = PlayerState.Respawning;
                 break;
 
             case PlayerState.Invincible:
-                //Debug.Log("he is Invincible");
                 if (isDead) nextState = PlayerState.Dead;
                 nextState = PlayerState.Invincible;
                 break;
@@ -193,11 +198,6 @@ public class PlayerManager : MonoBehaviour
 
     //-------External Functions------//
     // State Getters and Setters
-
-    public PlayerState GetState()
-    {
-        return _state;
-    }
 
 
     //Getters, Setters, and incrementers for character variables and inputs
@@ -230,9 +230,45 @@ public class PlayerManager : MonoBehaviour
 
     public void GoInvincible()
     {
-        canBeInvinvible = true;
+        canBeInvincible = true;
     }
 
+    public void SetIsDying(bool flag)
+    { 
+        isDying = flag;
+    }
+
+    public void SetIsRespawning(bool flag)
+    {
+        isRespawning = flag;
+    }
+
+    public void SetIsInvincible(bool flag)
+    {
+        isInvincible = flag;
+    }
+
+
+    //-------------- Getters --------------
+    public bool IsDying()
+    {
+        return isDying;
+    }
+
+    public bool IsRespawning()
+    {
+        return isRespawning;
+    }
+
+    public bool IsInvincible()
+    {
+        return isInvincible;
+    }
+
+    public PlayerState GetState()
+    {
+        return _state;
+    }
 
     public PlayerIdentity GetWhichPlayer()
     {
