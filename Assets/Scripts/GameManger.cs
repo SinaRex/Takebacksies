@@ -78,7 +78,7 @@ public class GameManger : MonoBehaviour
                     // Reset the triggers
                     players[i].GetComponent<PlayerManager>().SetIsDying(false);
                     players[i].GetComponent<PlayerManager>().SetIsRespawning(false);
-                    players[i].GetComponent<PlayerManager>()
+                    players[i].GetComponent<PlayerManager>();
 
                     break;
                 default:
@@ -177,14 +177,14 @@ public class GameManger : MonoBehaviour
             Debug.Log(GameObject.Find("RespawnPoint1"));
            return Instantiate(respawnPlatform,
                             GameObject.Find("RespawnPoint1").transform.position,
-                            Quaternion.identity);
+                            respawnPlatform.transform.rotation);
         }
 
         else if (player.GetComponent<PlayerManager>().GetWhichPlayer() == PlayerIdentity.Player2)
         {
             return Instantiate(respawnPlatform,
                             GameObject.Find("RespawnPoint2").transform.position,
-                            Quaternion.identity);
+                            respawnPlatform.transform.rotation);
         }
 
         else
