@@ -22,6 +22,10 @@ public class GameManger : MonoBehaviour
     /* Respawn Platform (DRAG AND DROP)*/
     public GameObject respawnPlatform;
 
+    /* Flags to help for things to happen only once */
+    private bool isRespawning = false;
+    private bool isDead = false;
+
     /* Enum */
     private enum whichPlayer {Player1, Player2, Echo1, Echo2}
 
@@ -50,19 +54,26 @@ public class GameManger : MonoBehaviour
             switch (players[i].GetComponent<PlayerManager>().GetState())
             {
                 case PlayerState.Dead:
-                    playersLives[i] -= 1;
-                    if (playersLives[i] <= 0)
-
+                    if (!isDead)
                     {
-                        GameOver();
-                    }
-                    else
-                    {
+                        Debug.Log("Dead in GameManager");
                         players[i].GetComponent<PlayerManager>().Respawn();
-                        StartCoroutine(RespawnPlayer(players[i]));
+                        // TODO: decrease the lives
+                        isDead = true;
+                       
                     }
                     break;
-                default:
+
+                case PlayerState.Respawning:
+                    if (!isRespawning)
+                    {
+                        Debug.Log("Respawning in GameManager");
+                        StartCoroutine(RespawnPlayer(players[i]));
+                        isRespawning = true;
+                    }
+                   
+                    break;
+                case PlayerState.Invincible:
                     break;
             }
         }
@@ -75,7 +86,7 @@ public class GameManger : MonoBehaviour
     private void FixedUpdate()
     {
         // Comment this out for testing
-        gameTimerRemaining -= Time.deltaTime;
+        //gameTimerRemaining -= Time.deltaTime;
 
         if (gameTimerRemaining < 0)
         {
@@ -106,32 +117,35 @@ public class GameManger : MonoBehaviour
 
         // Play the blast animation.
         player.GetComponentInChildren<ParticleSystem>().Play();
-        StartCoroutine(MakePlayerInvincible());
+        //StartCoroutine(MakePlayerInvincible());
 
         // Wait two (or customized) second before respawning.
         yield return new WaitForSeconds(respawnDuration);
 
         GameObject platform = MakeRespawnPlatform(player); 
 
-        platform.GetComponent<Rigidbody>().isKinematic = false;
-
-
         if (platform)
         {
+            player.transform.position = platform.transform.position + new Vector3(0, player.transform.localScale.y, 0);
+            player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None |
+            RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
+            platform.GetComponent<Rigidbody>().isKinematic = false;
             for (int i = 0; i < 30; i++)
             {
                 yield return new WaitForFixedUpdate();
                 platform.GetComponent<Rigidbody>().AddForce(new Vector3(0, -4.8f, 0));
-                GetComponent<Rigidbody>().AddForce(new Vector3(0, -4.8f, 0));
+                player.GetComponent<Rigidbody>().AddForce(new Vector3(0, -4.8f, 0));
             }
             platform.GetComponent<Rigidbody>().isKinematic = true;
 
             yield return new WaitForSeconds(0.5f);
             platform.GetComponent<BoxCollider>().enabled = false;
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None |
+            player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None |
                 RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
             Destroy(platform);
 
+            // Go invincible.
+            player.GetComponent<PlayerManager>().GoInvincible();
 
         }
         else
@@ -146,17 +160,18 @@ public class GameManger : MonoBehaviour
     private GameObject MakeRespawnPlatform(GameObject player)
     {
 
-        if (player.GetComponent<PlayerManager>().GetWhichPlayer() == whichPlayer.Player1)
+        if (player.GetComponent<PlayerManager>().GetWhichPlayer() == PlayerIdentity.Player1)
         {
+            Debug.Log(GameObject.Find("RespawnPoint1"));
            return Instantiate(respawnPlatform,
                             GameObject.Find("RespawnPoint1").transform.position,
                             Quaternion.identity);
         }
 
-        else if (player.GetComponent<PlayerManager>().GetWhichPlayer() == whichPlayer.Player2)
+        else if (player.GetComponent<PlayerManager>().GetWhichPlayer() == PlayerIdentity.Player2)
         {
             return Instantiate(respawnPlatform,
-                            GameObject.Find("RespawnPoint1").transform.position,
+                            GameObject.Find("RespawnPoint2").transform.position,
                             Quaternion.identity);
         }
 
@@ -170,5 +185,10 @@ public class GameManger : MonoBehaviour
     //{
 
     //}
+
+
+    /** =============== START: PlayZone & BlastZone Logic =================*/
+
+    /** =============== END: PlayZone & BlastZone Logic ======================*/
 
 }
