@@ -11,11 +11,18 @@ public enum PlayerState
     Dead, Respawning, Invincible
 }
 
+
 public enum PlayerIdentity
 {
     Player1, Player2, Echo1, Echo2
 }
 
+
+public enum Orientation
+{
+    Right = 0,
+    Left = 180
+}
 
 public class PlayerManager : MonoBehaviour
 { 
@@ -29,12 +36,15 @@ public class PlayerManager : MonoBehaviour
     private float attackingTimer = 0f;
     public PlayerIdentity whichPlayer; // TODO: change this to private
 
+    //Movement Variables
     private bool isGrounded;
     private float horizontalInput;
+    private Orientation playerOrientation;
 
     private bool canRespawn = false;
     private bool isDead = false;
     private bool canBeInvinvible = false;
+
     //Static Variables
     private static float threshold = 0.5f;
 
@@ -52,6 +62,10 @@ public class PlayerManager : MonoBehaviour
 
         horizontalInput = transform.GetComponent<Player>().getHorizontalInput();
 
+        //FIXME: This is jank
+        if (horizontalInput > 0) playerOrientation = Orientation.Right;
+        else if (horizontalInput < 0) playerOrientation = Orientation.Left;
+
         isGrounded = Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<Player>().groundingDistance, LayerMask.GetMask("Stage"));
 
         //Decrementing Timers
@@ -60,6 +74,10 @@ public class PlayerManager : MonoBehaviour
 
         if (attackingTimer > 0f) attackingTimer -= Time.deltaTime;
         else attackingTimer = 0;
+
+
+        //Other Player Managings
+        transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, (float)playerOrientation, 0));
 
         //--------- Player State Machine-----------//
         //Update Next State
@@ -175,6 +193,7 @@ public class PlayerManager : MonoBehaviour
 
     //-------External Functions------//
     // State Getters and Setters
+
     public PlayerState GetState()
     {
         return _state;
@@ -204,7 +223,6 @@ public class PlayerManager : MonoBehaviour
         canRespawn = true;
     }
 
-
     public void Die()
     {
         isDead = true;
@@ -221,5 +239,7 @@ public class PlayerManager : MonoBehaviour
         return whichPlayer;
     }
 
-
+    public Orientation getPlayerOrientation(){
+        return playerOrientation;
+    }
 }

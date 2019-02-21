@@ -16,6 +16,7 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
 
         AttatchedCharacter.GetComponent<PlayerManager>().setHitStun(move.hitStun);
         AttatchedCharacter.GetComponent<PlayerManager>().addDamage(move.damage);
+        AttatchedCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero;
         AttatchedCharacter.GetComponent<Rigidbody>().AddForce(move.knockBack);
 
     }
