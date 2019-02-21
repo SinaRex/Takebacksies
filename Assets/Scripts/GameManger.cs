@@ -78,7 +78,7 @@ public class GameManger : MonoBehaviour
                     // Reset the triggers
                     players[i].GetComponent<PlayerManager>().SetIsDying(false);
                     players[i].GetComponent<PlayerManager>().SetIsRespawning(false);
-
+                    players[i].GetComponent<PlayerManager>()
 
                     break;
                 default:
