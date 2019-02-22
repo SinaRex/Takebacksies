@@ -14,13 +14,22 @@ public class CavemanAnimation : MonoBehaviour
     private Orientation playerOrientation;
     private float horizontalInput;
 
-    private float finalRotaiton = 180;
+    private float sinceTime = 0.0f;
+    private bool isRotating = false;
+    Vector3 to;
+
+    private int extraJumps = 3;
+    private bool isGrounded;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
         playerOrientation = Orientation.Right;
+
+        to = transform.eulerAngles;
+
+        Physics.gravity = new Vector3(0, -40f, 0);
     }
 
     private void FixedUpdate()
@@ -29,15 +38,33 @@ public class CavemanAnimation : MonoBehaviour
 
         float h = Input.GetAxisRaw("HorizontalTesting"); // only -1, 0 and 1 (not a range)
         float v = Input.GetAxisRaw("Vertical");
+
         Orientation oldOrientation = playerOrientation;
         if (h > 0) playerOrientation = Orientation.Right;
         else if (h < 0) playerOrientation = Orientation.Left;
 
         Move(h, v);
-        if (oldOrientation != playerOrientation)
+        Turning(oldOrientation);
+
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 2.5f);
+        if (isGrounded)
         {
-            StartCoroutine(Rotate(Vector3.up, 180, 0.25f));
-        }  
+            extraJumps = 3;
+        }
+
+        if (Input.GetButtonDown("Jump1") && (extraJumps > 0))
+        {
+            //Limit extra jumps in the air
+            if (!isGrounded) extraJumps--;
+            //FIXME: Make paramterizable
+            playerRigidbody.velocity = (Vector3.up * 15f);
+        }
+
+        if (Input.GetAxis("Fire1") > 0 || Input.GetKeyDown(KeyCode.Q))
+            anim.SetTrigger("Jab");
+
+        if (Input.GetKeyDown(KeyCode.R))
+            anim.SetTrigger("Smash");
 
         Animating(h, v);
 
@@ -52,19 +79,36 @@ public class CavemanAnimation : MonoBehaviour
         playerRigidbody.MovePosition(transform.position + movement);
     }
 
-    private void Turning(float h)
+    private void Turning(Orientation oldOrientation)
     {
-        if (h > 0)
+        Vector3 from = transform.rotation.eulerAngles;
+        if (oldOrientation != playerOrientation)
         {
-
+            if (playerOrientation == Orientation.Left)
+            {
+                sinceTime = 0.0f;
+                to = new Vector3(0f, 0f, 0f);
+                isRotating = true;
+            }
+            else
+            {
+                sinceTime = 0.0f;
+                to = new Vector3(0f, 180f, 0f);
+                isRotating = true;
+            }
         }
-        //if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
-        //{
-        //    Vector3 playerToMouse = floorHit.point - transform.position;
-        //    playerToMouse.y = 0f;
-        //    Quaternion newRotation = Quaternion.LookRotation(playerToMouse);
-        //    playerRigidbody.MoveRotation(newRotation);
-        //}
+        if (isRotating)
+        {
+            from = Vector3.Lerp(from, to, sinceTime / 0.25f);
+            transform.rotation = Quaternion.Euler(from);
+            sinceTime += Time.deltaTime;
+            if (sinceTime > 0.25f)
+            {
+                isRotating = false;
+            }
+        }
+
+
     }
 
     private void Animating(float h, float v)
@@ -73,19 +117,19 @@ public class CavemanAnimation : MonoBehaviour
         anim.SetBool("isRunning", running);
     }
 
-    IEnumerator Rotate(Vector3 axis, float angle, float duration = 1.0f)
-    {
-        Quaternion from = transform.rotation;
-        Quaternion to = transform.rotation;
-        to *= Quaternion.Euler(axis * angle);
+    //IEnumerator Rotate(Vector3 axis, float angle, float duration = 1.0f)
+    //{
+    //    Quaternion from = transform.rotation;
+    //    Quaternion to = transform.rotation;
+    //    to *= Quaternion.Euler(axis * angle);
 
-        float elapsed = 0.0f;
-        while (elapsed < duration)
-        {
-            transform.rotation = Quaternion.Slerp(from, to, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        transform.rotation = to;
-    }
+    //    float elapsed = 0.0f;
+    //    while (elapsed < duration)
+    //    {
+    //        transform.rotation = Quaternion.Slerp(from, to, elapsed / duration);
+    //        elapsed += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //    //transform.rotation = to;
+    //}
 }
