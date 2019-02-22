@@ -36,7 +36,7 @@ public class CavemanAnimation : MonoBehaviour
     {
 
 
-        float h = Input.GetAxisRaw("HorizontalTesting"); // only -1, 0 and 1 (not a range)
+        float h = Input.GetAxis("HorizontalTesting"); // only -1, 0 and 1 (not a range)
         float v = Input.GetAxisRaw("Vertical");
 
         Orientation oldOrientation = playerOrientation;
