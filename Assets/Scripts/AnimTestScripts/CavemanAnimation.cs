@@ -14,6 +14,8 @@ public class CavemanAnimation : MonoBehaviour
     private Orientation playerOrientation;
     private float horizontalInput;
 
+    private float finalRotaiton = 180;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -32,9 +34,9 @@ public class CavemanAnimation : MonoBehaviour
         else if (h < 0) playerOrientation = Orientation.Left;
 
         Move(h, v);
-        if (playerOrientation == Orientation.Right)
+        if (oldOrientation != playerOrientation)
         {
-
+            StartCoroutine(Rotate(Vector3.up, 180, 0.25f));
         }  
 
         Animating(h, v);
