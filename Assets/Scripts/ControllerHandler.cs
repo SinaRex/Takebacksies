@@ -15,6 +15,13 @@ public struct TBInput
     public bool ParryButton;
     public bool jumpButton;  
 }
+public Queue<float> actions1 = new Queue<float>();
+public Queue<float> actions2 = new Queue<float>();
+
+//Size of the queue
+private int limit = 75;
+private int count1 = 0;
+private int count2 = 0;
 
 
 public class ControllerHandler : MonoBehaviour
@@ -43,6 +50,29 @@ public class ControllerHandler : MonoBehaviour
         input2.RewindButton = Input.GetButtonDown("RewindButton2");
         input2.ParryButton = Input.GetButtonDown("ParryButton2");
         input2.jumpButton = Input.GetButtonDown("Jump2");
+
+        if (count1 < limit)
+        {
+            actions1.Enqueue(Input1);
+            count1 += 1;
+        }
+        else
+        {
+            actions1.Dequeue();
+            actions1.Enqueue(Input1);
+
+        }
+        if (count2 < limit)
+        {
+            actions2.Enqueue(Input2);
+            count2 += 1;
+        }
+        else
+        {
+            actions2.Dequeue();
+            actions2.Enqueue(Input2);
+
+        }
 
     }
 }
