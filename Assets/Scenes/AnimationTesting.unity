@@ -349,6 +349,26 @@ CapsuleCollider:
   m_Height: 6.0556364
   m_Direction: 1
   m_Center: {x: -0.21369243, y: 0.8278179, z: 0}
+--- !u!114 &1623948965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623948962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13af159ab59eb420eb8ddf8da720c495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveAxisX1: 0
+  MoveAxisY1: 0
+  FightAxisX1: 0
+  FightAxisY1: 0
+  NormalButton1: 0
+  SpecialButton1: 0
+  RewindButton1: 0
+  ParryButton1: 0
 --- !u!114 &1623948967
 MonoBehaviour:
   m_ObjectHideFlags: 0

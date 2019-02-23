@@ -36,8 +36,8 @@ public class CavemanAnimation : MonoBehaviour
     {
 
 
-        float h = Input.GetAxis("HorizontalTesting"); // only -1, 0 and 1 (not a range)
-        float v = Input.GetAxisRaw("Vertical");
+        float h = Input.GetAxis("MoveAxisX1"); // only -1, 0 and 1 (not a range)
+        float v = Input.GetAxisRaw("MoveAxisY1");
 
         Orientation oldOrientation = playerOrientation;
         if (h > 0) playerOrientation = Orientation.Right;
@@ -60,7 +60,7 @@ public class CavemanAnimation : MonoBehaviour
             playerRigidbody.velocity = (Vector3.up * 15f);
         }
 
-        if (Input.GetAxis("Fire1") > 0 || Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
             anim.SetTrigger("Jab");
 
         if (Input.GetKeyDown(KeyCode.R))
