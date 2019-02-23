@@ -66,13 +66,13 @@ public class PlayerManager : MonoBehaviour
 
         //-------  Character/Input Management ------//
 
-        horizontalInput = transform.GetComponent<Player>().getHorizontalInput();
+        horizontalInput = transform.GetComponent<PlayerController>().getHorizontalInput();
 
         //FIXME: This is jank
         if (horizontalInput > 0) playerOrientation = Orientation.Right;
         else if (horizontalInput < 0) playerOrientation = Orientation.Left;
 
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<Player>().groundingDistance, LayerMask.GetMask("Stage"));
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<PlayerController>().groundingDistance, LayerMask.GetMask("Stage"));
 
         //Decrementing Timers
         if (hitStunTimer > 0f) hitStunTimer -= Time.deltaTime;

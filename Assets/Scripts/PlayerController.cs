@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LunarCatsStudio.SuperRewinder;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private Rewind3DObject[] m_rewinders;
     public float jumpSpeed = 4;
