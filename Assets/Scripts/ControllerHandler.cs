@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-struct TBInput
+public struct TBInput
 {
 
     public float MoveAxisX;
@@ -19,8 +19,8 @@ struct TBInput
 
 public class ControllerHandler : MonoBehaviour
 {
-    TBInput input1;
-    TBInput input2;
+    public TBInput input1;
+    public TBInput input2;
 
     void FixedUpdate()
     {
