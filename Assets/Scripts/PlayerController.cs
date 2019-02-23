@@ -12,13 +12,13 @@ public class PlayerController : MonoBehaviour
     private Canvas canvas;
 
 
-    //Movement Variables
+    //Control Variables
     private bool isGrounded;
     private bool isRewinding;
     private float horizontalDirection = 0;
     private float verticalDirection = 0;
     private int extraJumpsLeft = 2;
-
+    private float echoTimer = 0f;
 
     //Player Character Variables
     private TBInput playerInput;
@@ -29,10 +29,17 @@ public class PlayerController : MonoBehaviour
 
     Animator playerAnimator;
 
+    private ControllerHandler controllerHandler;
+
+    // Echo related variables
+    public GameObject characterPrefab = null;
+    private GameObject characterEcho = null;
 
     // Start is called before the first frame update
     void Start()
     {
+        controllerHandler = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>();
+
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
         canvas.enabled = false;
         m_rewinders = FindObjectsOfType<Rewind3DObject>();
@@ -48,20 +55,32 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        //----------Get Player manager related information ---------------
         playerManager = transform.GetComponent<PlayerManager>();
 
-        // Managing Movement Inputs
-        if (playerManager.whichPlayer == PlayerIdentity.Player1) playerInput = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().input1;
-        else playerInput = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().input2;
+        if (playerManager.playerIdentity != PlayerIdentity.Echo)
+        {
+            // Managing Movement Inputs
+            if (playerManager.playerIdentity == PlayerIdentity.Player1) playerInput = controllerHandler.input1;
+            else playerInput = controllerHandler.input2;
+        }
+        else {
+            playerInput = playerManager.getNextRecording();
+        }
 
+        //-----------Update control paramters----------------
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Stage"));
         if (isGrounded) extraJumpsLeft = 2;
+
+        if (echoTimer > 0) echoTimer-=Time.fixedDeltaTime;
+        else echoTimer = 0;
 
         //FIXME Can customize movemenet sensetivity here
         horizontalDirection = 500 * playerInput.MoveAxisX;
         verticalDirection = -500 * playerInput.MoveAxisY;
 
+
+        //----------- Process Player Inputs --------------
         if ((playerInput.jumpButton ) && (extraJumpsLeft > 0))
         {
             //Limit extra jumps in the air
@@ -88,18 +107,12 @@ public class PlayerController : MonoBehaviour
             transform.GetComponent<MoveList>().Forward_Special();
         }
 
-        
 
+        //Time travel
+        if (playerInput.RewindButton && (playerManager.GetWhichPlayer() != PlayerIdentity.Echo)) {
+            createEcho();
+        }
 
-        //Time travel Inputs
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            StartRewind();
-        }
-        if (Input.GetKeyUp(KeyCode.X))
-        {
-            StopRewind();
-        }
 
         //Different Movemetn options depending on player state
         if (playerManager.GetState() == PlayerState.InHitStun) playerBody.AddForce(new Vector3(horizontalDirection / 5, 0f, 0f), ForceMode.Force); //DI
@@ -109,38 +122,16 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    // Starts the rewind for all RewindObject in scene.
-    void StartRewind()
-    {
-        if (!isRewinding)
-        {
-            isRewinding = true;
-            canvas.enabled = true;
+    // Creates a timeclone of this character
+    private void createEcho() {
 
-            //send start rewind for all rewind object in the current scene
-            foreach (Rewind3DObject rewinder in m_rewinders)
-            {
-                rewinder.StartRewind();
-            }
-        }
+        if (echoTimer > 0) return;
+
+        characterEcho = Instantiate(characterPrefab, transform.position, transform.rotation);
+        characterEcho.GetComponent<PlayerManager>().setupEcho(gameObject, controllerHandler.getRecording(playerManager.GetWhichPlayer()));
+
+        echoTimer = 3f;
     }
-
-    // Stops the rewind for all RewindObject in scene.
-    void StopRewind()
-    {
-        if (isRewinding)
-        {
-            canvas.enabled = false;
-            isRewinding = false;
-
-            //send stop rewind for all rewind object in the current scene
-            foreach (Rewind3DObject rewinder in m_rewinders)
-            {
-                rewinder.StopRewind();
-            }
-        }
-    }
-
 
     //Getters and Setters
     public float getHorizontalInput() {

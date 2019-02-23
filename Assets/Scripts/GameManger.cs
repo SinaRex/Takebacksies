@@ -54,13 +54,15 @@ public class GameManger : MonoBehaviour
             switch (players[i].GetComponent<PlayerManager>().GetState())
             {
                 case PlayerState.Dead:
-                    if (!players[i].GetComponent<PlayerManager>().IsDying())
-                    {
-                        players[i].GetComponent<PlayerManager>().Respawn();
-                        // TODO: decrease the lives only once!
+                    if (players[i].GetComponent<PlayerManager>().GetWhichPlayer() != PlayerIdentity.Echo) {
+                        if (!players[i].GetComponent<PlayerManager>().IsDying())
+                        {
+                            players[i].GetComponent<PlayerManager>().Respawn();
+                            // TODO: decrease the lives only once!
 
-                        players[i].GetComponent<PlayerManager>().SetIsDying(true);
+                            players[i].GetComponent<PlayerManager>().SetIsDying(true);
 
+                        }
                     }
                     break;
 

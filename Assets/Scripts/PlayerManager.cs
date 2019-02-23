@@ -14,7 +14,7 @@ public enum PlayerState
 
 public enum PlayerIdentity
 {
-    Player1, Player2, Echo1, Echo2
+    Player1, Player2, Echo
 }
 
 
@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
     private float playerPercent = 0f;
     private float hitStunTimer = 0f;
     private float attackingTimer = 0f;
-    public PlayerIdentity whichPlayer; // TODO: change this to private
+    public PlayerIdentity playerIdentity; // TODO: change this to private
 
     //Movement Variables
     private bool isGrounded;
@@ -53,6 +53,10 @@ public class PlayerManager : MonoBehaviour
 
     //Static Variables
     private static float threshold = 0.5f;
+
+    //Echo Character related varibles
+    private GameObject echoParent = null;
+    private Queue<TBInput> echoRecording;
 
 
     void Start()
@@ -88,7 +92,7 @@ public class PlayerManager : MonoBehaviour
         //Other Player Managings
         transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, (float)playerOrientation, 0));
 
-        //--------- Player State Machine-----------//
+        //----------------------- Player State Machine --------------------------//
         //Update Next State
         _state = nextState;
 
@@ -200,10 +204,7 @@ public class PlayerManager : MonoBehaviour
     /*-------------------END: PlayZone & BlastZone Logic-----------------------*/
 
 
-    //-------External Functions------//
-    // State Getters and Setters
-
-
+    //-------------------------External Functions-----------------------------//
     //Getters, Setters, and incrementers for character variables and inputs
     public void setHitStun(float inputStun)
     {
@@ -229,7 +230,8 @@ public class PlayerManager : MonoBehaviour
 
     public void Die()
     {
-        isDead = true;
+        if (playerIdentity == PlayerIdentity.Echo) Destroy(gameObject);
+        else isDead = true;
     }
 
     public void FinishRespawning()
@@ -276,10 +278,23 @@ public class PlayerManager : MonoBehaviour
 
     public PlayerIdentity GetWhichPlayer()
     {
-        return whichPlayer;
+        return playerIdentity;
     }
 
     public Orientation getPlayerOrientation(){
         return playerOrientation;
+    }
+
+    //------  Echo Related Functions --------
+
+    public void setupEcho(GameObject inputEchoParent, Queue<TBInput> inputEchoRecording) {
+        playerIdentity = PlayerIdentity.Echo;
+        echoParent = inputEchoParent;
+        echoRecording = inputEchoRecording;
+    }
+
+    public TBInput getNextRecording() {
+        if (echoRecording.Count == 0) return new TBInput(0f, 0f, 0f, 0f, false, false, false, false, false);
+        else return echoRecording.Dequeue();
     }
 }

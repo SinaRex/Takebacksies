@@ -13,7 +13,21 @@ public struct TBInput
     public bool SpecialButton;  
     public bool RewindButton;
     public bool ParryButton;
-    public bool jumpButton;  
+    public bool jumpButton;
+
+    public TBInput(float MoveAxisXin, float MoveAxisYin, float FightAxisXin, float FightAxisYin,
+        bool NormalButtonin, bool SpecialButtonin, bool RewindButtonin, bool ParryButtonin, bool jumpButtonin)
+    {
+        MoveAxisX = MoveAxisXin; 
+        MoveAxisY = MoveAxisYin;
+        FightAxisX = FightAxisXin;
+        FightAxisY = FightAxisYin;
+        NormalButton = NormalButtonin;
+        SpecialButton = SpecialButtonin;
+        RewindButton = RewindButtonin;
+        ParryButton = ParryButtonin;
+        jumpButton = jumpButtonin;
+    }
 }
 
 public class ControllerHandler : MonoBehaviour
@@ -22,8 +36,8 @@ public class ControllerHandler : MonoBehaviour
     public TBInput input2;
 
     //Move recording Queues
-    public Queue<TBInput> recording1 = new Queue<TBInput>();
-    public Queue<TBInput> recording2 = new Queue<TBInput>();
+    private Queue<TBInput> recording1 = new Queue<TBInput>();
+    private Queue<TBInput> recording2 = new Queue<TBInput>();
 
     //Size of the queue
     private int recordingLimit = 150; // 50 calls/sec * 3 seconds
@@ -74,5 +88,13 @@ public class ControllerHandler : MonoBehaviour
             recording2.Enqueue(input2);
         }
 
+    }
+
+    //Returns the corresponding set of recorded actions to the player that calls this function
+    public Queue<TBInput> getRecording(PlayerIdentity inputIdentity) {
+
+        if (inputIdentity == PlayerIdentity.Player1) return (new Queue<TBInput>(recording1));
+        else if (inputIdentity == PlayerIdentity.Player2) return (new Queue<TBInput>(recording2));
+        else return new Queue<TBInput>();
     }
 }

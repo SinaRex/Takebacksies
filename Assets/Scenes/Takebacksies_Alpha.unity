@@ -123,6 +123,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
+    - target: {fileID: 100026, guid: b35dbb401a0e149a58a8db28c234fa40, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 400026, guid: b35dbb401a0e149a58a8db28c234fa40, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.41
@@ -435,7 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01c4821131dd4660b2595dc29beec22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whichPlayer: 0
+  playerIdentity: 0
 --- !u!114 &16569420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,6 +455,8 @@ MonoBehaviour:
   jumpSpeed: 4
   movementSpeed: 10
   groundingDistance: 0.5
+  characterPrefab: {fileID: 187512621207068077, guid: f11fd44a95dd14e45b233de677c92dd9,
+    type: 3}
 --- !u!1001 &122703318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1890,6 +1896,7 @@ MonoBehaviour:
   jumpSpeed: 4
   movementSpeed: 10
   groundingDistance: 0.5
+  characterPrefab: {fileID: 934184042}
 --- !u!54 &934184044
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2009,7 +2016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01c4821131dd4660b2595dc29beec22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whichPlayer: 1
+  playerIdentity: 1
 --- !u!114 &934184051
 MonoBehaviour:
   m_ObjectHideFlags: 0
