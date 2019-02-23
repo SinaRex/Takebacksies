@@ -26,7 +26,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         {"Jab",             new moveData(new Vector3(10f, 20f, 0), 1.0f, 0.2f, "default")},
         {"Forward-Normal",  new moveData(new Vector3(600, 300, 0), 1.0f, 1.0f, "default")},
         {"Down-Normal",     new moveData(Vector3.zero, 1.0f, 1.0f, "default")},
-        {"Up-Normal",       new moveData(new Vector3(30, 30, 0), 1.0f, 1.0f, "default")},
+        {"Up-Normal",       new moveData(new Vector3(30, 400, 0), 1.0f, 1.0f, "default")},
 
         {"Neutral-Air",     new moveData(Vector3.zero, 1.0f, 1.0f, "default")},
         {"Forward-Air",     new moveData(Vector3.zero, 1.0f, 1.0f, "default")},
@@ -76,10 +76,10 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     {
         GetComponent<Hitbox>().setResponder(this);
         GetComponent<PlayerManager>().StartAttacking(0.24f);
-        GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0.9f, 0f, 0) },
-                    new List<Quaternion>() { Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -60), Quaternion.Euler(0, 0, -90) },
-                    new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f) },
-                    new List<float>() { 0.06f, 0.06f, 0.06f, 0.06f }, 4, "Up-Normal");
+        GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0)},
+                    new List<Quaternion>() { Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0) },
+                    new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f) },
+                    new List<float>() { 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f }, 6, "Up-Normal");
 
     }
 

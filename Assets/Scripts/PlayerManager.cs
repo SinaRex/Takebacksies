@@ -11,6 +11,13 @@ public enum PlayerState
     Dead, Respawning, Invincible
 }
 
+
+public enum PlayerIdentity
+{
+    Player1, Player2, Echo1, Echo2
+}
+
+
 public enum Orientation
 {
     Right = 0,
@@ -23,11 +30,11 @@ public class PlayerManager : MonoBehaviour
     private PlayerState _state;
     private PlayerState nextState;
 
-
     //Character Variables
     private float playerPercent = 0f;
     private float hitStunTimer = 0f;
     private float attackingTimer = 0f;
+    public PlayerIdentity whichPlayer; // TODO: change this to private
 
     //Movement Variables
     private bool isGrounded;
@@ -35,9 +42,18 @@ public class PlayerManager : MonoBehaviour
     private Orientation playerOrientation;
 
     private bool canRespawn = false;
-    
+    private bool isDead = false;
+    private bool canMoveAfterDeath = false;
+
+    // Current state flags for GameManager so that it is a trigger 
+    // and not a state
+    private bool isDying = false;
+    private bool isRespawning = false;
+    private bool isInvincible = false;
+
     //Static Variables
     private static float threshold = 0.5f;
+
 
     void Start()
     {
@@ -50,13 +66,13 @@ public class PlayerManager : MonoBehaviour
 
         //-------  Character/Input Management ------//
 
-        horizontalInput = transform.GetComponent<Player>().getHorizontalInput();
+        horizontalInput = transform.GetComponent<PlayerController>().getHorizontalInput();
 
         //FIXME: This is jank
         if (horizontalInput > 0) playerOrientation = Orientation.Right;
         else if (horizontalInput < 0) playerOrientation = Orientation.Left;
 
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<Player>().groundingDistance, LayerMask.GetMask("Stage"));
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<PlayerController>().groundingDistance, LayerMask.GetMask("Stage"));
 
         //Decrementing Timers
         if (hitStunTimer > 0f) hitStunTimer -= Time.deltaTime;
@@ -76,7 +92,8 @@ public class PlayerManager : MonoBehaviour
         //Update States
         switch (_state) {
             case PlayerState.Idle:
-                if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
+                if (isDead) nextState = PlayerState.Dead;
+                else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else if (horizontalInput > 0 && horizontalInput < threshold) nextState = PlayerState.Walking;
@@ -85,7 +102,8 @@ public class PlayerManager : MonoBehaviour
                 break;
 
             case PlayerState.Walking:
-                if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
+                if (isDead) nextState = PlayerState.Dead;
+                else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else if (horizontalInput > 0 && horizontalInput < threshold) nextState = PlayerState.Walking;
@@ -95,7 +113,8 @@ public class PlayerManager : MonoBehaviour
 
             case PlayerState.Dashing:
                 //FIXME May need a transition state for turnaround lag
-                if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
+                if (isDead) nextState = PlayerState.Dead;
+                else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else if (horizontalInput > 0 && horizontalInput < threshold) nextState = PlayerState.Walking;
@@ -105,7 +124,8 @@ public class PlayerManager : MonoBehaviour
 
             case PlayerState.Airborne:
                 //FIXME Add Landing lag transition Stage
-                if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
+                if (isDead) nextState = PlayerState.Dead;
+                else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.ArialAttack;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else nextState = PlayerState.Idle;
@@ -113,36 +133,44 @@ public class PlayerManager : MonoBehaviour
 
             case PlayerState.InHitStun:
                 //FIXME Let characters Attack out of here
-                if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
+                if (isDead) nextState = PlayerState.Dead;
+                else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else nextState = PlayerState.Idle;
                 break;
 
             case PlayerState.GroundAttack:
                 //FIXME: Add Move Lag Transition state
-                if (hitStunTimer > 0) { nextState = PlayerState.InHitStun; GetComponent<MoveList>().interruptMove(); }
+                if (isDead) nextState = PlayerState.Dead;
+                else if (hitStunTimer > 0) { nextState = PlayerState.InHitStun; GetComponent<MoveList>().interruptMove(); }
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
                 else nextState = PlayerState.Idle;
                 break;
 
             case PlayerState.ArialAttack:
                 //FIXME: Add landing lag transition State
-                if (hitStunTimer > 0) { nextState = PlayerState.InHitStun; GetComponent<MoveList>().interruptMove(); }
+                if (isDead) nextState = PlayerState.Dead;
+                else if (hitStunTimer > 0) { nextState = PlayerState.InHitStun; GetComponent<MoveList>().interruptMove(); }
                 else if (isGrounded) { nextState = PlayerState.Idle; GetComponent<MoveList>().interruptMove(); }
                 else if (attackingTimer > 0) nextState = PlayerState.ArialAttack;
                 else nextState = PlayerState.Airborne;
                 break;
 
             case PlayerState.Dead:
-                if (canRespawn) { nextState = PlayerState.Respawning; canRespawn = false; }
+                //Debug.Log("he is Dead");
+                if (canRespawn) { nextState = PlayerState.Respawning; canRespawn = false; isDead = false;}
                 else nextState = PlayerState.Dead;
                 break;
 
             case PlayerState.Respawning:
-                nextState = PlayerState.Invincible;
+                //Debug.Log("he is Respawning");
+                //FIXME: Add invincible state
+                if (canMoveAfterDeath) nextState = PlayerState.Idle;
+                else nextState = PlayerState.Respawning;
                 break;
 
             case PlayerState.Invincible:
+                if (isDead) nextState = PlayerState.Dead;
                 nextState = PlayerState.Invincible;
                 break;
 
@@ -153,13 +181,25 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    //-------External Functions------//
-
-    // State Getters and Setters
-    public PlayerState GetState()
+    /*-------------------START: PlayZone & BlastZone Logic---------------------*/
+    private void OnTriggerExit(Collider other)
     {
-        return _state;
+        // The reaosn we check if the current state is not respawning state
+        // is because when respawning on the plaform at the top, a partial
+        // part of the player's body might be outside of the playBox.
+        if (other.gameObject.CompareTag("PlayZone") &&
+                 _state != PlayerState.Respawning) { 
+            Die();
+
+            }
+                
     }
+    /*-------------------END: PlayZone & BlastZone Logic-----------------------*/
+
+
+    //-------External Functions------//
+    // State Getters and Setters
+
 
     //Getters, Setters, and incrementers for character variables and inputs
     public void setHitStun(float inputStun)
@@ -167,17 +207,73 @@ public class PlayerManager : MonoBehaviour
         hitStunTimer = inputStun;
     }
 
+
     public void addDamage(float inputDamage)
     {
         playerPercent += inputDamage;
     }
 
+
     public void StartAttacking(float attackLength) {
         attackingTimer = attackLength;
     }
 
+
     public void Respawn() {
+        isDead = false;
         canRespawn = true;
+    }
+
+    public void Die()
+    {
+        isDead = true;
+    }
+
+    public void FinishRespawning()
+    {
+        canMoveAfterDeath = true;
+    }
+
+    public void SetIsDying(bool flag)
+    { 
+        isDying = flag;
+    }
+
+    public void SetIsRespawning(bool flag)
+    {
+        isRespawning = flag;
+    }
+
+    public void SetIsInvincible(bool flag)
+    {
+        isInvincible = flag;
+    }
+
+
+    //-------------- Getters --------------
+    public bool IsDying()
+    {
+        return isDying;
+    }
+
+    public bool IsRespawning()
+    {
+        return isRespawning;
+    }
+
+    public bool IsInvincible()
+    {
+        return isInvincible;
+    }
+
+    public PlayerState GetState()
+    {
+        return _state;
+    }
+
+    public PlayerIdentity GetWhichPlayer()
+    {
+        return whichPlayer;
     }
 
     public Orientation getPlayerOrientation(){
