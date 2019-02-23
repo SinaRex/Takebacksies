@@ -69,8 +69,11 @@ public class PlayerManager : MonoBehaviour
         horizontalInput = transform.GetComponent<PlayerController>().getHorizontalInput();
 
         //FIXME: This is jank
-        if (horizontalInput > 0) playerOrientation = Orientation.Right;
-        else if (horizontalInput < 0) playerOrientation = Orientation.Left;
+        if (_state != PlayerState.ArialAttack && _state != PlayerState.GroundAttack)
+        {
+            if (horizontalInput > 0) playerOrientation = Orientation.Right;
+            else if (horizontalInput < 0) playerOrientation = Orientation.Left;
+        }
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<PlayerController>().groundingDistance, LayerMask.GetMask("Stage"));
 

@@ -15,19 +15,21 @@ public struct TBInput
     public bool ParryButton;
     public bool jumpButton;  
 }
-public Queue<float> actions1 = new Queue<float>();
-public Queue<float> actions2 = new Queue<float>();
-
-//Size of the queue
-private int limit = 75;
-private int count1 = 0;
-private int count2 = 0;
-
 
 public class ControllerHandler : MonoBehaviour
 {
     public TBInput input1;
     public TBInput input2;
+
+    //Move recording Queues
+    public Queue<TBInput> recording1 = new Queue<TBInput>();
+    public Queue<TBInput> recording2 = new Queue<TBInput>();
+
+    //Size of the queue
+    private int recordingLimit = 150; // 50 calls/sec * 3 seconds
+    private int recordingCount1 = 0;
+    private int recordingCount2 = 0;
+
 
     void FixedUpdate()
     {
@@ -51,26 +53,30 @@ public class ControllerHandler : MonoBehaviour
         input2.ParryButton = Input.GetButtonDown("ParryButton2");
         input2.jumpButton = Input.GetButtonDown("Jump2");
 
-        if (count1 < limit)
+
+        //Record Character Actions
+        if (recordingCount1 < recordingLimit)
         {
-            actions1.Enqueue(Input1);
-            count1 += 1;
+            recording1.Enqueue(input1);
+            recordingCount1 += 1;
         }
         else
         {
-            actions1.Dequeue();
-            actions1.Enqueue(Input1);
+            recording1.Dequeue();
+            recording1.Enqueue(input1);
 
         }
-        if (count2 < limit)
+
+
+        if (recordingCount2 < recordingLimit)
         {
-            actions2.Enqueue(Input2);
-            count2 += 1;
+            recording2.Enqueue(input2);
+            recordingCount2 += 1;
         }
         else
         {
-            actions2.Dequeue();
-            actions2.Enqueue(Input2);
+            recording2.Dequeue();
+            recording2.Enqueue(input2);
 
         }
 
