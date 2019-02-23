@@ -8,8 +8,7 @@ public class PlayerController : MonoBehaviour
     private Rewind3DObject[] m_rewinders;
     public float jumpSpeed = 4;
     public float movementSpeed = 10;
-    public float groundingDistance = 1f;
-    public bool isPlayer1 = false;
+    public float groundingDistance = 0.5f;
     private Canvas canvas;
 
 
@@ -28,6 +27,8 @@ public class PlayerController : MonoBehaviour
 
     private PlayerManager playerManager;
 
+    Animator playerAnimator;
+
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
         isRewinding = false;
         //Control the fall speed
         Physics.gravity = new Vector3(0, -15.0F, 0);
+
+        playerAnimator = GetComponent<Animator>();
     }
 
 
@@ -49,7 +52,7 @@ public class PlayerController : MonoBehaviour
         playerManager = transform.GetComponent<PlayerManager>();
 
         // Managing Movement Inputs
-        if (isPlayer1) playerInput = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().input1;
+        if (playerManager.whichPlayer == PlayerIdentity.Player1) playerInput = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().input1;
         else playerInput = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().input2;
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Stage"));
@@ -68,18 +71,22 @@ public class PlayerController : MonoBehaviour
             playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
         }
 
-        if (playerInput.NormalButton   && (Mathf.Abs(horizontalDirection) < 0.5) && (verticalDirection < 0.5))
+        if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (verticalDirection < 0.5)){
+            playerAnimator.SetTrigger("Jab");
             transform.GetComponent<MoveList>().jab();
+        }
 
-        else if (playerInput.NormalButton   && (Mathf.Abs(horizontalDirection) > 0.5))
+        else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) {
+            playerAnimator.SetTrigger("Smash");
             transform.GetComponent<MoveList>().Forward_Normal();
+        }
 
-        else if (playerInput.NormalButton && (verticalDirection > 0.5))
+        else if (playerInput.NormalButton && (verticalDirection > 0.5)){
             transform.GetComponent<MoveList>().Up_Normal();
-
-        if (playerInput.SpecialButton   && (Mathf.Abs(horizontalDirection) > 0.5))
+        }
+        if (playerInput.SpecialButton && (Mathf.Abs(horizontalDirection) > 0.5)) {
             transform.GetComponent<MoveList>().Forward_Special();
-
+        }
 
         
 

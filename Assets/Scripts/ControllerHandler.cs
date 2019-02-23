@@ -54,30 +54,24 @@ public class ControllerHandler : MonoBehaviour
         input2.jumpButton = Input.GetButtonDown("Jump2");
 
 
-        //Record Character Actions
-        if (recordingCount1 < recordingLimit)
-        {
+        //Record the last 3 seconds of character actions 
+        if (recordingCount1 < recordingLimit){
             recording1.Enqueue(input1);
             recordingCount1 += 1;
         }
-        else
-        {
+        else {
             recording1.Dequeue();
             recording1.Enqueue(input1);
-
         }
 
 
-        if (recordingCount2 < recordingLimit)
-        {
+        if (recordingCount2 < recordingLimit){
             recording2.Enqueue(input2);
             recordingCount2 += 1;
         }
-        else
-        {
+        else{
             recording2.Dequeue();
             recording2.Enqueue(input2);
-
         }
 
     }
