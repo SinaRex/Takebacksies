@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Hurtbox : MonoBehaviour, IAttackResponder
 {
-    Transform AttatchedCharacter; 
-
+    Transform AttatchedCharacter;
     void start() {
         AttatchedCharacter = transform.root;
     }

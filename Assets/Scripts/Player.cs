@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
 
 
             if (Input.GetAxis("Fire1") > 0 || Input.GetKeyDown(KeyCode.Q))
-                transform.GetComponent<MoveList>().Up_Normal();
+                transform.GetComponent<MoveList>().Forward_Special();
 
             if (Input.GetKeyDown(KeyCode.R))
                 transform.GetComponent<MoveList>().Forward_Normal();

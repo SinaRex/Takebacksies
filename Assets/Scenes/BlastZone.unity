@@ -2491,7 +2491,6 @@ GameObject:
   - component: {fileID: 1562951713}
   - component: {fileID: 1562951715}
   - component: {fileID: 1562951714}
-  - component: {fileID: 1562951716}
   - component: {fileID: 1562951719}
   - component: {fileID: 1562951718}
   - component: {fileID: 1562951717}
@@ -2585,7 +2584,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562951706}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7098545, y: 0.8919868, z: -5.45}
+  m_LocalPosition: {x: -3.57, y: 0.8919868, z: -5.45}
   m_LocalScale: {x: 0.35754, y: 0.35754, z: 0.35754}
   m_Children:
   - {fileID: 2022965155}
@@ -2649,24 +2648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01c4821131dd4660b2595dc29beec22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1562951716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1562951706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6394c9a1fb04a4aa98b1843074aa3d4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startingHealth: 0
-  currentHealth: 0
-  healthSlider: {fileID: 600208727}
-  damageImage: {fileID: 346352952}
-  flashSpeed: 5
-  flashColour: {r: 1, g: 0, b: 0, a: 0.1}
 --- !u!114 &1562951717
 MonoBehaviour:
   m_ObjectHideFlags: 0
