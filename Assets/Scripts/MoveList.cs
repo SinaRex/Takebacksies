@@ -31,10 +31,10 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     //Define a default movelist
     IDictionary<string, moveData> moveDictionary = new Dictionary<string, moveData>() {
 
-        {"Jab",             new moveData(new Vector3(10f, 20f, 0), 1.0f, 0.2f, "default")},
+        {"Jab",             new moveData(new Vector3(30f, 60f, 0), 1.0f, 0.5f, "default")},
         {"Forward-Normal",  new moveData(new Vector3(600, 300, 0), 1.0f, 1.0f, "default")},
-        {"Down-Normal",     new moveData(Vector3.zero, 1.0f, 1.0f, "default")},
-        {"Up-Normal",       new moveData(new Vector3(30, 400, 0), 1.0f, 1.0f, "default")},
+        {"Down-Normal",     new moveData(new Vector3(100, 400, 0), 1.0f, 1.0f, "default")},
+        {"Up-Normal",       new moveData(new Vector3(30, 400, 0) , 1.0f, 1.0f, "default")},
 
         {"Neutral-Air",     new moveData(Vector3.zero, 1.0f, 1.0f, "default")},
         {"Forward-Air",     new moveData(Vector3.zero, 1.0f, 1.0f, "default")},
@@ -60,11 +60,12 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     public void jab() {
        
         GetComponent<Hitbox>().setResponder(this);
-        GetComponent<PlayerManager>().StartAttacking(0.15f);
-        moveSuccessful = GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(0.25f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0.25f, 0, 0), Vector3.zero }, 
-                    new List<Quaternion>() { transform.rotation, transform.rotation, transform.rotation, transform.rotation },
-                    new List<Vector3>() { new Vector3(0.5f, 0.1f, 0.1f), new Vector3(1f, 0.1f, 0.1f), new Vector3(0.5f, 0.1f, 0.1f), new Vector3(0f, 0f, 0f) }, 
-                    new List<float>() { 0.05f, 0.05f, 0.05f, 0.5f }, 4, "Jab");
+        GetComponent<PlayerManager>().StartAttacking(0.15f); // How long your character is frozen in place for FIXME
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(
+                    new List<Vector3>() {Vector3.zero, new Vector3(0.25f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0.25f, 0, 0), Vector3.zero }, 
+                    new List<Quaternion>() {transform.rotation, transform.rotation, transform.rotation, transform.rotation, transform.rotation },
+                    new List<Vector3>() { new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.1f, 0.1f), new Vector3(1f, 0.1f, 0.1f), new Vector3(0.5f, 0.1f, 0.1f), new Vector3(0f, 0f, 0f) }, 
+                    new List<float>() { 0.1f, 0.05f, 0.05f, 0.05f, 0.3f }, 5, "Jab"); // How long the move lasts/ how long it is between consecutive moves
         if(moveSuccessful) playerAnimator.SetTrigger("Jab");
 
     }
@@ -74,7 +75,8 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     {
         GetComponent<Hitbox>().setResponder(this);
         GetComponent<PlayerManager>().StartAttacking(0.24f);
-        moveSuccessful = GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0.9f, 0f, 0) },
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(
+                    new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0.9f, 0f, 0) },
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 45), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
                     new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f) },
                     new List<float>() {0.06f, 0.06f, 0.06f, 0.06f }, 4, "Forward-Normal");
@@ -86,12 +88,28 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     public void Up_Normal()
     {
         GetComponent<Hitbox>().setResponder(this);
+        GetComponent<PlayerManager>().StartAttacking(0.46f);
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(
+                    new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0)},
+                    new List<Quaternion>() { Quaternion.Euler(0, 0, 85), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -85), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 85), Quaternion.Euler(0, 0, 0) },
+                    new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f) },
+                    new List<float>() { 0.08f, 0.08f, 0.08f, 0.08f, 0.08f, 0.08f }, 6, "Up-Normal");
+        if (moveSuccessful) playerAnimator.SetTrigger("Up-Normal");
+
+
+    }
+
+
+    public void Down_Normal()
+    {
+        GetComponent<Hitbox>().setResponder(this);
         GetComponent<PlayerManager>().StartAttacking(0.24f);
-        moveSuccessful = GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0)},
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(
+                    new List<Vector3>() {new Vector3(-0.6f, 0.6f, 0), new Vector3(0, 0.8f, 0), new Vector3(0.7f, 0.6f, 0), new Vector3(0, 0.8f, 0), new Vector3(-0.6f, 0.6f, 0), new Vector3(0, 0.8f, 0) },
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0) },
                     new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f) },
-                    new List<float>() { 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f }, 6, "Up-Normal");
-        if (moveSuccessful) playerAnimator.SetTrigger("Up-Normal");
+                    new List<float>() { 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f }, 6, "Down-Normal");
+        if (moveSuccessful) playerAnimator.SetTrigger("Down-Normal");
 
 
     }
@@ -101,7 +119,8 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     {
         GetComponent<Hitbox>().setResponder(this);
         GetComponent<PlayerManager>().StartAttacking(0.3f);
-        moveSuccessful = GetComponent<Hitbox>().startHitbox(new List<Vector3>() { Vector3.zero, Vector3.zero, Vector3.zero },
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(
+                    new List<Vector3>() { Vector3.zero, Vector3.zero, Vector3.zero },
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
                     new List<Vector3>() { new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f) },
                     new List<float>() { 0.1f, 0.1f, 0.1f }, 3, "Up-Normal");
