@@ -390,6 +390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIdentity: 0
+  recordingDuration: 3
 --- !u!114 &187512621207034648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,8 +406,10 @@ MonoBehaviour:
   jumpSpeed: 4
   movementSpeed: 10
   groundingDistance: 0.5
+  timeTravelWaitTime: 2
   characterPrefab: {fileID: 187512621207068077, guid: f11fd44a95dd14e45b233de677c92dd9,
     type: 3}
+  echoMat: {fileID: 2100000, guid: 6e76cdc5a10c24b4e860ae1e10e4dd1d, type: 2}
 --- !u!1 &187512621207068079
 GameObject:
   m_ObjectHideFlags: 0

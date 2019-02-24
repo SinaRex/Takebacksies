@@ -101,7 +101,7 @@ public class GameManger : MonoBehaviour
         //Updating UI
         var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
         var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
-        timerLabel.text = timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+        timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
 
         //Game over when time is done
         if (gameTimerRemaining < 0)
