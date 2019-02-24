@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     public float groundingDistance = 0.5f;
     public float timeTravelWaitTime = 2f;
 
-
     //Control Variables
     private bool isGrounded;
     private bool isRewinding;
@@ -37,7 +36,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controllerHandler = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>();
-        
+
         m_rewinders = FindObjectsOfType<Rewind3DObject>();
         playerBody = gameObject.GetComponent<Rigidbody>();
 

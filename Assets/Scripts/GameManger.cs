@@ -21,7 +21,7 @@ public class GameManger : MonoBehaviour
     private List<GameObject> players = new List<GameObject>();
 
     /* List of lives that correspond to the players in the list players.*/
-    private List<int> playersLives = new List<int>();
+    public List<int> playersLives = new List<int>();
 
     /* Respawn Platform (DRAG AND DROP)*/
     public GameObject respawnPlatform;
@@ -31,7 +31,6 @@ public class GameManger : MonoBehaviour
 
     /* UI */
     public Text timerLabel;
-
     /**
      * Start is called before the first frame update
      */
@@ -62,10 +61,9 @@ public class GameManger : MonoBehaviour
                         if (!players[i].GetComponent<PlayerManager>().IsDying())
                         {
                             players[i].GetComponent<PlayerManager>().Respawn();
-                            // TODO: decrease the lives only once!
-
+                            playersLives[i] -= 1;
+                            FindObjectOfType<HealthUIManager>().updateUI();
                             players[i].GetComponent<PlayerManager>().SetIsDying(true);
-
                         }
                     }
                     break;
@@ -90,25 +88,26 @@ public class GameManger : MonoBehaviour
     }
 
 
-    ///**
-    // * FixedUpdate is usually 1/50 seconds per frame (or 50 FPS)
-    // */
-    //private void FixedUpdate()
-    //{
-    //    // Comment this out for testing
-    //    gameTimerRemaining -= Time.deltaTime;
 
-    //    //Updating UI
-    //    var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
-    //    var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
-    //    timerLabel.text = timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+    /**
+     * FixedUpdate is usually 1/50 seconds per frame (or 50 FPS)
+     */
+    private void FixedUpdate()
+    {
+        // Comment this out for testing
+        gameTimerRemaining -= Time.deltaTime;
 
-    //    //Game over when time is done
-    //    if (gameTimerRemaining < 0)
-    //    {
-    //        GameOver();
-    //    }
-    //}
+        //Updating UI
+        var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
+        var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
+        timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+
+        //Game over when time is done
+        if (gameTimerRemaining < 0)
+        {
+            GameOver();
+        }
+    }
 
 
     /**
