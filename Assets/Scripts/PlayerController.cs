@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     private bool isRewinding;
     private float horizontalDirection = 0;
     private float verticalDirection = 0;
-    private int extraJumpsLeft = 2;
+    private int extraJumpsLeft = 3;
     private float echoTimer = 0f;
 
     //Player Character Variables
@@ -26,8 +26,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerBody;
 
     private PlayerManager playerManager;
-
-    Animator playerAnimator;
 
     private ControllerHandler controllerHandler;
 
@@ -49,7 +47,6 @@ public class PlayerController : MonoBehaviour
         //Control the fall speed
         Physics.gravity = new Vector3(0, -15.0F, 0);
 
-        playerAnimator = GetComponent<Animator>();
     }
 
 
@@ -70,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
         //-----------Update control paramters----------------
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Stage"));
-        if (isGrounded) extraJumpsLeft = 2;
+        if (isGrounded) extraJumpsLeft = 3;
 
         if (echoTimer > 0) echoTimer-=Time.fixedDeltaTime;
         else echoTimer = 0;
@@ -90,22 +87,18 @@ public class PlayerController : MonoBehaviour
             playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
         }
 
-        if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (verticalDirection < 0.5)){
-            playerAnimator.SetTrigger("Jab");
-            transform.GetComponent<MoveList>().jab();
-        }
+        if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (verticalDirection < 0.5))
+            transform.GetComponent<MoveList>().jab();  
 
-        else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) {
-            playerAnimator.SetTrigger("Smash");
-            transform.GetComponent<MoveList>().Forward_Normal();
-        }
+        else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) 
+            transform.GetComponent<MoveList>().Forward_Normal();   
 
-        else if (playerInput.NormalButton && (verticalDirection > 0.5)){
+        else if (playerInput.NormalButton && (verticalDirection > 0.5))
             transform.GetComponent<MoveList>().Up_Normal();
-        }
-        if (playerInput.SpecialButton && (Mathf.Abs(horizontalDirection) > 0.5)) {
-            transform.GetComponent<MoveList>().Forward_Special();
-        }
+        
+        if (playerInput.SpecialButton) 
+            transform.GetComponent<MoveList>().Neutral_Special();
+        
 
 
         //Time travel

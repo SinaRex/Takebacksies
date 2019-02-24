@@ -13,10 +13,13 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
 
         AttatchedCharacter = transform.root;
 
+        float knockbackGrowth = 0.01f * AttatchedCharacter.GetComponent<PlayerManager>().getPercent();
+
         AttatchedCharacter.GetComponent<PlayerManager>().setHitStun(move.hitStun);
         AttatchedCharacter.GetComponent<PlayerManager>().addDamage(move.damage);
         AttatchedCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        AttatchedCharacter.GetComponent<Rigidbody>().AddForce(move.knockBack);
+        AttatchedCharacter.GetComponent<Rigidbody>().AddForce(move.knockBack + (move.knockBack*knockbackGrowth));
+
 
     }
 }

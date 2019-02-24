@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour
     private float horizontalInput;
     private Orientation playerOrientation;
 
+
     private bool canRespawn = false;
     private bool isDead = false;
     private bool canMoveAfterDeath = false;
@@ -59,19 +60,26 @@ public class PlayerManager : MonoBehaviour
     private Queue<TBInput> echoRecording;
 
 
+    //Animator
+    Animator playerAnimator;
+
+
     void Start()
     {
         _state = PlayerState.Start;
         nextState = PlayerState.Idle;
+
+        playerAnimator = GetComponent<Animator>();
     }
 
     void FixedUpdate()
     {
 
-        //-------  Character/Input Management ------//
+        //---------------  Character/Input Management --------------//
 
         horizontalInput = transform.GetComponent<PlayerController>().getHorizontalInput();
 
+        Orientation oldOrientation = playerOrientation; // SMOOTH TURNING
         //FIXME: This is jank
         if (_state != PlayerState.ArialAttack && _state != PlayerState.GroundAttack)
         {
@@ -81,16 +89,18 @@ public class PlayerManager : MonoBehaviour
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<PlayerController>().groundingDistance, LayerMask.GetMask("Stage"));
 
-        //Decrementing Timers
+        //-------------------Managing Counters ------------------//
         if (hitStunTimer > 0f) hitStunTimer -= Time.deltaTime;
         else hitStunTimer = 0;
 
         if (attackingTimer > 0f) attackingTimer -= Time.deltaTime;
         else attackingTimer = 0;
 
+        if (_state == PlayerState.Dead) playerPercent = 0f;
+
 
         //Other Player Managings
-        transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, (float)playerOrientation, 0));
+            transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, (float)playerOrientation, 0));
 
         //----------------------- Player State Machine --------------------------//
         //Update Next State
@@ -103,8 +113,8 @@ public class PlayerManager : MonoBehaviour
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
-                else if (horizontalInput > 0 && horizontalInput < threshold) nextState = PlayerState.Walking;
-                else if (horizontalInput > threshold) nextState = PlayerState.Dashing;
+                else if (Mathf.Abs(horizontalInput) > 0 && Mathf.Abs(horizontalInput) < threshold) nextState = PlayerState.Walking;
+                else if (Mathf.Abs(horizontalInput) > threshold) nextState = PlayerState.Dashing;
                 else nextState = PlayerState.Idle;
                 break;
 
@@ -113,8 +123,8 @@ public class PlayerManager : MonoBehaviour
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
-                else if (horizontalInput > 0 && horizontalInput < threshold) nextState = PlayerState.Walking;
-                else if (horizontalInput > threshold) nextState = PlayerState.Dashing;
+                else if (Mathf.Abs(horizontalInput) > 0 && Mathf.Abs(horizontalInput) < threshold) nextState = PlayerState.Walking;
+                else if (Mathf.Abs(horizontalInput) > threshold) nextState = PlayerState.Dashing;
                 else nextState = PlayerState.Idle;
                 break;
 
@@ -124,8 +134,8 @@ public class PlayerManager : MonoBehaviour
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
-                else if (horizontalInput > 0 && horizontalInput < threshold) nextState = PlayerState.Walking;
-                else if (horizontalInput > threshold) nextState = PlayerState.Dashing;
+                else if (Mathf.Abs(horizontalInput) > 0 && Mathf.Abs(horizontalInput) < threshold) nextState = PlayerState.Walking;
+                else if (Mathf.Abs(horizontalInput) > threshold) nextState = PlayerState.Dashing;
                 else nextState = PlayerState.Idle;
                 break;
 
@@ -185,8 +195,42 @@ public class PlayerManager : MonoBehaviour
 
         //Debug.Log(_state);
 
+
+        //--------------------------ANIMATIONS-------------------------//
+        if (_state == PlayerState.Dashing) playerAnimator.SetBool("isRunning", true);
+        else playerAnimator.SetBool("isRunning", false);
+
+        if (_state == PlayerState.Walking) playerAnimator.SetBool("isWalking", true);
+        else playerAnimator.SetBool("isWalking", false);
     }
 
+
+    //-------------------------- Helper Functions -----------------------------//
+   /* private void smoothTurn(Orientation oldOrientation)
+    {
+
+        Vector3 from = transform.rotation.eulerAngles;
+        if (oldOrientation != playerOrientation)
+        {
+
+            timeSinceRotation = 0.0f;
+            rotationGoalAngle = new Vector3(0f, (float)playerOrientation, 0f);
+            isRotating = true;
+    
+        }
+        if (isRotating)
+        {
+            from = Vector3.Lerp(from, rotationGoalAngle, timeSinceRotation / 0.25f);
+            transform.rotation = Quaternion.Euler(from);
+            timeSinceRotation += Time.deltaTime;
+            if (timeSinceRotation > 0.25f)
+            {
+                isRotating = false;
+            }
+        }
+
+
+    }*/
 
     /*-------------------START: PlayZone & BlastZone Logic---------------------*/
     private void OnTriggerExit(Collider other)
@@ -211,17 +255,14 @@ public class PlayerManager : MonoBehaviour
         hitStunTimer = inputStun;
     }
 
-
     public void addDamage(float inputDamage)
     {
         playerPercent += inputDamage;
     }
 
-
     public void StartAttacking(float attackLength) {
         attackingTimer = attackLength;
     }
-
 
     public void Respawn() {
         isDead = false;
@@ -256,6 +297,11 @@ public class PlayerManager : MonoBehaviour
 
 
     //-------------- Getters --------------
+
+    public float getPercent() {
+        return playerPercent;
+    }
+
     public bool IsDying()
     {
         return isDying;
@@ -285,7 +331,7 @@ public class PlayerManager : MonoBehaviour
         return playerOrientation;
     }
 
-    //------  Echo Related Functions --------
+    //-------------  Time Travel Related Functions --------------//
 
     public void setupEcho(GameObject inputEchoParent, Queue<TBInput> inputEchoRecording) {
         playerIdentity = PlayerIdentity.Echo;
@@ -297,4 +343,5 @@ public class PlayerManager : MonoBehaviour
         if (echoRecording.Count == 0) return new TBInput(0f, 0f, 0f, 0f, false, false, false, false, false);
         else return echoRecording.Dequeue();
     }
+
 }

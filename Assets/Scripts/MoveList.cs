@@ -19,6 +19,14 @@ public struct moveData
 
 public class MoveList : MonoBehaviour, IHitboxResponder
 {
+    //Variables
+    bool moveSuccessful;
+    Animator playerAnimator;
+
+    private void Start() {
+        playerAnimator = GetComponent<Animator>();
+
+    }
 
     //Define a default movelist
     IDictionary<string, moveData> moveDictionary = new Dictionary<string, moveData>() {
@@ -53,10 +61,12 @@ public class MoveList : MonoBehaviour, IHitboxResponder
        
         GetComponent<Hitbox>().setResponder(this);
         GetComponent<PlayerManager>().StartAttacking(0.15f);
-        GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(0.25f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0.25f, 0, 0), Vector3.zero }, 
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(0.25f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0.25f, 0, 0), Vector3.zero }, 
                     new List<Quaternion>() { transform.rotation, transform.rotation, transform.rotation, transform.rotation },
                     new List<Vector3>() { new Vector3(0.5f, 0.1f, 0.1f), new Vector3(1f, 0.1f, 0.1f), new Vector3(0.5f, 0.1f, 0.1f), new Vector3(0f, 0f, 0f) }, 
                     new List<float>() { 0.05f, 0.05f, 0.05f, 0.5f }, 4, "Jab");
+        if(moveSuccessful) playerAnimator.SetTrigger("Jab");
+
     }
 
 
@@ -64,10 +74,11 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     {
         GetComponent<Hitbox>().setResponder(this);
         GetComponent<PlayerManager>().StartAttacking(0.24f);
-        GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0.9f, 0f, 0) },
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0.9f, 0f, 0) },
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 45), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
                     new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f) },
                     new List<float>() {0.06f, 0.06f, 0.06f, 0.06f }, 4, "Forward-Normal");
+        if (moveSuccessful) playerAnimator.SetTrigger("Smash");
 
     }
 
@@ -76,7 +87,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     {
         GetComponent<Hitbox>().setResponder(this);
         GetComponent<PlayerManager>().StartAttacking(0.24f);
-        GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0)},
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(new List<Vector3>() { new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0)},
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0) },
                     new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f) },
                     new List<float>() { 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f }, 6, "Up-Normal");
@@ -84,11 +95,11 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     }
 
 
-    public void Forward_Special()
+    public void Neutral_Special()
     {
         GetComponent<Hitbox>().setResponder(this);
         GetComponent<PlayerManager>().StartAttacking(0.3f);
-        GetComponent<Hitbox>().startHitbox(new List<Vector3>() { Vector3.zero, Vector3.zero, Vector3.zero },
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(new List<Vector3>() { Vector3.zero, Vector3.zero, Vector3.zero },
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
                     new List<Vector3>() { new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f) },
                     new List<float>() { 0.1f, 0.1f, 0.1f }, 3, "Up-Normal");

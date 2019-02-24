@@ -47,10 +47,10 @@ public class Hitbox : MonoBehaviour
     }
 
     // Activate the hitbox with the given parameters
-    public void startHitbox(List<Vector3> posOffsetIn, List<Quaternion> rotationIn, List<Vector3> sizeIn, List<float> timersIn, int numStatesIn, string moveNameIn)
+    public bool startHitbox(List<Vector3> posOffsetIn, List<Quaternion> rotationIn, List<Vector3> sizeIn, List<float> timersIn, int numStatesIn, string moveNameIn)
     {
         // If a hitbox is already active, return
-        if (_state == ColliderState.Open || _state == ColliderState.Colliding) return;
+        if (_state == ColliderState.Open || _state == ColliderState.Colliding) return false;
 
         //Reset the index 
         hitboxIndex = 0;
@@ -68,6 +68,8 @@ public class Hitbox : MonoBehaviour
         moveName = moveNameIn;
 
         _state = ColliderState.Open;
+
+        return true;
     }
 
 

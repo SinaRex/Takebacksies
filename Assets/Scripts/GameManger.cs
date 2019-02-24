@@ -76,13 +76,9 @@ public class GameManger : MonoBehaviour
                     }
                     break;
 
-                case PlayerState.Idle:
-                    // Reset the triggers
+                default:
                     players[i].GetComponent<PlayerManager>().SetIsDying(false);
                     players[i].GetComponent<PlayerManager>().SetIsRespawning(false);
-                    break;
-                default:
-
                     break;
             }
         }
