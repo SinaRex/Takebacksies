@@ -92,7 +92,10 @@ public class PlayerController : MonoBehaviour
 
         else if (playerInput.NormalButton && (verticalDirection > 0.5))
             transform.GetComponent<MoveList>().Up_Normal();
-        
+
+        else if (playerInput.NormalButton && (verticalDirection < 0))
+            transform.GetComponent<MoveList>().Down_Normal();
+
         if (playerInput.SpecialButton) 
             transform.GetComponent<MoveList>().Neutral_Special();
         
