@@ -13,6 +13,8 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
 
         AttatchedCharacter = transform.root;
 
+        if (AttatchedCharacter.GetComponent<PlayerManager>().GetState() == PlayerState.TimeTravelling) return;
+
         float knockbackGrowth = 0.01f * AttatchedCharacter.GetComponent<PlayerManager>().getPercent();
 
         AttatchedCharacter.GetComponent<PlayerManager>().setHitStun(move.hitStun);

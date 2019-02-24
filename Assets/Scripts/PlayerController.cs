@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 4;
     public float movementSpeed = 10;
     public float groundingDistance = 0.5f;
+    public float timeTravelWaitTime = 2f;
     private Canvas canvas;
 
 
@@ -63,7 +64,7 @@ public class PlayerController : MonoBehaviour
             else playerInput = controllerHandler.input2;
         }
         else {
-            playerInput = playerManager.getNextRecording();
+            playerInput = playerManager.getNextEchoRecording();
         }
 
         //-----------Update control paramters----------------
@@ -104,20 +105,44 @@ public class PlayerController : MonoBehaviour
 
         //Time travel
         if (playerInput.RewindButton && (playerManager.GetWhichPlayer() != PlayerIdentity.Echo)) {
-            createEcho();
+            StartCoroutine(TravelBackInTime());
         }
 
 
         //Different Movemetn options depending on player state
         if (playerManager.GetState() == PlayerState.InHitStun) playerBody.AddForce(new Vector3(horizontalDirection / 5, 0f, 0f), ForceMode.Force); //DI
         else if (playerManager.GetState() == PlayerState.GroundAttack) playerBody.velocity = Vector3.zero; // Can't move while attacking
+        else if (playerManager.GetState() == PlayerState.TimeTravelling) playerBody.velocity = Vector3.zero; // Can't move while in timetravel
         else if (playerManager.GetState() == PlayerState.Airborne || playerManager.GetState() == PlayerState.ArialAttack) playerBody.AddForce(new Vector3(horizontalDirection / 3, 0f, 0f), ForceMode.Impulse);
         else playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f); // Move normally
 
     }
 
+
+    //-------------  Time Travel Related Functions: All --------------//
+
+    private IEnumerator TravelBackInTime() {
+
+        //Enable TimeTravel State
+        playerManager.StartTimeTravelling();
+
+        //Fetcth the recording up until you pressed the reqind button
+        Queue<TBInput> inputRecording = new Queue<TBInput>(controllerHandler.getRecording(playerManager.GetWhichPlayer()));
+
+        //Set you up in proper position
+        transform.position = playerManager.getRecordedPosition();
+
+        yield return new WaitForSeconds(timeTravelWaitTime);
+
+        playerManager.StopTimeTravelling();
+
+        playerBody.AddForce(playerManager.getRecordedVelocity(), ForceMode.VelocityChange);
+
+        createEcho(inputRecording);
+    }
+
     // Creates a timeclone of this character
-    private void createEcho() {
+    private void createEcho(Queue<TBInput> inputRecording) {
 
         if (echoTimer > 0) return;
 
@@ -127,7 +152,7 @@ public class PlayerController : MonoBehaviour
         GameObject echoModel = characterEcho.transform.GetChild(2).gameObject;// get CharacterModel gameobject
         echoModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().sharedMaterial = echoMat;// set the caveman.001's material to echoMat
 
-        characterEcho.GetComponent<PlayerManager>().setupEcho(gameObject, controllerHandler.getRecording(playerManager.GetWhichPlayer()));
+        characterEcho.GetComponent<PlayerManager>().setupEcho(gameObject, inputRecording);
 
         echoTimer = 3f;
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public enum PlayerState
     Start,
     Idle, Walking, Dashing, Airborne,
     InHitStun, GroundAttack, ArialAttack,
-    Dead, Respawning, Invincible
+    Dead, Respawning, Invincible, TimeTravelling
 }
 
 
@@ -22,6 +23,17 @@ public enum Orientation
 {
     Right = 0,
     Left = 180
+}
+
+public struct positionalData {
+
+    public Vector3 position;
+    public Vector3 velocity;
+
+    public positionalData(Vector3 positionIn, Vector3 velocityIn) {
+        position = positionIn;
+        velocity = velocityIn;
+    }
 }
 
 public class PlayerManager : MonoBehaviour
@@ -42,23 +54,30 @@ public class PlayerManager : MonoBehaviour
     private Orientation playerOrientation;
 
 
+    //State Management flags
     private bool canRespawn = false;
     private bool isDead = false;
     private bool canMoveAfterDeath = false;
 
-    // Current state flags for GameManager so that it is a trigger 
-    // and not a state
+    // Current state flags for GameManager so that it is a trigger and not a state
     private bool isDying = false;
     private bool isRespawning = false;
     private bool isInvincible = false;
+    private bool isTimeTravelling = false;
 
-    //Static Variables
-    private static float threshold = 0.5f;
+    //Constant Variables
+    private const float threshold = 0.5f;
 
     //Echo Character related varibles
     private GameObject echoParent = null;
     private Queue<TBInput> echoRecording;
 
+    //Time Travel Variables
+    public int recordingDuration = 3;
+    private int recordingLimit;
+    private int recordingCount;
+    private Queue<positionalData> positionalDataRecording = new Queue<positionalData>();
+    
 
     //Animator
     Animator playerAnimator;
@@ -66,8 +85,12 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
+        //Player State machine Vars
         _state = PlayerState.Start;
         nextState = PlayerState.Idle;
+
+        //Time travel vars
+        recordingLimit = recordingDuration * 50;
 
         playerAnimator = GetComponent<Animator>();
     }
@@ -98,9 +121,11 @@ public class PlayerManager : MonoBehaviour
 
         if (_state == PlayerState.Dead) playerPercent = 0f;
 
+        //Time Travel Managings
+        trackPositionalData();
 
         //Other Player Managings
-            transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, (float)playerOrientation, 0));
+        transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, (float)playerOrientation, 0));
 
         //----------------------- Player State Machine --------------------------//
         //Update Next State
@@ -112,6 +137,7 @@ public class PlayerManager : MonoBehaviour
                 if (isDead) nextState = PlayerState.Dead;
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
+                else if (isTimeTravelling) nextState = PlayerState.TimeTravelling;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else if (Mathf.Abs(horizontalInput) > 0 && Mathf.Abs(horizontalInput) < threshold) nextState = PlayerState.Walking;
                 else if (Mathf.Abs(horizontalInput) > threshold) nextState = PlayerState.Dashing;
@@ -122,6 +148,7 @@ public class PlayerManager : MonoBehaviour
                 if (isDead) nextState = PlayerState.Dead;
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
+                else if (isTimeTravelling) nextState = PlayerState.TimeTravelling;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else if (Mathf.Abs(horizontalInput) > 0 && Mathf.Abs(horizontalInput) < threshold) nextState = PlayerState.Walking;
                 else if (Mathf.Abs(horizontalInput) > threshold) nextState = PlayerState.Dashing;
@@ -133,6 +160,7 @@ public class PlayerManager : MonoBehaviour
                 if (isDead) nextState = PlayerState.Dead;
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
+                else if (isTimeTravelling) nextState = PlayerState.TimeTravelling;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else if (Mathf.Abs(horizontalInput) > 0 && Mathf.Abs(horizontalInput) < threshold) nextState = PlayerState.Walking;
                 else if (Mathf.Abs(horizontalInput) > threshold) nextState = PlayerState.Dashing;
@@ -144,6 +172,7 @@ public class PlayerManager : MonoBehaviour
                 if (isDead) nextState = PlayerState.Dead;
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.ArialAttack;
+                else if (isTimeTravelling) nextState = PlayerState.TimeTravelling;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else nextState = PlayerState.Idle;
                 break;
@@ -191,6 +220,11 @@ public class PlayerManager : MonoBehaviour
                 nextState = PlayerState.Invincible;
                 break;
 
+            case PlayerState.TimeTravelling:
+                if (isTimeTravelling) nextState = PlayerState.TimeTravelling;
+                else nextState = PlayerState.Idle;
+                break;
+
         }
 
         //Debug.Log(_state);
@@ -206,33 +240,49 @@ public class PlayerManager : MonoBehaviour
 
 
     //-------------------------- Helper Functions -----------------------------//
-   /* private void smoothTurn(Orientation oldOrientation)
-    {
+    /* private void smoothTurn(Orientation oldOrientation)
+     {
 
-        Vector3 from = transform.rotation.eulerAngles;
-        if (oldOrientation != playerOrientation)
+         Vector3 from = transform.rotation.eulerAngles;
+         if (oldOrientation != playerOrientation)
+         {
+
+             timeSinceRotation = 0.0f;
+             rotationGoalAngle = new Vector3(0f, (float)playerOrientation, 0f);
+             isRotating = true;
+
+         }
+         if (isRotating)
+         {
+             from = Vector3.Lerp(from, rotationGoalAngle, timeSinceRotation / 0.25f);
+             transform.rotation = Quaternion.Euler(from);
+             timeSinceRotation += Time.deltaTime;
+             if (timeSinceRotation > 0.25f)
+             {
+                 isRotating = false;
+             }
+         }
+
+
+     }*/
+
+    private void trackPositionalData() {
+
+        //Used to track the postion an trajectory of the player over the most recent 3 seconds
+        if (recordingCount < recordingLimit)
         {
-
-            timeSinceRotation = 0.0f;
-            rotationGoalAngle = new Vector3(0f, (float)playerOrientation, 0f);
-            isRotating = true;
-    
+            positionalDataRecording.Enqueue(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
+            recordingCount += 1;
         }
-        if (isRotating)
+        else
         {
-            from = Vector3.Lerp(from, rotationGoalAngle, timeSinceRotation / 0.25f);
-            transform.rotation = Quaternion.Euler(from);
-            timeSinceRotation += Time.deltaTime;
-            if (timeSinceRotation > 0.25f)
-            {
-                isRotating = false;
-            }
+            positionalDataRecording.Dequeue();
+            positionalDataRecording.Enqueue(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
         }
+    }
 
 
-    }*/
-
-    /*-------------------START: PlayZone & BlastZone Logic---------------------*/
+    //-------------------PlayZone & BlastZone Logic--------------------//
     private void OnTriggerExit(Collider other)
     {
         // The reaosn we check if the current state is not respawning state
@@ -245,7 +295,6 @@ public class PlayerManager : MonoBehaviour
             }
                 
     }
-    /*-------------------END: PlayZone & BlastZone Logic-----------------------*/
 
 
     //-------------------------External Functions-----------------------------//
@@ -295,6 +344,18 @@ public class PlayerManager : MonoBehaviour
         isInvincible = flag;
     }
 
+    public void StartTimeTravelling() {
+
+        if (_state == PlayerState.Dead || _state == PlayerState.Respawning || _state == PlayerState.Invincible)
+            isTimeTravelling = false;
+        else isTimeTravelling = true;
+    }
+
+    public void StopTimeTravelling()
+    {
+        isTimeTravelling = false;
+    }
+
 
     //-------------- Getters --------------
 
@@ -331,17 +392,30 @@ public class PlayerManager : MonoBehaviour
         return playerOrientation;
     }
 
-    //-------------  Time Travel Related Functions --------------//
 
-    public void setupEcho(GameObject inputEchoParent, Queue<TBInput> inputEchoRecording) {
+    //-------------  Time Travel Related Functions: Echos --------------//
+
+    public void setupEcho(GameObject inputEchoParent, Queue<TBInput> inputEchoRecording)
+    {
         playerIdentity = PlayerIdentity.Echo;
         echoParent = inputEchoParent;
         echoRecording = inputEchoRecording;
     }
 
-    public TBInput getNextRecording() {
+    public TBInput getNextEchoRecording()
+    {
         if (echoRecording.Count == 0) return new TBInput(0f, 0f, 0f, 0f, false, false, false, false, false);
         else return echoRecording.Dequeue();
     }
+
+    //-------------  Time Travel Related Functions: Echos --------------//
+    public Vector3 getRecordedPosition() {
+        return positionalDataRecording.Peek().position;
+    }
+
+    public Vector3 getRecordedVelocity() {
+        return positionalDataRecording.Peek().velocity;
+    }
+
 
 }

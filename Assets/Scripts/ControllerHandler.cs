@@ -40,10 +40,17 @@ public class ControllerHandler : MonoBehaviour
     private Queue<TBInput> recording2 = new Queue<TBInput>();
 
     //Size of the queue
-    private int recordingLimit = 150; // 50 calls/sec * 3 seconds
-    private int recordingCount1 = 0;
-    private int recordingCount2 = 0;
+    public int recordingDuration = 3; 
+    private int recordingLimit; 
+    private int recordingCount1;
+    private int recordingCount2;
 
+    private void Start()
+    {
+        recordingLimit = recordingDuration * 50; // 50 calls/sec to fixed update * 3 seconds
+        recordingCount1 = 0;
+        recordingCount2 = 0;
+    }
 
     void FixedUpdate()
     {
@@ -68,27 +75,39 @@ public class ControllerHandler : MonoBehaviour
         input2.jumpButton = Input.GetButtonDown("Jump2");
 
 
+        updateRecordings();
+
+    }
+
+    //-------------------------Helper Functions ------------------------------------------
+    private void updateRecordings() {
+
         //Record the last 3 seconds of character actions 
-        if (recordingCount1 < recordingLimit){
+        if (recordingCount1 < recordingLimit)
+        {
             recording1.Enqueue(input1);
             recordingCount1 += 1;
         }
-        else {
+        else
+        {
             recording1.Dequeue();
             recording1.Enqueue(input1);
         }
 
 
-        if (recordingCount2 < recordingLimit){
+        if (recordingCount2 < recordingLimit)
+        {
             recording2.Enqueue(input2);
             recordingCount2 += 1;
         }
-        else{
+        else
+        {
             recording2.Dequeue();
             recording2.Enqueue(input2);
         }
-
     }
+
+    //-------------------------External Functions ------------------------------------------
 
     //Returns the corresponding set of recorded actions to the player that calls this function
     public Queue<TBInput> getRecording(PlayerIdentity inputIdentity) {
@@ -97,4 +116,6 @@ public class ControllerHandler : MonoBehaviour
         else if (inputIdentity == PlayerIdentity.Player2) return (new Queue<TBInput>(recording2));
         else return new Queue<TBInput>();
     }
+
+
 }
