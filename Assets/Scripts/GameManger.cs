@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManger : MonoBehaviour
 {
     /* Can be changed in Unity Editor */
-    public float gameTimerRemaining = 600f;
+    public float gameTimerRemaining = 300f;
 
     /* Maximum lives that each player can have*/
     public int maxLives = 3;
@@ -27,6 +28,9 @@ public class GameManger : MonoBehaviour
 
     /* Enum */
     private enum whichPlayer {Player1, Player2, Echo1, Echo2}
+
+    /* UI */
+    public Text timerLabel;
 
     /**
      * Start is called before the first frame update
@@ -92,8 +96,14 @@ public class GameManger : MonoBehaviour
     private void FixedUpdate()
     {
         // Comment this out for testing
-        //gameTimerRemaining -= Time.deltaTime;
+        gameTimerRemaining -= Time.deltaTime;
 
+        //Updating UI
+        var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
+        var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
+        timerLabel.text = timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+
+        //Game over when time is done
         if (gameTimerRemaining < 0)
         {
             GameOver();

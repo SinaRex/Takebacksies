@@ -72,6 +72,7 @@ public class PlayerManager : MonoBehaviour
     private GameObject echoParent = null;
     private Queue<TBInput> echoRecording;
 
+
     //Time Travel Variables
     public int recordingDuration = 3;
     private int recordingLimit;
