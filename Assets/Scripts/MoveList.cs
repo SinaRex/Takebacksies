@@ -78,7 +78,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 45), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
                     new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f) },
                     new List<float>() {0.06f, 0.06f, 0.06f, 0.06f }, 4, "Forward-Normal");
-        if (moveSuccessful) playerAnimator.SetTrigger("Smash");
+        if (moveSuccessful) playerAnimator.SetTrigger("Forward-Normal");
 
     }
 
@@ -91,6 +91,8 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0) },
                     new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f) },
                     new List<float>() { 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f }, 6, "Up-Normal");
+        if (moveSuccessful) playerAnimator.SetTrigger("Up-Normal");
+
 
     }
 
