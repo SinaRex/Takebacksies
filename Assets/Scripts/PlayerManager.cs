@@ -59,7 +59,6 @@ public class PlayerManager : MonoBehaviour
     private GameObject echoParent = null;
     private Queue<TBInput> echoRecording;
 
-
     //Animator
     Animator playerAnimator;
 
