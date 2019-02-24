@@ -90,25 +90,25 @@ public class GameManger : MonoBehaviour
     }
 
 
-    /**
-     * FixedUpdate is usually 1/50 seconds per frame (or 50 FPS)
-     */
-    private void FixedUpdate()
-    {
-        // Comment this out for testing
-        gameTimerRemaining -= Time.deltaTime;
+    ///**
+    // * FixedUpdate is usually 1/50 seconds per frame (or 50 FPS)
+    // */
+    //private void FixedUpdate()
+    //{
+    //    // Comment this out for testing
+    //    gameTimerRemaining -= Time.deltaTime;
 
-        //Updating UI
-        var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
-        var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
-        timerLabel.text = timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+    //    //Updating UI
+    //    var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
+    //    var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
+    //    timerLabel.text = timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
 
-        //Game over when time is done
-        if (gameTimerRemaining < 0)
-        {
-            GameOver();
-        }
-    }
+    //    //Game over when time is done
+    //    if (gameTimerRemaining < 0)
+    //    {
+    //        GameOver();
+    //    }
+    //}
 
 
     /**
