@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     // Echo related variables
     public GameObject characterPrefab = null;
     private GameObject characterEcho = null;
+    public Material echoMat;
 
     // Start is called before the first frame update
     void Start()
@@ -121,6 +122,11 @@ public class PlayerController : MonoBehaviour
         if (echoTimer > 0) return;
 
         characterEcho = Instantiate(characterPrefab, transform.position, transform.rotation);
+
+        // *** Set the material to the special one ****//
+        GameObject echoModel = characterEcho.transform.GetChild(2).gameObject;// get CharacterModel gameobject
+        echoModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().sharedMaterial = echoMat;// set the caveman.001's material to echoMat
+
         characterEcho.GetComponent<PlayerManager>().setupEcho(gameObject, controllerHandler.getRecording(playerManager.GetWhichPlayer()));
 
         echoTimer = 3f;
