@@ -73,6 +73,7 @@ public class GameManger : MonoBehaviour
                         StartCoroutine(StartFlashing(players[i]));// Also start flashing
 
                         players[i].GetComponent<PlayerManager>().SetIsRespawning(true);
+                        //players[i].GetComponent<PlayerManager>().SetIsDying(false);
                     }
                     break;
 
@@ -193,14 +194,18 @@ public class GameManger : MonoBehaviour
     {
         float totalDuration = Mathf.Ceil((respawnDuration + invincibeDuration) / 0.25f);
         int i = 0;
+        GameObject playerModel = player.transform.GetChild(2).gameObject;// get CharacterModel gameobject
         while (i < totalDuration && 
             (player.GetComponent<PlayerManager>().GetState() == PlayerState.Invincible || 
             player.GetComponent<PlayerManager>().GetState() == PlayerState.Respawning))
         {
             yield return new WaitForSeconds(0.125f);
-            player.GetComponent<Renderer>().enabled = false; // FIXME: replace the rendered with tag
+            //player.GetComponentInChildren<Renderer>().enabled = false; // FIXME: replace the rendered with tag
+
+            playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().enabled = false;
             yield return new WaitForSeconds(0.125f);
-            player.GetComponent<Renderer>().enabled = true; // FIXME: replace it with tag
+            //player.GetComponentInChildren<Renderer>().enabled = true; // FIXME: replace it with tag
+            playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().enabled = true;
             i++;
         }
 

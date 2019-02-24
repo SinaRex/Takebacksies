@@ -175,14 +175,14 @@ public class PlayerManager : MonoBehaviour
 
             case PlayerState.Dead:
                 //Debug.Log("he is Dead");
-                if (canRespawn) { nextState = PlayerState.Respawning; canRespawn = false; isDead = false;}
+                if (canRespawn) { nextState = PlayerState.Respawning; canRespawn = false; isDead = false; }
                 else nextState = PlayerState.Dead;
                 break;
 
             case PlayerState.Respawning:
                 //Debug.Log("he is Respawning");
                 //FIXME: Add invincible state
-                if (canMoveAfterDeath) nextState = PlayerState.Idle;
+                if (canMoveAfterDeath) {nextState = PlayerState.Idle; canMoveAfterDeath = false; }
                 else nextState = PlayerState.Respawning;
                 break;
 
@@ -265,7 +265,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void Respawn() {
-        isDead = false;
+        //isDead = false;
         canRespawn = true;
     }
 
