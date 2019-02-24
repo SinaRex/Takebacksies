@@ -390,6 +390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIdentity: 0
+  echoMat: {fileID: 0}
   recordingDuration: 3
 --- !u!114 &187512621207034648
 MonoBehaviour:
@@ -407,9 +408,7 @@ MonoBehaviour:
   movementSpeed: 10
   groundingDistance: 0.5
   timeTravelWaitTime: 2
-  characterPrefab: {fileID: 187512621207068077, guid: f11fd44a95dd14e45b233de677c92dd9,
-    type: 3}
-  echoMat: {fileID: 2100000, guid: 6e76cdc5a10c24b4e860ae1e10e4dd1d, type: 2}
+  characterPrefab: {fileID: 187512621207068077}
 --- !u!1 &187512621207068079
 GameObject:
   m_ObjectHideFlags: 0
@@ -908,6 +907,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4199831803895519598}
+  - component: {fileID: 6698229330050844405}
   m_Layer: 0
   m_Name: CharacterModel
   m_TagString: Untagged
@@ -931,6 +931,18 @@ Transform:
   m_Father: {fileID: 187512621207159181}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!122 &6698229330050844405
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6032344041953879840}
+  m_Enabled: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4281959556
+  m_Size: 1
 --- !u!1 &6945408527424217365
 GameObject:
   m_ObjectHideFlags: 0

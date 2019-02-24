@@ -71,6 +71,7 @@ public class PlayerManager : MonoBehaviour
     //Echo Character related varibles
     private GameObject echoParent = null;
     private Queue<TBInput> echoRecording;
+    public Material echoMat;
 
 
     //Time Travel Variables
@@ -401,6 +402,22 @@ public class PlayerManager : MonoBehaviour
         playerIdentity = PlayerIdentity.Echo;
         echoParent = inputEchoParent;
         echoRecording = inputEchoRecording;
+
+        // *** Set the material to the special one ****//
+        GameObject echoModel = transform.GetChild(2).gameObject;// get CharacterModel gameobject
+        Renderer echoRenderer = echoModel.transform.GetChild(1).gameObject.GetComponent<Renderer>();
+
+        Material[] newMats = new Material[echoRenderer.materials.Length];
+        for (int i = 0; i < newMats.Length; i++)
+        {
+            newMats[i] = echoMat;
+        }
+        echoRenderer.materials = newMats;
+
+        // Enable the Halo effect from the prefab
+        Behaviour halo = (Behaviour)echoModel.GetComponent("Halo");
+        halo.enabled = true;
+
     }
 
     public TBInput getNextEchoRecording()
