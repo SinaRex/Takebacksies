@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 10;
     public float groundingDistance = 0.5f;
     public float timeTravelWaitTime = 2f;
-    private Canvas canvas;
-
 
     //Control Variables
     private bool isGrounded;
@@ -39,9 +37,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controllerHandler = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>();
-
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
-        canvas.enabled = false;
         m_rewinders = FindObjectsOfType<Rewind3DObject>();
         playerBody = gameObject.GetComponent<Rigidbody>();
 
