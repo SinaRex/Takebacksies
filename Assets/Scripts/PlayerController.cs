@@ -32,6 +32,9 @@ public class PlayerController : MonoBehaviour
     public GameObject characterPrefab = null;
     private GameObject characterEcho = null;
 
+    // FIXME: DELETE THIS AFTER ALPHA
+    private bool makeSmoke1 = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -105,6 +108,25 @@ public class PlayerController : MonoBehaviour
 
         //Time travel
         if (playerInput.RewindButton && (playerManager.GetWhichPlayer() != PlayerIdentity.Echo)) {
+
+            // ---------- FIXME: DELETE THIS AFTER ALPHA--------//
+            if (!makeSmoke1)
+            {
+                if (playerManager.GetWhichPlayer() == PlayerIdentity.Player1)
+                {
+                    GameObject.Find("CloudEffect1").transform.position = transform.position;
+                    GameObject.Find("CloudEffect1").GetComponentInChildren<ParticleSystem>().Play();
+                }
+                else
+                {
+                    GameObject.Find("CloudEffect2").transform.position = transform.position;
+                    GameObject.Find("CloudEffect2").GetComponentInChildren<ParticleSystem>().Play();
+                }
+
+                makeSmoke1 = true;
+            }
+            // ---------- FIXME: DELETE THIS AFTER ALPHA--------//
+
             StartCoroutine(TravelBackInTime());
         }
 
@@ -132,6 +154,20 @@ public class PlayerController : MonoBehaviour
         //Set you up in proper position
         transform.position = playerManager.getRecordedPosition();
 
+        // ---------- FIXME: DELETE THIS AFTER ALPHA--------//
+        if (playerManager.GetWhichPlayer() == PlayerIdentity.Player1)
+        {
+            GameObject.Find("CloudEffect1_2").transform.position = transform.position;
+            GameObject.Find("CloudEffect1_2").GetComponentInChildren<ParticleSystem>().Play();
+        }
+        else
+        {
+            GameObject.Find("CloudEffect2_2").transform.position = transform.position;
+            GameObject.Find("CloudEffect2_2").GetComponentInChildren<ParticleSystem>().Play();
+        }
+
+        // ---------- FIXME: DELETE THIS AFTER ALPHA--------//
+
         yield return new WaitForSeconds(timeTravelWaitTime);
 
         playerManager.StopTimeTravelling();
@@ -149,6 +185,9 @@ public class PlayerController : MonoBehaviour
 
         characterEcho = Instantiate(characterPrefab, transform.position, transform.rotation);
         characterEcho.GetComponent<PlayerManager>().setupEcho(gameObject, inputRecording);
+
+        // FIXME: DELE THIS AFTER ALPHA
+        makeSmoke1 = false;
 
         echoTimer = 3f;
     }
