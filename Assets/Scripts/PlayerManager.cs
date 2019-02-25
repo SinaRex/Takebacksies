@@ -100,10 +100,6 @@ public class PlayerManager : MonoBehaviour
 
         playerAnimator = GetComponent<Animator>();
 
-        timeJuice -= 1;
-        FindObjectOfType<TimeJuiceUI>().updateUI(true, timeJuice / maxTimeJuice); 
-        timeJuice -= 1;
-        FindObjectOfType<TimeJuiceUI>().updateUI(true, timeJuice / maxTimeJuice);
     }
 
     void FixedUpdate()
@@ -383,9 +379,18 @@ public class PlayerManager : MonoBehaviour
         else
         {
             isTimeTravelling = true;
-            //FIXME Uncomment and call this function properly for TIME UI update
-            //timeJuice -= 1;
-            //FindObjectOfType<TimeJuiceUI>().updateUI(true, timeJuice / maxTimeJuice);
+            timeJuice -= 1;
+
+            //Updating time juice UI
+            if (playerIdentity == PlayerIdentity.Player1)
+            {
+                FindObjectOfType<TimeJuiceUI>().updateUI(true, timeJuice / maxTimeJuice);
+            }
+            else if (playerIdentity == PlayerIdentity.Player2)
+            {
+                FindObjectOfType<TimeJuiceUI>().updateUI(false, timeJuice / maxTimeJuice);
+            }
+
         }
     }
 
