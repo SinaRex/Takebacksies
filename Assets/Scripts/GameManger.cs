@@ -33,6 +33,9 @@ public class GameManger : MonoBehaviour
     public Text timerLabel;
     public Text gameOverText;
 
+    /* GameOver Tracking */
+    private bool isGameOver = false;
+
     /**
      * Start is called before the first frame update
      */
@@ -62,8 +65,8 @@ public class GameManger : MonoBehaviour
                     if (players[i].GetComponent<PlayerManager>().GetWhichPlayer() != PlayerIdentity.Echo) {
                         if (!players[i].GetComponent<PlayerManager>().IsDying())
                         {
+                            if(!isGameOver) playersLives[i] -= 1;
                             players[i].GetComponent<PlayerManager>().Respawn();
-                            playersLives[i] -= 1;
                             if (playersLives[i] <= 0)
                             {
                                 StartCoroutine(GameOver());
@@ -131,21 +134,20 @@ public class GameManger : MonoBehaviour
     private IEnumerator GameOver()
     {
         gameOverText.gameObject.SetActive(true);
+        isGameOver = true;
 
         for (int i = 0; i < players.Count; i++)
         {
-            players[i].GetComponent<PlayerManager>().SetTimeJuice(15);
-            playersLives[i] = 3;
             players[i].GetComponent<PlayerManager>().Die();
             players[i].GetComponent<PlayerManager>().Respawn();
-
-
+            players[i].GetComponent<PlayerManager>().SetTimeJuice(15);
+            playersLives[i] = 3;
         }
 
         yield return new WaitForSeconds(3);
 
         gameTimerRemaining = 300f;
-
+        isGameOver = false;
         gameOverText.gameObject.SetActive(false);
 
 
