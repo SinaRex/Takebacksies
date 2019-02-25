@@ -44,7 +44,7 @@ public class PlayerManager : MonoBehaviour
 
     //Character Variables
     private float playerPercent = 0f;
-    private float timeJuice = 0f;
+    private float timeJuice = 15f;
 
 
     //Character Management Variables
@@ -370,6 +370,10 @@ public class PlayerManager : MonoBehaviour
 
     public float getPercent() {
         return playerPercent;
+    }
+
+    public float getTimeJuice() {
+        return timeJuice;
     }
 
     public bool IsDying()
