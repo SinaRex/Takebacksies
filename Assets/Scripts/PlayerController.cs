@@ -73,8 +73,12 @@ public class PlayerController : MonoBehaviour
         horizontalDirection = 500 * playerInput.MoveAxisX;
         verticalDirection = -500 * playerInput.MoveAxisY;
 
+
+        if (playerManager.GetState() == PlayerState.Dead || playerManager.GetState() == PlayerState.Respawning) return;
+
+
         //----------- Process Player Inputs --------------
-        if ((playerInput.jumpButton ) && (extraJumpsLeft > 0))
+            if ((playerInput.jumpButton ) && (extraJumpsLeft > 0))
         {
             //Limit extra jumps in the air
             if (!isGrounded) extraJumpsLeft--;
@@ -133,7 +137,7 @@ public class PlayerController : MonoBehaviour
 
         playerManager.StopTimeTravelling();
 
-        playerBody.AddForce(playerManager.getRecordedVelocity(), ForceMode.VelocityChange);
+        //playerBody.AddForce(playerManager.getRecordedVelocity(), ForceMode.VelocityChange);
 
         createEcho(inputRecording);
     }

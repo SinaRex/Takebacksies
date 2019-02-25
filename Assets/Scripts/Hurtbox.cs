@@ -22,6 +22,8 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
         AttatchedCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero;
         AttatchedCharacter.GetComponent<Rigidbody>().AddForce(move.knockBack + (move.knockBack*knockbackGrowth));
 
+        //GetComponent<Animator>().SetTrigger("Flinch");
+
 
     }
 }

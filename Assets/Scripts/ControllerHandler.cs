@@ -118,4 +118,17 @@ public class ControllerHandler : MonoBehaviour
     }
 
 
+    public void resetPositionalData(PlayerIdentity inputIdentity)
+    {
+
+        if (inputIdentity == PlayerIdentity.Player1) {
+            recordingCount1 = 0;
+            recording1.Clear();
+        }
+        else if (inputIdentity == PlayerIdentity.Player2) {
+            recordingCount2 = 0;
+            recording2.Clear();
+        }
+    }
+
 }

@@ -44,6 +44,10 @@ public class PlayerManager : MonoBehaviour
 
     //Character Variables
     private float playerPercent = 0f;
+    private float timeJuice = 0f;
+
+
+    //Character Management Variables
     private float hitStunTimer = 0f;
     private float attackingTimer = 0f;
     public PlayerIdentity playerIdentity; // TODO: change this to private
@@ -329,6 +333,9 @@ public class PlayerManager : MonoBehaviour
     public void FinishRespawning()
     {
         canMoveAfterDeath = true;
+        //FIXME: this should probably not be here lol FIXME
+        resetPositionalData();
+        GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().resetPositionalData(playerIdentity);
     }
 
     public void SetIsDying(bool flag)
@@ -433,6 +440,11 @@ public class PlayerManager : MonoBehaviour
 
     public Vector3 getRecordedVelocity() {
         return positionalDataRecording.Peek().velocity;
+    }
+
+    public void resetPositionalData() {
+        recordingCount = 0;
+        positionalDataRecording.Clear();
     }
 
 

@@ -105,10 +105,10 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         GetComponent<Hitbox>().setResponder(this);
         GetComponent<PlayerManager>().StartAttacking(0.46f);
         moveSuccessful = GetComponent<Hitbox>().startHitbox(
-                    new List<Vector3>() {new Vector3(-0.6f, 0.6f, 0), new Vector3(0, 0.8f, 0), new Vector3(0.7f, 0.6f, 0), new Vector3(0, 0.8f, 0), new Vector3(-0.6f, 0.6f, 0), new Vector3(0, 0.8f, 0) },
-                    new List<Quaternion>() { Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0) },
-                    new List<Vector3>() { new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f), new Vector3(0.2f, 0.7f, 0.1f), new Vector3(0.2f, 0.5f, 0.1f) },
-                    new List<float>() { 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f }, 6, "Down-Normal");
+                    new List<Vector3>() {new Vector3(0f, 0f, 0f), new Vector3(0, -0.2f, 0), new Vector3(0.3f, -0.3f, 0), new Vector3(0.65f, -0.4f, 0), new Vector3(0, 0, 0) },
+                    new List<Quaternion>() { transform.rotation, transform.rotation, transform.rotation, transform.rotation, transform.rotation},
+                    new List<Vector3>() { Vector3.zero, new Vector3(0.5f, 0.5f, 0.1f), new Vector3(0.5f, 0.3f, 0.1f), new Vector3(0.5f, 0.15f, 0.1f), Vector3.zero},
+                    new List<float>() { 0.06f, 0.06f, 0.06f, 0.06f, 0.06f, 0.06f }, 5, "Down-Normal");
         if (moveSuccessful) playerAnimator.SetTrigger("Down-Normal");
 
 
@@ -124,6 +124,8 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
                     new List<Vector3>() { new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f), new Vector3(0.2f, 2f, 0.1f) },
                     new List<float>() { 0.1f, 0.1f, 0.1f }, 3, "Up-Normal");
+        if (moveSuccessful) playerAnimator.SetTrigger("Special");
+
 
     }
 
