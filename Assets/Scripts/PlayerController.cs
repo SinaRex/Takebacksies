@@ -43,7 +43,6 @@ public class PlayerController : MonoBehaviour
         isRewinding = false;
         //Control the fall speed
         Physics.gravity = new Vector3(0, -15.0F, 0);
-
     }
 
 
@@ -140,6 +139,7 @@ public class PlayerController : MonoBehaviour
         //playerBody.AddForce(playerManager.getRecordedVelocity(), ForceMode.VelocityChange);
 
         createEcho(inputRecording);
+
     }
 
     // Creates a timeclone of this character

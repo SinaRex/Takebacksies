@@ -45,7 +45,7 @@ public class PlayerManager : MonoBehaviour
     //Character Variables
     private float playerPercent = 0f;
     private float timeJuice = 15f;
-
+    private float maxTimeJuice = 15f;
 
     //Character Management Variables
     private float hitStunTimer = 0f;
@@ -99,6 +99,11 @@ public class PlayerManager : MonoBehaviour
         recordingLimit = recordingDuration * 50;
 
         playerAnimator = GetComponent<Animator>();
+
+        timeJuice -= 1;
+        FindObjectOfType<TimeJuiceUI>().updateUI(true, timeJuice / maxTimeJuice); 
+        timeJuice -= 1;
+        FindObjectOfType<TimeJuiceUI>().updateUI(true, timeJuice / maxTimeJuice);
     }
 
     void FixedUpdate()
@@ -357,7 +362,14 @@ public class PlayerManager : MonoBehaviour
 
         if (_state == PlayerState.Dead || _state == PlayerState.Respawning || _state == PlayerState.Invincible)
             isTimeTravelling = false;
-        else isTimeTravelling = true;
+
+        else
+        {
+            isTimeTravelling = true;
+            //FIXME Uncomment and call this function properly for TIME UI update
+            //timeJuice -= 1;
+            //FindObjectOfType<TimeJuiceUI>().updateUI(true, timeJuice / maxTimeJuice);
+        }
     }
 
     public void StopTimeTravelling()
