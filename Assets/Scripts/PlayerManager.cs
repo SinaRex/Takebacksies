@@ -373,13 +373,14 @@ public class PlayerManager : MonoBehaviour
 
     public void StartTimeTravelling() {
 
+        // FIXME: AFTER ALPHA
         if (_state == PlayerState.Dead || _state == PlayerState.Respawning || _state == PlayerState.Invincible)
             isTimeTravelling = false;
 
         else
         {
             isTimeTravelling = true;
-            timeJuice -= 1;
+            timeJuice -= 1; // FIXME: timeJuice -3;
 
             //Updating time juice UI
             if (playerIdentity == PlayerIdentity.Player1)
@@ -392,11 +393,21 @@ public class PlayerManager : MonoBehaviour
             }
 
         }
+
+        // FIXME: AFTER ALPHA
     }
 
     public void StopTimeTravelling()
     {
+        // FIXME: 
+        resetPositionalData();
+        GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().resetPositionalData(playerIdentity);
         isTimeTravelling = false;
+    }
+
+    public void SetTimeJuice(int num)
+    {
+        timeJuice = num;
     }
 
 

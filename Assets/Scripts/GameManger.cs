@@ -31,6 +31,8 @@ public class GameManger : MonoBehaviour
 
     /* UI */
     public Text timerLabel;
+    public Text gameOverText;
+
     /**
      * Start is called before the first frame update
      */
@@ -62,6 +64,10 @@ public class GameManger : MonoBehaviour
                         {
                             players[i].GetComponent<PlayerManager>().Respawn();
                             playersLives[i] -= 1;
+                            if (playersLives[i] <= 0)
+                            {
+                                StartCoroutine(GameOver());
+                            }
                             FindObjectOfType<HealthUIManager>().updateUI();
                             players[i].GetComponent<PlayerManager>().SetIsDying(true);
                         }
@@ -105,7 +111,8 @@ public class GameManger : MonoBehaviour
         //Game over when time is done
         if (gameTimerRemaining < 0)
         {
-            GameOver();
+            StartCoroutine(GameOver());
+            //GameOver();
         }
     }
 
@@ -115,10 +122,33 @@ public class GameManger : MonoBehaviour
      * or if it's a tie. Then probably have a button to go 
      * back to the menu.
      */
-    private void GameOver()
+    //private void GameOver()
+    //{
+    //    // TODO: have a nice UI implementation to do this.
+    //    Debug.Log("GameOver");
+    //    gameOverText.gameObject.SetActive( true);
+    //}
+    private IEnumerator GameOver()
     {
-        // TODO: have a nice UI implementation to do this.
-        Debug.Log("GameOver");
+        gameOverText.gameObject.SetActive(true);
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].GetComponent<PlayerManager>().SetTimeJuice(15);
+            playersLives[i] = 3;
+            players[i].GetComponent<PlayerManager>().Die();
+            players[i].GetComponent<PlayerManager>().Respawn();
+
+
+        }
+
+        yield return new WaitForSeconds(3);
+
+        gameTimerRemaining = 300f;
+
+        gameOverText.gameObject.SetActive(false);
+
+
     }
 
 

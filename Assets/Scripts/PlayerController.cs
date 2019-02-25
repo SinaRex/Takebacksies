@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
         verticalDirection = -500 * playerInput.MoveAxisY;
 
 
-        if (playerManager.GetState() == PlayerState.Dead || playerManager.GetState() == PlayerState.Respawning) return;
+        if (playerManager.GetState() == PlayerState.Dead || playerManager.GetState() == PlayerState.Respawning || playerManager.GetState() == PlayerState.TimeTravelling) return;
 
 
         //----------- Process Player Inputs --------------
@@ -107,8 +107,9 @@ public class PlayerController : MonoBehaviour
 
 
         //Time travel
-        if (playerInput.RewindButton && (playerManager.GetWhichPlayer() != PlayerIdentity.Echo)) {
+        if (playerInput.RewindButton && (playerManager.GetWhichPlayer() != PlayerIdentity.Echo) && playerManager.getTimeJuice() > 3) {
 
+            Debug.Log("PRessing Y");
             // ---------- FIXME: DELETE THIS AFTER ALPHA--------//
             if (!makeSmoke1)
             {
@@ -169,6 +170,7 @@ public class PlayerController : MonoBehaviour
         // ---------- FIXME: DELETE THIS AFTER ALPHA--------//
 
         yield return new WaitForSeconds(timeTravelWaitTime);
+
 
         playerManager.StopTimeTravelling();
 
