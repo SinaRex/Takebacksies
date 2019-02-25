@@ -103,7 +103,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     public void Down_Normal()
     {
         GetComponent<Hitbox>().setResponder(this);
-        GetComponent<PlayerManager>().StartAttacking(0.24f);
+        GetComponent<PlayerManager>().StartAttacking(0.46f);
         moveSuccessful = GetComponent<Hitbox>().startHitbox(
                     new List<Vector3>() {new Vector3(-0.6f, 0.6f, 0), new Vector3(0, 0.8f, 0), new Vector3(0.7f, 0.6f, 0), new Vector3(0, 0.8f, 0), new Vector3(-0.6f, 0.6f, 0), new Vector3(0, 0.8f, 0) },
                     new List<Quaternion>() { Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -60), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 0) },

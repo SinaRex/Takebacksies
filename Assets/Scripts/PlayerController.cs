@@ -73,7 +73,6 @@ public class PlayerController : MonoBehaviour
         horizontalDirection = 500 * playerInput.MoveAxisX;
         verticalDirection = -500 * playerInput.MoveAxisY;
 
-
         //----------- Process Player Inputs --------------
         if ((playerInput.jumpButton ) && (extraJumpsLeft > 0))
         {
@@ -84,7 +83,7 @@ public class PlayerController : MonoBehaviour
             playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
         }
 
-        if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (verticalDirection < 0.5))
+        if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
             transform.GetComponent<MoveList>().jab();  
 
         else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) 
@@ -93,7 +92,7 @@ public class PlayerController : MonoBehaviour
         else if (playerInput.NormalButton && (verticalDirection > 0.5))
             transform.GetComponent<MoveList>().Up_Normal();
 
-        else if (playerInput.NormalButton && (verticalDirection < 0))
+        else if (playerInput.NormalButton && (verticalDirection < -0.5))
             transform.GetComponent<MoveList>().Down_Normal();
 
         if (playerInput.SpecialButton) 
