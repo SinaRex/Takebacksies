@@ -15,12 +15,12 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
 
         if (AttatchedCharacter.GetComponent<PlayerManager>().GetState() == PlayerState.TimeTravelling) return;
 
-        float knockbackGrowth = 0.01f * AttatchedCharacter.GetComponent<PlayerManager>().getPercent();
+        Vector3 totalKnockback = move.baseKnockBack + (move.knockBackGrowth * AttatchedCharacter.GetComponent<PlayerManager>().getPercent());
 
         AttatchedCharacter.GetComponent<PlayerManager>().setHitStun(move.hitStun);
         AttatchedCharacter.GetComponent<PlayerManager>().addDamage(move.damage);
         AttatchedCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        AttatchedCharacter.GetComponent<Rigidbody>().AddForce(move.knockBack + (move.knockBack*knockbackGrowth));
+        AttatchedCharacter.GetComponent<Rigidbody>().AddForce(totalKnockback);
 
         //GetComponent<Animator>().SetTrigger("Flinch");
 

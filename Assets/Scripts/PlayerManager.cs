@@ -55,6 +55,7 @@ public class PlayerManager : MonoBehaviour
     //Movement Variables
     private bool isGrounded;
     private float horizontalInput;
+    private float horizontalFightInput;
     private Orientation playerOrientation;
 
 
@@ -108,12 +109,15 @@ public class PlayerManager : MonoBehaviour
         //---------------  Character/Input Management --------------//
 
         horizontalInput = transform.GetComponent<PlayerController>().getHorizontalInput();
+        horizontalFightInput = transform.GetComponent<PlayerController>().getHorizontalFightInput();
 
         Orientation oldOrientation = playerOrientation; // SMOOTH TURNING
         //FIXME: This is jank
         if (_state != PlayerState.ArialAttack && _state != PlayerState.GroundAttack)
         {
-            if (horizontalInput > 0) playerOrientation = Orientation.Right;
+            if (horizontalFightInput > 0) playerOrientation = Orientation.Right;
+            else if (horizontalFightInput < 0) playerOrientation = Orientation.Left;
+            else if (horizontalInput > 0) playerOrientation = Orientation.Right;
             else if (horizontalInput < 0) playerOrientation = Orientation.Left;
         }
 

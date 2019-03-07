@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     private bool isRewinding;
     private float horizontalDirection = 0;
     private float verticalDirection = 0;
+    private float horizontalFightDirection = 0;
+    private float verticalFightDirection = 0;
     private int extraJumpsLeft = 3;
     private float echoTimer = 0f;
 
@@ -74,6 +76,8 @@ public class PlayerController : MonoBehaviour
         //FIXME Can customize movemenet sensetivity here
         horizontalDirection = 500 * playerInput.MoveAxisX;
         verticalDirection = -500 * playerInput.MoveAxisY;
+        horizontalFightDirection = 500 * playerInput.FightAxisX;
+        verticalFightDirection = -500 * playerInput.FightAxisY;
 
 
         if (playerManager.GetState() == PlayerState.Dead || playerManager.GetState() == PlayerState.Respawning || playerManager.GetState() == PlayerState.TimeTravelling) return;
@@ -92,13 +96,13 @@ public class PlayerController : MonoBehaviour
         if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
             transform.GetComponent<MoveList>().jab();  
 
-        else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) 
+        else if ((playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) || (Mathf.Abs(horizontalFightDirection) > 0.5))
             transform.GetComponent<MoveList>().Forward_Normal();   
 
-        else if (playerInput.NormalButton && (verticalDirection > 0.5))
+        else if ((playerInput.NormalButton && (verticalDirection > 0.5)) || verticalFightDirection > 0.5 )
             transform.GetComponent<MoveList>().Up_Normal();
 
-        else if (playerInput.NormalButton && (verticalDirection < -0.5))
+        else if ((playerInput.NormalButton && (verticalDirection < -0.5)) || verticalFightDirection < -0.5 )
             transform.GetComponent<MoveList>().Down_Normal();
 
         if (playerInput.SpecialButton) 
@@ -197,5 +201,10 @@ public class PlayerController : MonoBehaviour
     //Getters and Setters
     public float getHorizontalInput() {
         return horizontalDirection;
+    }
+
+    public float getHorizontalFightInput()
+    {
+        return horizontalFightDirection;
     }
 }
