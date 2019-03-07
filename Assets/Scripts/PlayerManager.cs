@@ -83,8 +83,10 @@ public class PlayerManager : MonoBehaviour
     public int recordingDuration = 3;
     private int recordingLimit;
     private int recordingCount;
-    private Queue<positionalData> positionalDataRecording = new Queue<positionalData>();
-    
+    //private Queue<positionalData> positionalDataRecording = new Queue<positionalData>();
+    private List<positionalData> positionalDataRecording = new List<positionalData>();
+
+
 
     //Animator
     Animator playerAnimator;
@@ -282,13 +284,16 @@ public class PlayerManager : MonoBehaviour
         //Used to track the postion an trajectory of the player over the most recent 3 seconds
         if (recordingCount < recordingLimit)
         {
-            positionalDataRecording.Enqueue(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
+            //positionalDataRecording.Enqueue(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
+            positionalDataRecording.Add(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
             recordingCount += 1;
         }
         else
         {
-            positionalDataRecording.Dequeue();
-            positionalDataRecording.Enqueue(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
+            //positionalDataRecording.Dequeue();
+            positionalDataRecording.RemoveAt(0);
+            //positionalDataRecording.Enqueue(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
+            positionalDataRecording.Add(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
         }
     }
 
@@ -462,6 +467,7 @@ public class PlayerManager : MonoBehaviour
         playerIdentity = PlayerIdentity.Echo;
         echoParent = inputEchoParent;
         echoRecording = inputEchoRecording;
+        playerPercent = 200;
 
         // *** Set the material to the special one ****//
         GameObject echoModel = transform.GetChild(2).gameObject;// get CharacterModel gameobject
@@ -488,11 +494,18 @@ public class PlayerManager : MonoBehaviour
 
     //-------------  Time Travel Related Functions: Echos --------------//
     public Vector3 getRecordedPosition() {
-        return positionalDataRecording.Peek().position;
+        //return positionalDataRecording.Peek().position;
+        return positionalDataRecording[0].position;
     }
 
     public Vector3 getRecordedVelocity() {
-        return positionalDataRecording.Peek().velocity;
+        //return positionalDataRecording.Peek().velocity;
+        return positionalDataRecording[0].position;
+    }
+
+    public List<positionalData> getRecordPositionList()
+    {
+        return new List<positionalData>(positionalDataRecording);
     }
 
     public void resetPositionalData() {

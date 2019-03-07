@@ -56,6 +56,9 @@ public class GameManger : MonoBehaviour
      */
     private void Update()
     {
+        // This slows down the time for debugging
+         //Time.timeScale = 0.4f;
+
         for (int i = 0; i < players.Count; i++)
         {
 

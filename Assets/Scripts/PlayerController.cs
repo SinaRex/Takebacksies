@@ -50,7 +50,6 @@ public class PlayerController : MonoBehaviour
         Physics.gravity = new Vector3(0, -15.0F, 0);
     }
 
-
     private void FixedUpdate()
     {
         //----------Get Player manager related information ---------------
@@ -157,7 +156,14 @@ public class PlayerController : MonoBehaviour
         Queue<TBInput> inputRecording = new Queue<TBInput>(controllerHandler.getRecording(playerManager.GetWhichPlayer()));
 
         //Set you up in proper position
-        transform.position = playerManager.getRecordedPosition();
+        //transform.position = playerManager.getRecordedPosition();
+        List<positionalData> positionalDatas = playerManager.getRecordPositionList();
+        for (int i = positionalDatas.Count - 1; i >= 0; i -= 5)
+        {
+            transform.position = positionalDatas[i].position;
+            Debug.Log(positionalDatas[i].position);
+            yield return new WaitForSeconds(0.0000001f);
+        }
 
         // ---------- FIXME: DELETE THIS AFTER ALPHA--------//
         if (playerManager.GetWhichPlayer() == PlayerIdentity.Player1)
