@@ -18,7 +18,6 @@ public enum PlayerIdentity
     Player1, Player2, Echo
 }
 
-
 public enum Orientation
 {
     Right = 0,
@@ -102,7 +101,6 @@ public class PlayerManager : MonoBehaviour
         recordingLimit = recordingDuration * 50;
 
         playerAnimator = GetComponent<Animator>();
-
     }
 
     void FixedUpdate()
@@ -340,6 +338,14 @@ public class PlayerManager : MonoBehaviour
     public void addDamage(float inputDamage)
     {
         playerPercent += inputDamage;
+        if (playerIdentity == PlayerIdentity.Player1)
+        {
+            FindObjectOfType<PercentageUI>().UpdateUI(true);
+        }
+        else if (playerIdentity == PlayerIdentity.Player2)
+        {
+            FindObjectOfType<PercentageUI>().UpdateUI(false);
+        }
     }
 
     public void StartAttacking(float attackLength) {
