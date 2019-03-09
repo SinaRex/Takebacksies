@@ -117,8 +117,8 @@ public class PlayerManager : MonoBehaviour
         //FIXME: This is jank
         if (_state != PlayerState.ArialAttack && _state != PlayerState.GroundAttack)
         {
-            if (horizontalFightInput > 0) playerOrientation = Orientation.Right;
-            else if (horizontalFightInput < 0) playerOrientation = Orientation.Left;
+            if (horizontalFightInput > 0.25) playerOrientation = Orientation.Right;
+            else if (horizontalFightInput < -0.25) playerOrientation = Orientation.Left;
             else if (horizontalInput > 0) playerOrientation = Orientation.Right;
             else if (horizontalInput < 0) playerOrientation = Orientation.Left;
         }

@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private float verticalDirection = 0;
     private float horizontalFightDirection = 0;
     private float verticalFightDirection = 0;
+    private float directionSign = 1;
+    private float directionMagnitude = 0;
     private int extraJumpsLeft = 3;
     private float echoTimer = 0f;
 
@@ -89,7 +91,9 @@ public class PlayerController : MonoBehaviour
             if (!isGrounded) extraJumpsLeft--;
 
             //FIXME: Make paramterizable
-            playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
+            //playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
+            playerBody.velocity = new Vector3(playerBody.velocity.x,  jumpSpeed * 1.3f, 0f); //FIXME UPDATED
+
         }
 
         if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
@@ -136,12 +140,30 @@ public class PlayerController : MonoBehaviour
 
 
         //Different Movemetn options depending on player state
-        if (playerManager.GetState() == PlayerState.InHitStun) playerBody.AddForce(new Vector3(horizontalDirection/5, 0f, 0f), ForceMode.Force); //DI
+        if (playerManager.GetState() == PlayerState.InHitStun) playerBody.AddForce(new Vector3(horizontalDirection / 5, 0f, 0f), ForceMode.Force); //DI
         else if (playerManager.GetState() == PlayerState.GroundAttack) playerBody.velocity = Vector3.zero; // Can't move while attacking
         else if (playerManager.GetState() == PlayerState.TimeTravelling) playerBody.velocity = Vector3.zero; // Can't move while in timetravel
-        else if (playerManager.GetState() == PlayerState.Airborne || playerManager.GetState() == PlayerState.ArialAttack) playerBody.AddForce(new Vector3(horizontalDirection * movementSpeed / 25, 0f, 0f), ForceMode.Impulse);
-        else playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f); // Move normally
+        else if ((playerManager.GetState() == PlayerState.Airborne || playerManager.GetState() == PlayerState.ArialAttack)  //FIXME UPDATED
+            && Mathf.Abs(playerBody.velocity.x) <= movementSpeed)
 
+            playerBody.AddForce(new Vector3(horizontalDirection * movementSpeed / 25, 0f, 0f), ForceMode.VelocityChange);
+        else //FIXME UPDATED
+        {
+            //FIXME: UPDATE THE ANIMATIONS FOR DASHING AND WALKING HERE
+
+            //Define Direction
+            if (horizontalDirection > 0) directionSign = 1;
+            else directionSign = -1;
+
+            //Defining step function speed, either dashing or walking, no continuous spectrum
+            if (Mathf.Abs(horizontalDirection) > 0.9) directionMagnitude = movementSpeed;
+            else if (Mathf.Abs(horizontalDirection) > 0) directionMagnitude = movementSpeed / 3;
+            else directionMagnitude = 0;
+
+
+            //playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f); // Move normally
+            playerBody.velocity = new Vector3(directionSign*directionMagnitude, playerBody.velocity.y, 0f); // Move normally
+        }
     }
 
 

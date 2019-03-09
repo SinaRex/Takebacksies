@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameManger : MonoBehaviour
 {
     /* Can be changed in Unity Editor */
-    public float gameTimerRemaining = 300f;
+    public float gameTimerRemaining = 1200f;
 
     /* Maximum lives that each player can have*/
     public int maxLives = 3;
