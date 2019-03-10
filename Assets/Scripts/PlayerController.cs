@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 10;
     public float groundingDistance = 0.5f;
     public float timeTravelWaitTime = 2f;
+    public float parryCooldown = 1f;
+    public float parryDuration = 0.5f;
 
     //Control Variables
     private bool isGrounded;
@@ -18,8 +20,12 @@ public class PlayerController : MonoBehaviour
     private float verticalDirection = 0;
     private float horizontalFightDirection = 0;
     private float verticalFightDirection = 0;
+    private float directionSign = 1;
+    private float directionMagnitude = 0;
     private int extraJumpsLeft = 3;
-    private float echoTimer = 0f;
+    private float echoCooldownTimer = 0f;
+    private float parryCooldownTimer = 0f;
+
 
     //Player Character Variables
     private TBInput playerInput;
@@ -69,9 +75,12 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Stage"));
         if (isGrounded) extraJumpsLeft = 3;
 
-        if (echoTimer > 0) echoTimer-=Time.fixedDeltaTime;
-        else echoTimer = 0;
+        if (echoCooldownTimer > 0) echoCooldownTimer -= Time.fixedDeltaTime;
+        else echoCooldownTimer = 0;
 
+        if (parryCooldownTimer > 0) parryCooldownTimer -= Time.fixedDeltaTime;
+        else parryCooldownTimer = 0;
+        
         //FIXME Can customize movemenet sensetivity here
         horizontalDirection = 500 * playerInput.MoveAxisX;
         verticalDirection = -500 * playerInput.MoveAxisY;
@@ -83,25 +92,34 @@ public class PlayerController : MonoBehaviour
 
 
         //----------- Process Player Inputs --------------
-            if ((playerInput.jumpButton ) && (extraJumpsLeft > 0))
+        if ((playerInput.jumpButton ) && (extraJumpsLeft > 0))
         {
             //Limit extra jumps in the air
             if (!isGrounded) extraJumpsLeft--;
 
             //FIXME: Make paramterizable
-            playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
+            //playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
+            playerBody.velocity = new Vector3(playerBody.velocity.x,  jumpSpeed * 1.3f, 0f); //FIXME UPDATED
+
         }
 
-        if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
-            transform.GetComponent<MoveList>().jab();  
+        //Parry 
+        if (playerInput.ParryButton && parryCooldownTimer <= 0) {
+            parryCooldownTimer = parryCooldown;
+            playerManager.StartParrying(parryDuration);
+            GetComponent<Animator>().SetTrigger("Parry");
+        }
+
+        else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
+            transform.GetComponent<MoveList>().jab();
 
         else if ((playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) || (Mathf.Abs(horizontalFightDirection) > 0.5))
-            transform.GetComponent<MoveList>().Forward_Normal();   
+            transform.GetComponent<MoveList>().Forward_Normal();
 
-        else if ((playerInput.NormalButton && (verticalDirection > 0.5)) || verticalFightDirection > 0.5 )
+        else if ((playerInput.NormalButton && (verticalDirection > 0.5)) || verticalFightDirection > 0.5)
             transform.GetComponent<MoveList>().Up_Normal();
 
-        else if ((playerInput.NormalButton && (verticalDirection < -0.5)) || verticalFightDirection < -0.5 )
+        else if ((playerInput.NormalButton && (verticalDirection < -0.5)) || verticalFightDirection < -0.5)
             transform.GetComponent<MoveList>().Down_Normal();
 
         if (playerInput.SpecialButton) 
@@ -136,12 +154,28 @@ public class PlayerController : MonoBehaviour
 
 
         //Different Movemetn options depending on player state
-        if (playerManager.GetState() == PlayerState.InHitStun) playerBody.AddForce(new Vector3(horizontalDirection/5, 0f, 0f), ForceMode.Force); //DI
-        else if (playerManager.GetState() == PlayerState.GroundAttack) playerBody.velocity = Vector3.zero; // Can't move while attacking
+        if (playerManager.GetState() == PlayerState.InHitStun) playerBody.AddForce(new Vector3(horizontalDirection / 5, 0f, 0f), ForceMode.Force); //DI
+        else if (playerManager.GetState() == PlayerState.GroundAttack || playerManager.GetState() == PlayerState.Parrying /*FIXME THIS PREVENTS MOVEMENT DURING ARIAL PARRY*/) playerBody.velocity = Vector3.zero; // Can't move while attacking
         else if (playerManager.GetState() == PlayerState.TimeTravelling) playerBody.velocity = Vector3.zero; // Can't move while in timetravel
-        else if (playerManager.GetState() == PlayerState.Airborne || playerManager.GetState() == PlayerState.ArialAttack) playerBody.AddForce(new Vector3(horizontalDirection * movementSpeed / 25, 0f, 0f), ForceMode.Impulse);
-        else playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f); // Move normally
+        else if ((playerManager.GetState() == PlayerState.Airborne || playerManager.GetState() == PlayerState.ArialAttack)  
+            && Mathf.Abs(playerBody.velocity.x) <= movementSpeed)
+            playerBody.AddForce(new Vector3(horizontalDirection * movementSpeed / 25, 0f, 0f), ForceMode.VelocityChange);
+        else 
+        {
+            //FIXME: UPDATE THE ANIMATIONS FOR DASHING AND WALKING HERE
+            //Define Direction
+            if (horizontalDirection > 0) directionSign = 1;
+            else directionSign = -1;
 
+            //Defining step function speed, either dashing or walking, no continuous spectrum
+            if (Mathf.Abs(horizontalDirection) > 0.9) directionMagnitude = movementSpeed;
+            else if (Mathf.Abs(horizontalDirection) > 0) directionMagnitude = movementSpeed / 3;
+            else directionMagnitude = 0;
+
+
+            //playerBody.velocity = new Vector3(horizontalDirection * movementSpeed, playerBody.velocity.y, 0f); // Move normally
+            playerBody.velocity = new Vector3(directionSign*directionMagnitude, playerBody.velocity.y, 0f); // Move normally
+        }
     }
 
 
@@ -161,7 +195,7 @@ public class PlayerController : MonoBehaviour
         for (int i = positionalDatas.Count - 1; i >= 0; i -= 5)
         {
             transform.position = positionalDatas[i].position;
-            Debug.Log(positionalDatas[i].position);
+            //Debug.Log(positionalDatas[i].position);
             yield return new WaitForSeconds(0.0000001f);
         }
 
@@ -193,7 +227,7 @@ public class PlayerController : MonoBehaviour
     // Creates a timeclone of this character
     private void createEcho(Queue<TBInput> inputRecording) {
 
-        if (echoTimer > 0) return;
+        if (echoCooldownTimer > 0) return;
 
         characterEcho = Instantiate(characterPrefab, transform.position, transform.rotation);
         characterEcho.GetComponent<PlayerManager>().setupEcho(gameObject, inputRecording);
@@ -201,7 +235,7 @@ public class PlayerController : MonoBehaviour
         // FIXME: DELE THIS AFTER ALPHA
         makeSmoke1 = false;
 
-        echoTimer = 3f;
+        echoCooldownTimer = 3f;
     }
 
     //Getters and Setters

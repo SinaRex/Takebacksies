@@ -8,7 +8,7 @@ public enum PlayerState
 {
     Start,
     Idle, Walking, Dashing, Airborne,
-    InHitStun, GroundAttack, ArialAttack,
+    InHitStun, GroundAttack, ArialAttack, Parrying,
     Dead, Respawning, Invincible, TimeTravelling
 }
 
@@ -49,6 +49,7 @@ public class PlayerManager : MonoBehaviour
     //Character Management Variables
     private float hitStunTimer = 0f;
     private float attackingTimer = 0f;
+    private float parryTimer = 0f;
     public PlayerIdentity playerIdentity; // TODO: change this to private
 
     //Movement Variables
@@ -113,10 +114,10 @@ public class PlayerManager : MonoBehaviour
 
         Orientation oldOrientation = playerOrientation; // SMOOTH TURNING
         //FIXME: This is jank
-        if (_state != PlayerState.ArialAttack && _state != PlayerState.GroundAttack)
+        if (_state != PlayerState.ArialAttack && _state != PlayerState.GroundAttack && _state != PlayerState.Parrying)
         {
-            if (horizontalFightInput > 0) playerOrientation = Orientation.Right;
-            else if (horizontalFightInput < 0) playerOrientation = Orientation.Left;
+            if (horizontalFightInput > 0.25) playerOrientation = Orientation.Right;
+            else if (horizontalFightInput < -0.25) playerOrientation = Orientation.Left;
             else if (horizontalInput > 0) playerOrientation = Orientation.Right;
             else if (horizontalInput < 0) playerOrientation = Orientation.Left;
         }
@@ -129,6 +130,9 @@ public class PlayerManager : MonoBehaviour
 
         if (attackingTimer > 0f) attackingTimer -= Time.deltaTime;
         else attackingTimer = 0;
+
+        if (parryTimer > 0f) parryTimer -= Time.deltaTime;
+        else parryTimer = 0;
 
         if (_state == PlayerState.Dead) playerPercent = 0f;
 
@@ -148,6 +152,7 @@ public class PlayerManager : MonoBehaviour
                 if (isDead) nextState = PlayerState.Dead;
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
+                else if (parryTimer > 0) nextState = PlayerState.Parrying;
                 else if (isTimeTravelling) nextState = PlayerState.TimeTravelling;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else if (Mathf.Abs(horizontalInput) > 0 && Mathf.Abs(horizontalInput) < threshold) nextState = PlayerState.Walking;
@@ -159,6 +164,7 @@ public class PlayerManager : MonoBehaviour
                 if (isDead) nextState = PlayerState.Dead;
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
+                else if (parryTimer > 0) nextState = PlayerState.Parrying;
                 else if (isTimeTravelling) nextState = PlayerState.TimeTravelling;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else if (Mathf.Abs(horizontalInput) > 0 && Mathf.Abs(horizontalInput) < threshold) nextState = PlayerState.Walking;
@@ -171,6 +177,7 @@ public class PlayerManager : MonoBehaviour
                 if (isDead) nextState = PlayerState.Dead;
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.GroundAttack;
+                else if (parryTimer > 0) nextState = PlayerState.Parrying;
                 else if (isTimeTravelling) nextState = PlayerState.TimeTravelling;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else if (Mathf.Abs(horizontalInput) > 0 && Mathf.Abs(horizontalInput) < threshold) nextState = PlayerState.Walking;
@@ -183,6 +190,7 @@ public class PlayerManager : MonoBehaviour
                 if (isDead) nextState = PlayerState.Dead;
                 else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
                 else if (attackingTimer > 0) nextState = PlayerState.ArialAttack;
+                else if (parryTimer > 0) nextState = PlayerState.Parrying;
                 else if (isTimeTravelling) nextState = PlayerState.TimeTravelling;
                 else if (!isGrounded) nextState = PlayerState.Airborne;
                 else nextState = PlayerState.Idle;
@@ -211,6 +219,15 @@ public class PlayerManager : MonoBehaviour
                 else if (isGrounded) { nextState = PlayerState.Idle; GetComponent<MoveList>().interruptMove(); }
                 else if (attackingTimer > 0) nextState = PlayerState.ArialAttack;
                 else nextState = PlayerState.Airborne;
+                break;
+
+
+            case PlayerState.Parrying:
+                //FIXME: Add Move Lag Transition state
+                if (isDead) nextState = PlayerState.Dead;
+                else if (hitStunTimer > 0) nextState = PlayerState.InHitStun;
+                else if (parryTimer > 0) nextState = PlayerState.Parrying;
+                else nextState = PlayerState.Idle;
                 break;
 
             case PlayerState.Dead:
@@ -296,6 +313,24 @@ public class PlayerManager : MonoBehaviour
     }
 
 
+    private IEnumerator FlashOnce(float duration)
+    {
+        Debug.Log("Parrying!");
+
+        int i = 0;
+        GameObject playerModel = transform.GetChild(2).gameObject;// get CharacterModel gameobject
+        Color preset = playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material.color;
+        while (i < duration) {
+            yield return new WaitForSeconds(0.125f);
+            playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material.color = Color.blue;
+            yield return new WaitForSeconds(0.125f);
+            playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material.color = preset;
+            i++;
+        }
+
+
+    }
+
     //-------------------PlayZone & BlastZone Logic--------------------//
     private void OnTriggerExit(Collider other)
     {
@@ -330,6 +365,8 @@ public class PlayerManager : MonoBehaviour
 
     //-------------------------External Functions-----------------------------//
     //Getters, Setters, and incrementers for character variables and inputs
+
+    //-------------- Setters --------------
     public void setHitStun(float inputStun)
     {
         hitStunTimer = inputStun;
@@ -340,16 +377,22 @@ public class PlayerManager : MonoBehaviour
         playerPercent += inputDamage;
         if (playerIdentity == PlayerIdentity.Player1)
         {
-            FindObjectOfType<PercentageUI>().UpdateUI(true);
+           // FindObjectOfType<PercentageUI>().UpdateUI(true);
         }
         else if (playerIdentity == PlayerIdentity.Player2)
         {
-            FindObjectOfType<PercentageUI>().UpdateUI(false);
+           // FindObjectOfType<PercentageUI>().UpdateUI(false);
         }
     }
 
     public void StartAttacking(float attackLength) {
         attackingTimer = attackLength;
+    }
+
+    public void StartParrying(float parryLength)
+    {
+        parryTimer = parryLength;
+        StartCoroutine(FlashOnce(parryLength));
     }
 
     public void Respawn() {
