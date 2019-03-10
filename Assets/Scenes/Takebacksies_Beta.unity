@@ -903,6 +903,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p1: {fileID: 888558360}
   p2: {fileID: 107173996}
+  p1percentageText: {fileID: 0}
+  p2percentageText: {fileID: 0}
 --- !u!114 &105869595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3470,6 +3472,31 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 0c2b9919fba3440fe90c9d5224f1f147, type: 2}
+    - target: {fileID: 187512621197586039, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0c2b9919fba3440fe90c9d5224f1f147, type: 2}
+    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.24
+      objectReference: {fileID: 0}
     - target: {fileID: 187512621193466039, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3500,34 +3527,6 @@ PrefabInstance:
       propertyPath: m_Color.rgba
       value: 4294901796
       objectReference: {fileID: 0}
-<<<<<<< HEAD
-    - target: {fileID: 187512621197586039, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 0c2b9919fba3440fe90c9d5224f1f147, type: 2}
-    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 5.78
-      objectReference: {fileID: 0}
-    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.38
-      objectReference: {fileID: 0}
-    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.24
-      objectReference: {fileID: 0}
-=======
->>>>>>> 72cfd7aaafb9aa19b8a86c63053d67638c77d4e1
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f11fd44a95dd14e45b233de677c92dd9, type: 3}
 --- !u!1 &819893573
@@ -4622,6 +4621,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p1: {fileID: 888558360}
   p2: {fileID: 107173996}
+  p1percentageText: {fileID: 0}
+  p2percentageText: {fileID: 0}
 --- !u!114 &1253672548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4736,7 +4737,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game OVer
+  m_Text: Game Over
 --- !u!222 &1323746936
 CanvasRenderer:
   m_ObjectHideFlags: 0

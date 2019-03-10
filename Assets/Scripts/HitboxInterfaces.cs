@@ -12,7 +12,7 @@ public interface IHitboxResponder {
 //An interface to standardize attack hurtbox interfaces
 public interface IAttackResponder{
 
-    void getHitBy(moveData move);
+    void getHitBy(moveData move, Transform attacker);
 
 }
 

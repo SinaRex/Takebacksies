@@ -120,13 +120,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
     public void Neutral_Special()
     {
         GetComponent<Hitbox>().setResponder(this);
-        GetComponent<PlayerManager>().StartAttacking(0.3f);
-        //moveSuccessful = GetComponent<Hitbox>().startHitbox(
-        //new List<Vector3>() { Vector3.zero, Vector3.zero, Vector3.zero },
-        //new List<Quaternion>() { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
-        //new List<Vector3>() { new Vector3(0.2f, 1f, 0.1f), new Vector3(0.2f, 1f, 0.1f), new Vector3(0.2f, 1f, 0.1f) },
-        //new List<float>() { 0.1f, 0.1f, 0.1f }, 3, "Neutral-Special");
-
+        GetComponent<PlayerManager>().StartAttacking(0.48f);
         moveSuccessful = GetComponent<Hitbox>().startHitbox(
                    new List<Vector3>() { Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero },
                    new List<Quaternion>() { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
@@ -147,7 +141,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         moveData inputData = moveDictionary[move];
         inputData.baseKnockBack = Quaternion.Euler(0, (float)transform.GetComponent<PlayerManager>().getPlayerOrientation(), 0) * inputData.baseKnockBack;
         inputData.knockBackGrowth = Quaternion.Euler(0, (float)transform.GetComponent<PlayerManager>().getPlayerOrientation(), 0) * inputData.knockBackGrowth;
-        collider.transform.root.GetComponent<Hurtbox>().getHitBy(inputData);
+        collider.transform.root.GetComponent<Hurtbox>().getHitBy(inputData, transform);
     }
 
 }
