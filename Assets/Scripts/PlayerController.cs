@@ -111,10 +111,10 @@ public class PlayerController : MonoBehaviour
         }
 
         else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
-            transform.GetComponent<MoveList>().jab();
+            transform.GetComponent<MoveList>().Forward_Normal();
 
         else if ((playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) || (Mathf.Abs(horizontalFightDirection) > 0.5))
-            transform.GetComponent<MoveList>().Forward_Normal();
+            transform.GetComponent<MoveList>().jab();
 
         else if ((playerInput.NormalButton && (verticalDirection > 0.5)) || verticalFightDirection > 0.5)
             transform.GetComponent<MoveList>().Up_Normal();

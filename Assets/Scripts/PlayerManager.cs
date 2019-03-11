@@ -422,6 +422,14 @@ public class PlayerManager : MonoBehaviour
     public void SetIsRespawning(bool flag)
     {
         isRespawning = flag;
+        if (playerIdentity == PlayerIdentity.Player1)
+        {
+            FindObjectOfType<PercentageUI>().UpdateUI(true);
+        }
+        else if (playerIdentity == PlayerIdentity.Player2)
+        {
+            FindObjectOfType<PercentageUI>().UpdateUI(false);
+        }
     }
 
     public void SetIsInvincible(bool flag)

@@ -50,7 +50,7 @@ public class Hitbox : MonoBehaviour
     public bool startHitbox(List<Vector3> posOffsetIn, List<Quaternion> rotationIn, List<Vector3> sizeIn, List<float> timersIn, int numStatesIn, string moveNameIn)
     {
         // If a hitbox is already active, return
-        if (_state == ColliderState.Open || _state == ColliderState.Colliding) return false;
+        if (_state == ColliderState.Open || _state == ColliderState.Colliding || _state == ColliderState.Inactive) return false;
 
         //Reset the index 
         hitboxIndex = 0;
