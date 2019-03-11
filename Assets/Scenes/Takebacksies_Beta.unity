@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -462,6 +462,8 @@ MonoBehaviour:
   movementSpeed: 10
   groundingDistance: 0.5
   timeTravelWaitTime: 2
+  parryCooldown: 1
+  parryDuration: 0.5
   characterPrefab: {fileID: 0}
 --- !u!1 &32074652
 GameObject:
@@ -862,7 +864,6 @@ GameObject:
   - component: {fileID: 105869593}
   - component: {fileID: 105869596}
   - component: {fileID: 105869595}
-  - component: {fileID: 105869594}
   m_Layer: 5
   m_Name: P1PercentageUI
   m_TagString: Untagged
@@ -889,22 +890,6 @@ RectTransform:
   m_AnchoredPosition: {x: 43, y: 42}
   m_SizeDelta: {x: 160, y: 58}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &105869594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 105869592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec839fcc915d441e39d049db79c92530, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  p1: {fileID: 888558360}
-  p2: {fileID: 107173996}
-  p1percentageText: {fileID: 0}
-  p2percentageText: {fileID: 0}
 --- !u!114 &105869595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3477,26 +3462,6 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 0c2b9919fba3440fe90c9d5224f1f147, type: 2}
-    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 5.78
-      objectReference: {fileID: 0}
-    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.38
-      objectReference: {fileID: 0}
-    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.24
-      objectReference: {fileID: 0}
     - target: {fileID: 187512621193466039, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3526,6 +3491,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.rgba
       value: 4294901796
+      objectReference: {fileID: 0}
+    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 187512621998281422, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f11fd44a95dd14e45b233de677c92dd9, type: 3}
@@ -3828,6 +3813,8 @@ MonoBehaviour:
   movementSpeed: 10
   groundingDistance: 0.5
   timeTravelWaitTime: 2
+  parryCooldown: 1
+  parryDuration: 0.5
   characterPrefab: {fileID: 0}
 --- !u!54 &934184044
 Rigidbody:
@@ -4580,7 +4567,6 @@ GameObject:
   - component: {fileID: 1253672546}
   - component: {fileID: 1253672549}
   - component: {fileID: 1253672548}
-  - component: {fileID: 1253672547}
   m_Layer: 5
   m_Name: P2PercentageUI
   m_TagString: Untagged
@@ -4607,22 +4593,6 @@ RectTransform:
   m_AnchoredPosition: {x: -43, y: 42}
   m_SizeDelta: {x: 160, y: 53.25}
   m_Pivot: {x: 1, y: 0}
---- !u!114 &1253672547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1253672545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec839fcc915d441e39d049db79c92530, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  p1: {fileID: 888558360}
-  p2: {fileID: 107173996}
-  p1percentageText: {fileID: 0}
-  p2percentageText: {fileID: 0}
 --- !u!114 &1253672548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5377,6 +5347,7 @@ GameObject:
   - component: {fileID: 1783361661}
   - component: {fileID: 1783361660}
   - component: {fileID: 1783361659}
+  - component: {fileID: 1783361665}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -5503,6 +5474,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1783361665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783361658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec839fcc915d441e39d049db79c92530, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  p1: {fileID: 888558360}
+  p2: {fileID: 107173996}
+  p1percentageText: {fileID: 105869595}
+  p2percentageText: {fileID: 1253672548}
 --- !u!1 &1806146547
 GameObject:
   m_ObjectHideFlags: 0

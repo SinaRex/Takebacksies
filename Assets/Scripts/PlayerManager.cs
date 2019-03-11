@@ -376,12 +376,12 @@ public class PlayerManager : MonoBehaviour
     {
         playerPercent += inputDamage;
         if (playerIdentity == PlayerIdentity.Player1)
-        {
-           // FindObjectOfType<PercentageUI>().UpdateUI(true);
+        {   
+            FindObjectOfType<PercentageUI>().UpdateUI(true);
         }
         else if (playerIdentity == PlayerIdentity.Player2)
         {
-           // FindObjectOfType<PercentageUI>().UpdateUI(false);
+           FindObjectOfType<PercentageUI>().UpdateUI(false);
         }
     }
 
