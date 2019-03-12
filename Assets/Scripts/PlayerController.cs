@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
         isRewinding = false;
         //Control the fall speed
-        Physics.gravity = new Vector3(0, -15.0F, 0);
+        //Physics.gravity = new Vector3(0, -15.0F, 0);
     }
 
     private void FixedUpdate()
@@ -192,12 +192,28 @@ public class PlayerController : MonoBehaviour
         //Set you up in proper position
         //transform.position = playerManager.getRecordedPosition();
         List<positionalData> positionalDatas = playerManager.getRecordPositionList();
-        for (int i = positionalDatas.Count - 1; i >= 0; i -= 5)
+
+
+        Color c = new Color(0.1f, 1f, 1f);
+        transform.GetChild(2).GetChild(1).GetComponent<Renderer>().material.color = c;
+
+        transform.GetChild(2).GetComponent<TrailRenderer>().enabled = true;
+
+
+        for (int i = positionalDatas.Count - 1; i >= 0; i -= 2)
         {
             transform.position = positionalDatas[i].position;
             //Debug.Log(positionalDatas[i].position);
-            yield return new WaitForSeconds(0.0000001f);
+            //yield return new WaitForSeconds(0.0000001f);
+            yield return new WaitForFixedUpdate();
         }
+
+        c = new Color(1f, 1f, 1f);
+        transform.GetChild(2).GetChild(1).GetComponent<Renderer>().material.color = c;
+        transform.GetChild(2).GetComponent<TrailRenderer>().enabled = false;
+
+
+
 
         // ---------- FIXME: DELETE THIS AFTER ALPHA--------//
         if (playerManager.GetWhichPlayer() == PlayerIdentity.Player1)
@@ -213,7 +229,7 @@ public class PlayerController : MonoBehaviour
 
         // ---------- FIXME: DELETE THIS AFTER ALPHA--------//
 
-        yield return new WaitForSeconds(timeTravelWaitTime);
+       //yield return new WaitForSeconds(timeTravelWaitTime);
 
 
         playerManager.StopTimeTravelling();
