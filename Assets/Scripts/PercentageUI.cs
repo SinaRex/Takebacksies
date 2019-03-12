@@ -22,10 +22,34 @@ public class PercentageUI : MonoBehaviour
         if (p1)
         {
             p1percentageText.text = Mathf.Round(p1Manager.getPercent()).ToString() + "%";
+            if (p1Manager.getPercent() < 50)
+            {
+                p1percentageText.color = Color.Lerp(Color.white, new Color(1f, 0.8f, 0f), p1Manager.getPercent() / 50);
+            }
+            else if (p1Manager.getPercent() <= 100)
+            {
+                p1percentageText.color = Color.Lerp(new Color(1f, 0.8f, 0f), new Color(1f, 0f, 0f), p1Manager.getPercent() / 100);
+            }
+            else
+            {
+                p1percentageText.color = Color.Lerp(new Color(1f, 0f, 0f), new Color(0.5f, 0f, 0f), p1Manager.getPercent() / 200);
+            }
         }
         else
         {
             p2percentageText.text = Mathf.Round(p2Manager.getPercent()).ToString() + "%";
+            if (p2Manager.getPercent() < 50)
+            {
+                p2percentageText.color = Color.Lerp(Color.white, new Color(1f, 1f, 0f), p2Manager.getPercent() / 50);
+            }
+            else if (p2Manager.getPercent() <= 100)
+            {
+                p2percentageText.color = Color.Lerp(new Color(1f, 1f, 0f), new Color(1f, 0f, 0f), p2Manager.getPercent() / 100);
+            }
+            else
+            {
+                p2percentageText.color = Color.Lerp(new Color(1f, 0f, 0f), new Color(0.5f, 0f, 0f), p2Manager.getPercent() / 200);
+            }
         }
     }
 
