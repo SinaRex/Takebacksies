@@ -42,6 +42,7 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
     // Hit Spark
     private IEnumerator MakeHitSparks(float hitStun, float percent)
     {
+        transform.GetChild(3).GetComponent<ParticleSystem>().Play();
         GameObject playerModel = transform.GetChild(2).gameObject;// get CharacterModel gameobject
         //playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material.color = Color.red;
         LerpColorPercent(playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material, percent);
@@ -59,11 +60,11 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
     {
         if (percent < 50)
         {
-            playerModelMat.color = Color.Lerp(Color.white, new Color(1f, 0.8f, 0f), percent / 50);
+            playerModelMat.color = Color.Lerp(Color.white, new Color(0.5f, 0f, 0f), percent / 50);
         }
         else if(percent <= 100)
         {
-            playerModelMat.color = Color.Lerp(new Color(1f, 0.8f, 0f), new Color(1f, 0f, 0f), percent / 100);
+            playerModelMat.color = Color.Lerp(new Color(0.5f, 0f, 0f), new Color(1f, 0f, 0f), percent / 100);
         }
         else
         {
