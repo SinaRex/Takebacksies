@@ -34,6 +34,42 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
 
         GetComponent<Animator>().SetTrigger("Flinch");
 
+        // When you het hury
+        StartCoroutine(MakeHitSparks(move.hitStun, AttatchedCharacter.GetComponent<PlayerManager>().getPercent()));
+    }
+
+
+    // Hit Spark
+    private IEnumerator MakeHitSparks(float hitStun, float percent)
+    {
+        GameObject playerModel = transform.GetChild(2).gameObject;// get CharacterModel gameobject
+        //playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material.color = Color.red;
+        LerpColorPercent(playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material, percent);
+
+
+        yield return new WaitForSecondsRealtime(hitStun);
+
+        playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material.color = Color.white;
+
 
     }
+
+    // Just lerp to a predefined color that also matches the color of percentage
+    private void LerpColorPercent(Material playerModelMat, float percent)
+    {
+        if (percent < 50)
+        {
+            playerModelMat.color = Color.Lerp(Color.white, new Color(1f, 0.8f, 0f), percent / 50);
+        }
+        else if(percent <= 100)
+        {
+            playerModelMat.color = Color.Lerp(new Color(1f, 0.8f, 0f), new Color(1f, 0f, 0f), percent / 100);
+        }
+        else
+        {
+            playerModelMat.color = Color.Lerp(new Color(1f, 0f, 0f), new Color(0.5f, 0f, 0f), percent / 200);
+        }
+
+    }
+
 }

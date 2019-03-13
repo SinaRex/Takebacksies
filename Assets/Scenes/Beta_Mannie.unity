@@ -1074,7 +1074,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157344568}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8c1874503e1bb45628c4bc01a12feb6b, type: 3}
@@ -1417,8 +1417,6 @@ TrailRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 1ffd8212a18274e6f83c3b3e03d9e031, type: 2}
-  - {fileID: 2100000, guid: 5a7c7fe57457f45e1bb45cc8c3153c4d, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
