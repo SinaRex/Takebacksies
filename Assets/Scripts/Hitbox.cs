@@ -8,8 +8,10 @@ public enum ColliderState
 }
 
 
-public class Hitbox : MonoBehaviour
-{
+public class Hitbox : MonoBehaviour { 
+    // The trail renderer
+    public GameObject clubTrailRenderer;
+
     //Input Variables for tracking size
     private List<Vector3> hitboxSizeList;
     private List<Quaternion> hitboxRotOffset;
@@ -39,6 +41,7 @@ public class Hitbox : MonoBehaviour
     //Player orientation Tracker
     private Orientation playerOrientation;
 
+
     //Setter for hitbox responder
     public void setResponder(IHitboxResponder responder)
     {
@@ -49,6 +52,9 @@ public class Hitbox : MonoBehaviour
     // Activate the hitbox with the given parameters
     public bool startHitbox(List<Vector3> posOffsetIn, List<Quaternion> rotationIn, List<Vector3> sizeIn, List<float> timersIn, int numStatesIn, string moveNameIn)
     {
+        // Trail Renderer
+        clubTrailRenderer.SetActive(true);
+
         // If a hitbox is already active, return
         if (_state == ColliderState.Open || _state == ColliderState.Colliding || _state == ColliderState.Inactive) return false;
 
@@ -75,6 +81,8 @@ public class Hitbox : MonoBehaviour
 
     // Called when hitbox deactivated
     public void endHitbox() {
+        // Trail Renderer
+        clubTrailRenderer.SetActive(false);
 
         //Reset Hitbox Size
         hitboxSize = new Vector3(0.1f, 0.1f, 0.1f);
