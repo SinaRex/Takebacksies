@@ -51,6 +51,10 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
         yield return new WaitForSecondsRealtime(hitStun);
 
         playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material.color = Color.white;
+        if (AttatchedCharacter.GetComponent<PlayerManager>().playerIdentity == PlayerIdentity.Echo)
+        {
+            playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material.color = new Color(1f,1f,1f, 0.5f);
+        }
 
 
     }
@@ -58,18 +62,20 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
     // Just lerp to a predefined color that also matches the color of percentage
     private void LerpColorPercent(Material playerModelMat, float percent)
     {
+        float alpha = AttatchedCharacter.GetComponent<PlayerManager>().playerIdentity == PlayerIdentity.Echo ? 0.5f : 1;
         if (percent < 50)
         {
-            playerModelMat.color = Color.Lerp(Color.white, new Color(0.5f, 0f, 0f), percent / 50);
+            playerModelMat.color = Color.Lerp(Color.white, new Color(0.5f, 0f, 0, alpha), percent / 50);
         }
         else if(percent <= 100)
         {
-            playerModelMat.color = Color.Lerp(new Color(0.5f, 0f, 0f), new Color(1f, 0f, 0f), percent / 100);
+            playerModelMat.color = Color.Lerp(new Color(0.5f, 0f, 0f), new Color(1f, 0f, 0f, alpha), percent / 100);
         }
         else
         {
-            playerModelMat.color = Color.Lerp(new Color(1f, 0f, 0f), new Color(0.5f, 0f, 0f), percent / 200);
+            playerModelMat.color = Color.Lerp(new Color(1f, 0f, 0f), new Color(0.5f, 0f, 0f, alpha), percent / 200);
         }
+
 
     }
 

@@ -431,6 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043dad9db1856f54e97f248075470682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clubTrailRenderer: {fileID: 0}
 --- !u!114 &16569419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1436,6 +1437,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 16569413}
     m_Modifications:
+    - target: {fileID: 7131768858175234669, guid: 0670903a914684a329c34691591da457,
+        type: 3}
+      propertyPath: m_TagString
+      value: blast1
+      objectReference: {fileID: 0}
     - target: {fileID: 7131768858175234666, guid: 0670903a914684a329c34691591da457,
         type: 3}
       propertyPath: m_LocalRotation.y
@@ -1495,11 +1501,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7131768858175234669, guid: 0670903a914684a329c34691591da457,
-        type: 3}
-      propertyPath: m_TagString
-      value: blast1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0670903a914684a329c34691591da457, type: 3}
@@ -1808,7 +1809,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 0b1d8e20c81a9460b96e8402fb1de90f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 86d531c1fb21e4307b2e7162d09e6639, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2424,6 +2425,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 934184048}
     m_Modifications:
+    - target: {fileID: 7131768858175234669, guid: 0670903a914684a329c34691591da457,
+        type: 3}
+      propertyPath: m_Name
+      value: BlastParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7131768858175234669, guid: 0670903a914684a329c34691591da457,
+        type: 3}
+      propertyPath: m_TagString
+      value: blast2
+      objectReference: {fileID: 0}
     - target: {fileID: 7131768858175234666, guid: 0670903a914684a329c34691591da457,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2493,16 +2504,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7131768858175234669, guid: 0670903a914684a329c34691591da457,
-        type: 3}
-      propertyPath: m_Name
-      value: BlastParticle
-      objectReference: {fileID: 0}
-    - target: {fileID: 7131768858175234669, guid: 0670903a914684a329c34691591da457,
-        type: 3}
-      propertyPath: m_TagString
-      value: blast2
       objectReference: {fileID: 0}
     - target: {fileID: 7131768858175234664, guid: 0670903a914684a329c34691591da457,
         type: 3}
@@ -4101,6 +4102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043dad9db1856f54e97f248075470682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clubTrailRenderer: {fileID: 0}
 --- !u!114 &934184054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4406,7 +4408,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 0b1d8e20c81a9460b96e8402fb1de90f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 86d531c1fb21e4307b2e7162d09e6639, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5336,7 +5338,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 0b1d8e20c81a9460b96e8402fb1de90f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 86d531c1fb21e4307b2e7162d09e6639, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
