@@ -28,10 +28,12 @@ public struct positionalData {
 
     public Vector3 position;
     public Vector3 velocity;
+    public Orientation orientation;
 
-    public positionalData(Vector3 positionIn, Vector3 velocityIn) {
+    public positionalData(Vector3 positionIn, Vector3 velocityIn, Orientation orientationIn) {
         position = positionIn;
         velocity = velocityIn;
+        orientation = orientationIn;
     }
 }
 
@@ -43,14 +45,20 @@ public class PlayerManager : MonoBehaviour
 
     //Character Variables
     private float playerPercent = 0f;
-    private float timeJuice = 15f;
     private float maxTimeJuice = 15f;
+    private float timeJuice = 0f;
 
     //Character Management Variables
     private float hitStunTimer = 0f;
     private float attackingTimer = 0f;
     private float parryTimer = 0f;
+    private float lastHitByTimer = 0f;
     public PlayerIdentity playerIdentity; // TODO: change this to private
+    private Transform lastHitBy = null;
+
+    //Echo Related Variables
+    private GameObject timeclone = null;
+    public GameObject characterPrefab = null;
 
     //Movement Variables
     private bool isGrounded;
@@ -71,10 +79,10 @@ public class PlayerManager : MonoBehaviour
     private bool isTimeTravelling = false;
 
     //Constant Variables
-    private const float threshold = 0.5f;
+    private const float threshold = 0.9f;
 
     //Echo Character related varibles
-    private GameObject echoParent = null;
+    private Transform echoParent = null;
     private Queue<TBInput> echoRecording;
     public Material echoMat;
 
@@ -107,6 +115,12 @@ public class PlayerManager : MonoBehaviour
     void FixedUpdate()
     {
 
+
+        //---------------  Updating UI --------------//
+        FindObjectOfType<TimeJuiceUI>().updateUI(playerIdentity, timeJuice / maxTimeJuice);
+        FindObjectOfType<PercentageUI>().UpdateUI(playerIdentity);
+
+
         //---------------  Character/Input Management --------------//
 
         horizontalInput = transform.GetComponent<PlayerController>().getHorizontalInput();
@@ -114,7 +128,7 @@ public class PlayerManager : MonoBehaviour
 
         Orientation oldOrientation = playerOrientation; // SMOOTH TURNING
         //FIXME: This is jank
-        if (_state != PlayerState.ArialAttack && _state != PlayerState.GroundAttack && _state != PlayerState.Parrying)
+        if (_state != PlayerState.ArialAttack && _state != PlayerState.GroundAttack && _state != PlayerState.Parrying && _state != PlayerState.TimeTravelling)
         {
             if (horizontalFightInput > 0.25) playerOrientation = Orientation.Right;
             else if (horizontalFightInput < -0.25) playerOrientation = Orientation.Left;
@@ -133,6 +147,10 @@ public class PlayerManager : MonoBehaviour
 
         if (parryTimer > 0f) parryTimer -= Time.deltaTime;
         else parryTimer = 0;
+
+        if (lastHitByTimer > 0f) lastHitByTimer -= Time.deltaTime;
+        else { lastHitByTimer = 0; lastHitBy = null; }
+
 
         if (_state == PlayerState.Dead) playerPercent = 0f;
 
@@ -299,16 +317,13 @@ public class PlayerManager : MonoBehaviour
         //Used to track the postion an trajectory of the player over the most recent 3 seconds
         if (recordingCount < recordingLimit)
         {
-            //positionalDataRecording.Enqueue(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
-            positionalDataRecording.Add(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
+            positionalDataRecording.Add(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity, playerOrientation));
             recordingCount += 1;
         }
         else
         {
-            //positionalDataRecording.Dequeue();
             positionalDataRecording.RemoveAt(0);
-            //positionalDataRecording.Enqueue(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
-            positionalDataRecording.Add(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity));
+            positionalDataRecording.Add(new positionalData(transform.position, transform.GetComponent<Rigidbody>().velocity, playerOrientation));
         }
     }
 
@@ -374,15 +389,7 @@ public class PlayerManager : MonoBehaviour
 
     public void addDamage(float inputDamage)
     {
-        playerPercent += inputDamage;
-        if (playerIdentity == PlayerIdentity.Player1)
-        {   
-            FindObjectOfType<PercentageUI>().UpdateUI(true);
-        }
-        else if (playerIdentity == PlayerIdentity.Player2)
-        {
-           FindObjectOfType<PercentageUI>().UpdateUI(false);
-        }
+        playerPercent += inputDamage;      
     }
 
     public void StartAttacking(float attackLength) {
@@ -404,6 +411,10 @@ public class PlayerManager : MonoBehaviour
     {
         if (playerIdentity == PlayerIdentity.Echo) Destroy(gameObject);
         else isDead = true;
+
+        //Reward the player who killed you
+        if(lastHitBy != null) lastHitBy.GetComponent<PlayerManager>().AddTimeJuice(2);
+
     }
 
     public void FinishRespawning()
@@ -422,14 +433,6 @@ public class PlayerManager : MonoBehaviour
     public void SetIsRespawning(bool flag)
     {
         isRespawning = flag;
-        if (playerIdentity == PlayerIdentity.Player1)
-        {
-            FindObjectOfType<PercentageUI>().UpdateUI(true);
-        }
-        else if (playerIdentity == PlayerIdentity.Player2)
-        {
-            FindObjectOfType<PercentageUI>().UpdateUI(false);
-        }
     }
 
     public void SetIsInvincible(bool flag)
@@ -446,18 +449,7 @@ public class PlayerManager : MonoBehaviour
         else
         {
             isTimeTravelling = true;
-            timeJuice -= 1; // FIXME: timeJuice -3;
-
-            //Updating time juice UI
-            if (playerIdentity == PlayerIdentity.Player1)
-            {
-                FindObjectOfType<TimeJuiceUI>().updateUI(true, timeJuice / maxTimeJuice);
-            }
-            else if (playerIdentity == PlayerIdentity.Player2)
-            {
-                FindObjectOfType<TimeJuiceUI>().updateUI(false, timeJuice / maxTimeJuice);
-            }
-
+            timeJuice -= 3; // FIXME: timeJuice -3;
         }
 
         // FIXME: AFTER ALPHA
@@ -471,12 +463,26 @@ public class PlayerManager : MonoBehaviour
         isTimeTravelling = false;
     }
 
-    public void SetTimeJuice(int num)
+    public void SetTimeJuice(float num)
     {
-        timeJuice = num;
+        timeJuice = (num < 15f) ? num : 15f;
     }
 
+    public void AddTimeJuice(float num)
+    {
+        timeJuice += num;
+        timeJuice = (timeJuice < 15f) ? timeJuice : 15f;
+    }
 
+    public void updateLastHitBy(Transform Assaulter) {
+        lastHitBy = Assaulter;
+        lastHitByTimer = 10.0f;
+    }
+
+    public void setPlayerOrientation(Orientation orientation)
+    {
+        playerOrientation = orientation;
+    }
     //-------------- Getters --------------
 
     public float getPercent() {
@@ -516,10 +522,18 @@ public class PlayerManager : MonoBehaviour
         return playerOrientation;
     }
 
+    public Transform getLastHitBy()
+    {
+        return lastHitBy;
+    }
+
+    public Transform getEchoParent(){
+        return echoParent;
+    }
 
     //-------------  Time Travel Related Functions: Echos --------------//
 
-    public void setupEcho(GameObject inputEchoParent, Queue<TBInput> inputEchoRecording)
+    public void setupEcho(Transform inputEchoParent, Queue<TBInput> inputEchoRecording)
     {
         playerIdentity = PlayerIdentity.Echo;
         echoParent = inputEchoParent;
@@ -541,6 +555,7 @@ public class PlayerManager : MonoBehaviour
         Behaviour halo = (Behaviour)echoModel.GetComponent("Halo");
         halo.enabled = true;
 
+        gameObject.tag = "Clone";
     }
 
     public TBInput getNextEchoRecording()
@@ -551,13 +566,16 @@ public class PlayerManager : MonoBehaviour
 
     //-------------  Time Travel Related Functions: Echos --------------//
     public Vector3 getRecordedPosition() {
-        //return positionalDataRecording.Peek().position;
-        return positionalDataRecording[0].position;
+         return positionalDataRecording[0].position;
     }
 
     public Vector3 getRecordedVelocity() {
-        //return positionalDataRecording.Peek().velocity;
-        return positionalDataRecording[0].position;
+         return positionalDataRecording[0].position;
+    }
+
+    public Orientation getRecordedOrientation()
+    {
+         return positionalDataRecording[0].orientation;
     }
 
     public List<positionalData> getRecordPositionList()
@@ -569,6 +587,5 @@ public class PlayerManager : MonoBehaviour
         recordingCount = 0;
         positionalDataRecording.Clear();
     }
-
 
 }
