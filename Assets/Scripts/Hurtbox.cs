@@ -34,11 +34,15 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
 
         GetComponent<Animator>().SetTrigger("Flinch");
 
-        // When you het hury
+        //Set current Attacker as the last player that hit you
+        attacker.GetComponent<PlayerManager>().AddTimeJuice(0.1f);
+        AttatchedCharacter.GetComponent<PlayerManager>().updateLastHitBy(attacker);
+
+        // When you get hurt
         StartCoroutine(MakeHitSparks(move.hitStun, AttatchedCharacter.GetComponent<PlayerManager>().getPercent()));
     }
 
-
+    //------------------- Helper Functions ----------------------//
     // Hit Spark
     private IEnumerator MakeHitSparks(float hitStun, float percent)
     {

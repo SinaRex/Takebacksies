@@ -13,9 +13,9 @@ public class TimeJuiceUI : MonoBehaviour
      * bool p1 -> if function is being called on p1
      * ratio -> timeJuice / maxTimeJuice   
      */
-    public void updateUI(bool p1, float ratio)
+    public void updateUI(PlayerIdentity player, float ratio)
     {
-        if (p1)
+        if (player == PlayerIdentity.Player1)
         {
             p1TimeBar.rectTransform.localScale = new Vector3(ratio, 1, 1);
         }

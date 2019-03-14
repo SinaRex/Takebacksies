@@ -17,9 +17,9 @@ public class PercentageUI : MonoBehaviour
         p2Manager = p2.GetComponent<PlayerManager>();
     }
 
-    public void UpdateUI(bool p1)
+    public void UpdateUI(PlayerIdentity player)
     {
-        if (p1)
+        if (player == PlayerIdentity.Player1)
         {
             p1percentageText.text = Mathf.Round(p1Manager.getPercent()).ToString() + "%";
             if (p1Manager.getPercent() < 50)

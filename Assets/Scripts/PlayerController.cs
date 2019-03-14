@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public float groundingDistance = 0.5f;
     public float timeTravelWaitTime = 2f;
     public float parryCooldown = 1f;
-    public float parryDuration = 0.5f;
+    public float parryDuration = 1f;
 
     //Control Variables
     private bool isGrounded;
@@ -97,8 +97,10 @@ public class PlayerController : MonoBehaviour
 
             //FIXME: Make paramterizable
             //playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
-            playerBody.velocity = new Vector3(playerBody.velocity.x,  jumpSpeed * 1.3f, 0f); //FIXME UPDATED
-
+            if(Mathf.Abs(horizontalDirection*movementSpeed) > Mathf.Abs(playerBody.velocity.x))
+                playerBody.velocity = new Vector3(/*playerBody.velocity.x*/ horizontalDirection*movementSpeed,  jumpSpeed * 1.3f, 0f); //FIXME UPDATED
+            else
+                playerBody.velocity = new Vector3(playerBody.velocity.x, jumpSpeed * 1.3f, 0f);
         }
 
         //Parry 
@@ -107,12 +109,14 @@ public class PlayerController : MonoBehaviour
             playerManager.StartParrying(parryDuration);
             GetComponent<Animator>().SetTrigger("Parry");
         }
+        else if (playerInput.NormalButton && playerManager.GetState() == PlayerState.Dashing)
+            transform.GetComponent<MoveList>().Dash_Attack();
 
         else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
-            transform.GetComponent<MoveList>().Forward_Normal();
+            transform.GetComponent<MoveList>().jab();
 
         else if ((playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) || (Mathf.Abs(horizontalFightDirection) > 0.5))
-            transform.GetComponent<MoveList>().jab();
+            transform.GetComponent<MoveList>().Forward_Normal();
 
         else if ((playerInput.NormalButton && (verticalDirection > 0.5)) || verticalFightDirection > 0.5)
             transform.GetComponent<MoveList>().Up_Normal();
@@ -131,7 +135,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("PRessing Y");
 
 
-            StartCoroutine(TravelBackInTime());
+           StartCoroutine(TravelBackInTime());
         }
 
 
@@ -185,6 +189,7 @@ public class PlayerController : MonoBehaviour
         for (int i = positionalDatas.Count - 1; i >= 0; i -= 2)
         {
             transform.position = positionalDatas[i].position;
+            //playerManager.setPlayerOrientation(positionalDatas[i].orientation);
             //Debug.Log(positionalDatas[i].position);
             //yield return new WaitForSeconds(0.0000001f);
             yield return new WaitForFixedUpdate();
@@ -192,7 +197,7 @@ public class PlayerController : MonoBehaviour
 
         c = new Color(1f, 1f, 1f);
         transform.GetChild(2).GetChild(1).GetComponent<Renderer>().material.color = c;
-        transform.GetChild(2).GetComponent<TrailRenderer>().enabled = false;
+        transform.GetChild(2).GetComponent<TrailRenderer>().enabled = false; // FIXME:UBISOFT VISIT FIXME
 
 
 
@@ -201,9 +206,8 @@ public class PlayerController : MonoBehaviour
 
         playerManager.StopTimeTravelling();
 
-        //playerBody.AddForce(playerManager.getRecordedVelocity(), ForceMode.VelocityChange);
-
         createEcho(inputRecording);
+        transform.GetChild(2).GetComponent<TrailRenderer>().enabled = true;
 
     }
 
@@ -213,7 +217,7 @@ public class PlayerController : MonoBehaviour
         if (echoCooldownTimer > 0) return;
 
         characterEcho = Instantiate(characterPrefab, transform.position, transform.rotation);
-        characterEcho.GetComponent<PlayerManager>().setupEcho(gameObject, inputRecording);
+        characterEcho.GetComponent<PlayerManager>().setupEcho(transform, inputRecording);
 
         echoCooldownTimer = 3f;
     }

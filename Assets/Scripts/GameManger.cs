@@ -20,6 +20,9 @@ public class GameManger : MonoBehaviour
     /* List of players GameObject*/
     private List<GameObject> players = new List<GameObject>();
 
+    /* List of time clone gameobjects*/
+    private GameObject[] clones;
+
     /* List of lives that correspond to the players in the list players.*/
     public List<int> playersLives = new List<int>();
 
@@ -143,13 +146,22 @@ public class GameManger : MonoBehaviour
         {
             players[i].GetComponent<PlayerManager>().Die();
             players[i].GetComponent<PlayerManager>().Respawn();
-            players[i].GetComponent<PlayerManager>().SetTimeJuice(15);
+            players[i].GetComponent<PlayerManager>().SetTimeJuice(0);
             playersLives[i] = 3;
+        }
+
+
+        //FIXME UBISOFT
+        //Destroy all remaining clones after a gameover
+        clones = GameObject.FindGameObjectsWithTag("Clone");
+        foreach (GameObject clone in clones)
+        {
+            clone.GetComponent<PlayerManager>().Die();
         }
 
         yield return new WaitForSeconds(3);
 
-        gameTimerRemaining = 300f;
+        gameTimerRemaining = 3000f;
         isGameOver = false;
         gameOverText.gameObject.SetActive(false);
 
