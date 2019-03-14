@@ -5,9 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class StartGame : MonoBehaviour
 {
-   public void ChangeScene()
+    public GameObject foreGround;
+    public GameObject backGround;
+
+
+    public void ChangeScene()
     {
-        SceneManager.LoadScene("FightScene");
+ 
+        StartCoroutine(CharacterSelector());
+    }
+
+   private IEnumerator CharacterSelector()
+    {
+        backGround.GetComponent<Animator>().SetTrigger("backStart");
+        yield return new WaitForSeconds(0.2f);
+        foreGround.GetComponent<Animator>().SetTrigger("ForeStart");
+        yield return new WaitForSeconds(2.5f);
+        SceneManager.LoadScene("Beta_v1");
     }
 
 }
