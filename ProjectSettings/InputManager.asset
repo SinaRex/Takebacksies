@@ -83,7 +83,7 @@ InputManager:
     snap: 0
     invert: 0
     type: 2
-    axis: 3
+    axis: 2
     joyNum: 1
   - serializedVersion: 3
     m_Name: kFightAxisX1
@@ -115,7 +115,7 @@ InputManager:
     snap: 0
     invert: 0
     type: 2
-    axis: 4
+    axis: 3
     joyNum: 1
   - serializedVersion: 3
     m_Name: kFightAxisY1
@@ -490,9 +490,9 @@ InputManager:
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: enter
+    positiveButton: joystick 2 button 14
     altNegativeButton: 
-    altPositiveButton: space
+    altPositiveButton: joystick 2 button 5
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
