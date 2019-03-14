@@ -14,7 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Deprecated/FightScene.unity
     guid: 05f275a5bccf56146bd584f9919fe425
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Deprecated/Takebacksies_Alpha.unity
     guid: a5b1fb18a15df4a1ea5fce9ce8fa253a
+  - enabled: 1
+    path: Assets/Scenes/Takebacksies_Beta.unity
+    guid: 0900e4cfd4f464114b04b378ca7991d3
   m_configObjects: {}
