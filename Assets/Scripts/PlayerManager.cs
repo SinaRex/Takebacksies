@@ -110,6 +110,7 @@ public class PlayerManager : MonoBehaviour
         recordingLimit = recordingDuration * 50;
 
         playerAnimator = GetComponent<Animator>();
+        InvokeRepeating("testAddDamage", 2f, 2f);
     }
 
     void FixedUpdate()
@@ -390,6 +391,11 @@ public class PlayerManager : MonoBehaviour
     public void addDamage(float inputDamage)
     {
         playerPercent += inputDamage;      
+    }
+
+    public void testAddDamage()
+    {
+        playerPercent += 5f;
     }
 
     public void StartAttacking(float attackLength) {
