@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class PercentageUI : MonoBehaviour
 {
-
     public GameObject p1, p2;
     public Text p1percentageText, p2percentageText;
     private PlayerManager p1Manager, p2Manager;
+    public Animator p1Animator, p2Animator;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +21,11 @@ public class PercentageUI : MonoBehaviour
     {
         if (player == PlayerIdentity.Player1)
         {
+            
+            if(p1percentageText.text != Mathf.Round(p1Manager.getPercent()).ToString() + "%" && p1Animator != null){
+                p1Animator.Play("hit");
+            }
+
             p1percentageText.text = Mathf.Round(p1Manager.getPercent()).ToString() + "%";
             if (p1Manager.getPercent() < 50)
             {
@@ -37,6 +42,11 @@ public class PercentageUI : MonoBehaviour
         }
         else
         {
+            if (p2percentageText.text != Mathf.Round(p2Manager.getPercent()).ToString() + "%" && p2Animator != null)
+            {
+                p2Animator.Play("hit");
+            }
+
             p2percentageText.text = Mathf.Round(p2Manager.getPercent()).ToString() + "%";
             if (p2Manager.getPercent() < 50)
             {
@@ -52,8 +62,6 @@ public class PercentageUI : MonoBehaviour
             }
         }
     }
-
-  
-
+ 
 
 }
