@@ -90,18 +90,6 @@ public class PlayerController : MonoBehaviour
 
 
         //----------- Process Player Inputs --------------
-        if ((playerInput.jumpButton ) && (extraJumpsLeft > 0))
-        {
-            //Limit extra jumps in the air
-            if (!isGrounded) extraJumpsLeft--;
-
-            //FIXME: Make paramterizable
-            //playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
-            if(Mathf.Abs(horizontalDirection*movementSpeed) > Mathf.Abs(playerBody.velocity.x))
-                playerBody.velocity = new Vector3(/*playerBody.velocity.x*/ horizontalDirection*movementSpeed,  jumpSpeed * 1.3f, 0f); //FIXME UPDATED
-            else
-                playerBody.velocity = new Vector3(playerBody.velocity.x, jumpSpeed * 1.3f, 0f);
-        }
 
         //Parry 
         if (playerInput.ParryButton && parryCooldownTimer <= 0) {
@@ -126,13 +114,27 @@ public class PlayerController : MonoBehaviour
 
         if (playerInput.SpecialButton) 
             transform.GetComponent<MoveList>().Neutral_Special();
-        
 
 
-        //Time travel
+        //Jump 
+        if ((playerInput.jumpButton) && (extraJumpsLeft > 0))
+        {
+            //Limit extra jumps in the air
+            if (!isGrounded) extraJumpsLeft--;
+
+            //FIXME: Make paramterizable
+            //playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
+            if (Mathf.Abs(horizontalDirection * movementSpeed) > Mathf.Abs(playerBody.velocity.x))
+                playerBody.velocity = new Vector3(/*playerBody.velocity.x*/ horizontalDirection * movementSpeed, jumpSpeed * 1.3f, 0f); //FIXME UPDATED
+            else
+                playerBody.velocity = new Vector3(playerBody.velocity.x, jumpSpeed * 1.3f, 0f);
+        }
+
+
+        //Time-travel
         if (playerInput.RewindButton && (playerManager.GetWhichPlayer() != PlayerIdentity.Echo) && playerManager.getTimeJuice() > 3) {
 
-            Debug.Log("PRessing Y");
+            //Debug.Log("PRessing Y");
 
 
            StartCoroutine(TravelBackInTime());

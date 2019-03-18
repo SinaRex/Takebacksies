@@ -8,6 +8,11 @@ public class StartGame : MonoBehaviour
     public GameObject foreGround;
     public GameObject backGround;
 
+    void Update() {
+        if (Input.anyKey) {
+            ChangeScene();
+        }
+    }
 
     public void ChangeScene()
     {
@@ -20,7 +25,7 @@ public class StartGame : MonoBehaviour
         backGround.GetComponent<Animator>().SetTrigger("backStart");
         yield return new WaitForSeconds(0.2f);
         foreGround.GetComponent<Animator>().SetTrigger("ForeStart");
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2.0f);
         SceneManager.LoadScene("Beta_v1");
     }
 

@@ -422,7 +422,7 @@ public class PlayerManager : MonoBehaviour
         canMoveAfterDeath = true;
         //FIXME: this should probably not be here lol FIXME
         resetPositionalData();
-        GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().resetPositionalData(playerIdentity);
+        GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().resetPlayerInputData(playerIdentity);
     }
 
     public void SetIsDying(bool flag)
@@ -459,7 +459,7 @@ public class PlayerManager : MonoBehaviour
     {
         // FIXME: 
         resetPositionalData();
-        GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().resetPositionalData(playerIdentity);
+        GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().resetPlayerInputData(playerIdentity);
         isTimeTravelling = false;
     }
 

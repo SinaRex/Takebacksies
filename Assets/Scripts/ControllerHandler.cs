@@ -118,7 +118,7 @@ public class ControllerHandler : MonoBehaviour
     }
 
 
-    public void resetPositionalData(PlayerIdentity inputIdentity)
+    public void resetPlayerInputData(PlayerIdentity inputIdentity)
     {
 
         if (inputIdentity == PlayerIdentity.Player1) {
