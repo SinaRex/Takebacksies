@@ -38,7 +38,10 @@ public class PlayerController : MonoBehaviour
 
     // Echo related variables
     public GameObject characterPrefab = null;
-    private GameObject characterEcho = null;
+
+    //Echo Variables
+    private Queue<TBInput> echoInputs;
+    private List<positionalData> echoPositionalDatas;
 
 
     // Start is called before the first frame update
@@ -66,7 +69,8 @@ public class PlayerController : MonoBehaviour
             else playerInput = controllerHandler.input2;
         }
         else {
-            playerInput = playerManager.getNextEchoRecording();
+            //playerInput = playerManager.getNextEchoRecording();
+            updateEchoPositionAndInput();
         }
 
         //-----------Update control paramters----------------
@@ -116,6 +120,9 @@ public class PlayerController : MonoBehaviour
             transform.GetComponent<MoveList>().Neutral_Special();
 
 
+        //FIXME: BETA. Do not want echoes to move conventionally
+        if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo) return;
+
         //Jump 
         if ((playerInput.jumpButton) && (extraJumpsLeft > 0))
         {
@@ -136,8 +143,8 @@ public class PlayerController : MonoBehaviour
 
             //Debug.Log("PRessing Y");
 
-
-           StartCoroutine(TravelBackInTime());
+          //FIXME beta
+          // StartCoroutine(TravelBackInTime());
         }
 
 
@@ -208,20 +215,13 @@ public class PlayerController : MonoBehaviour
 
         playerManager.StopTimeTravelling();
 
-        createEcho(inputRecording);
+        if (echoCooldownTimer <= 0)
+        {
+            playerManager.createEcho(inputRecording, new List<positionalData>());
+            echoCooldownTimer = 3f;
+        }
         transform.GetChild(2).GetComponent<TrailRenderer>().enabled = true;
 
-    }
-
-    // Creates a timeclone of this character
-    private void createEcho(Queue<TBInput> inputRecording) {
-
-        if (echoCooldownTimer > 0) return;
-
-        characterEcho = Instantiate(characterPrefab, transform.position, transform.rotation);
-        characterEcho.GetComponent<PlayerManager>().setupEcho(transform, inputRecording);
-
-        echoCooldownTimer = 3f;
     }
 
     //Getters and Setters
@@ -233,4 +233,23 @@ public class PlayerController : MonoBehaviour
     {
         return horizontalFightDirection;
     }
+
+
+    //-------------  Time Travel Related Functions: Echo Specific --------------//
+
+    private void updateEchoPositionAndInput() {
+
+        echoInputs = playerManager.getAllInputEchoRecording();
+        echoPositionalDatas = playerManager.getPositionEchoRecording();
+
+        transform.position = echoPositionalDatas[0].position;
+
+        if (echoInputs.Count >= playerManager.getRecordingLimit()){
+            playerInput = echoInputs.Peek();
+        }
+        else {
+            playerInput = new TBInput(0f, 0f, 0f, 0f, false, false, false, false, false);
+        }
+    }
+
 }

@@ -129,7 +129,7 @@ public class Hitbox : MonoBehaviour {
         foreach (Collider c in colliders)
         {
             //Do not count collisions with yourself
-            if (c.transform.root == transform)
+            if (c.transform.root == transform || c.transform.root.GetComponent<PlayerManager>().GetWhichPlayer() == PlayerIdentity.Echo || c == transform.root.GetComponent<PlayerManager>().getEchoParent() )
                 continue;
 
             //FIXME: for now, just apply knock back, will compartmentalize this later

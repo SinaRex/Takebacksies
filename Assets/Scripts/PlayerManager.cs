@@ -81,9 +81,10 @@ public class PlayerManager : MonoBehaviour
     //Constant Variables
     private const float threshold = 0.9f;
 
-    //Echo Character related varibles
+    //Variables used inside character echoes 
     private Transform echoParent = null;
-    private Queue<TBInput> echoRecording;
+    private Queue<TBInput> echoInputRecording;
+    private List<positionalData> echoPositionalDataRecording;
     public Material echoMat;
 
 
@@ -91,7 +92,7 @@ public class PlayerManager : MonoBehaviour
     public int recordingDuration = 3;
     private int recordingLimit;
     private int recordingCount;
-    //private Queue<positionalData> positionalDataRecording = new Queue<positionalData>();
+    private GameObject characterEcho = null;
     private List<positionalData> positionalDataRecording = new List<positionalData>();
 
 
@@ -99,9 +100,14 @@ public class PlayerManager : MonoBehaviour
     //Animator
     Animator playerAnimator;
 
+    //Controller
+    private ControllerHandler controllerHandler;
+
 
     void Start()
     {
+        controllerHandler = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>();
+
         //Player State machine Vars
         _state = PlayerState.Start;
         nextState = PlayerState.Idle;
@@ -110,12 +116,26 @@ public class PlayerManager : MonoBehaviour
         recordingLimit = recordingDuration * 50;
 
         playerAnimator = GetComponent<Animator>();
-        InvokeRepeating("testAddDamage", 2f, 2f);
     }
 
     void FixedUpdate()
     {
 
+        //---------------  Time Travel Management --------------//
+        //transform.GetComponent<TimeTravelManager>().UpdatePersistentClone();
+        if (playerIdentity != PlayerIdentity.Echo) {
+            if (_state != PlayerState.Dead && _state != PlayerState.Respawning)
+            {
+                if (characterEcho == null)
+                {
+                    createEcho(new Queue<TBInput>(controllerHandler.getRecording(playerIdentity)), positionalDataRecording);
+                }
+                else
+                {
+                    characterEcho.GetComponent<PlayerManager>().updateEcho(transform, new Queue<TBInput>(controllerHandler.getRecording(playerIdentity)), positionalDataRecording);
+                }
+            }
+        }
 
         //---------------  Updating UI --------------//
         FindObjectOfType<TimeJuiceUI>().updateUI(playerIdentity, timeJuice / maxTimeJuice);
@@ -347,6 +367,7 @@ public class PlayerManager : MonoBehaviour
 
     }
 
+
     //-------------------PlayZone & BlastZone Logic--------------------//
     private void OnTriggerExit(Collider other)
     {
@@ -418,8 +439,13 @@ public class PlayerManager : MonoBehaviour
         if (playerIdentity == PlayerIdentity.Echo) Destroy(gameObject);
         else isDead = true;
 
+        //FIXME: beta
+        transform.GetChild(2).GetComponent<TrailRenderer>().Clear();
+        transform.GetChild(2).GetComponent<TrailRenderer>().enabled = false;
+
+
         //Reward the player who killed you
-        if(lastHitBy != null) lastHitBy.GetComponent<PlayerManager>().AddTimeJuice(2);
+        if (lastHitBy != null) lastHitBy.GetComponent<PlayerManager>().AddTimeJuice(2);
 
     }
 
@@ -428,6 +454,10 @@ public class PlayerManager : MonoBehaviour
         canMoveAfterDeath = true;
         //FIXME: this should probably not be here lol FIXME
         resetPositionalData();
+
+        //FIXME: beta
+        transform.GetChild(2).GetComponent<TrailRenderer>().enabled = true;
+
         GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>().resetPlayerInputData(playerIdentity);
     }
 
@@ -537,16 +567,37 @@ public class PlayerManager : MonoBehaviour
         return echoParent;
     }
 
+    public GameObject getCharacterEcho() {
+        return characterEcho;
+    }
+
+    public int getRecordingLimit() {
+        return recordingLimit;
+    }
+
+    //-------------  Time Travel Related Functions: Parents --------------//
+    // Creates a timeclone of this character
+    public void createEcho(Queue<TBInput> inputRecording, List<positionalData> inputPositionalDataRecording)
+    {
+
+        characterEcho = Instantiate(characterPrefab, transform.position, transform.rotation);
+        characterEcho.GetComponent<PlayerManager>().setupEcho(transform, inputRecording, inputPositionalDataRecording);
+
+    }
+
+
     //-------------  Time Travel Related Functions: Echos --------------//
 
-    public void setupEcho(Transform inputEchoParent, Queue<TBInput> inputEchoRecording)
+    public void setupEcho(Transform inputEchoParent, Queue<TBInput> inputEchoRecording, List<positionalData> inputPositionalData)
     {
         playerIdentity = PlayerIdentity.Echo;
         echoParent = inputEchoParent;
-        echoRecording = inputEchoRecording;
+        echoInputRecording = new Queue<TBInput>(inputEchoRecording);
+        echoPositionalDataRecording = new List<positionalData>(inputPositionalData);
         playerPercent = 200;
 
         // *** Set the material to the special one ****//
+        transform.GetChild(2).GetComponent<TrailRenderer>().enabled = false;
         GameObject echoModel = transform.GetChild(2).gameObject;// get CharacterModel gameobject
         Renderer echoRenderer = echoModel.transform.GetChild(1).gameObject.GetComponent<Renderer>();
 
@@ -564,13 +615,17 @@ public class PlayerManager : MonoBehaviour
         gameObject.tag = "Clone";
     }
 
-    public TBInput getNextEchoRecording()
+    
+    public void updateEcho(Transform inputEchoParent, Queue<TBInput> inputEchoRecording, List<positionalData> inputPositionalData)
     {
-        if (echoRecording.Count == 0) return new TBInput(0f, 0f, 0f, 0f, false, false, false, false, false);
-        else return echoRecording.Dequeue();
-    }
+        if (inputEchoParent != echoParent) return;
+        echoInputRecording = inputEchoRecording;
+        echoPositionalDataRecording = inputPositionalData;
 
-    //-------------  Time Travel Related Functions: Echos --------------//
+}
+
+
+    //-------------  Time Travel Related Functions: Parents--------------//
     public Vector3 getRecordedPosition() {
          return positionalDataRecording[0].position;
     }
@@ -592,6 +647,25 @@ public class PlayerManager : MonoBehaviour
     public void resetPositionalData() {
         recordingCount = 0;
         positionalDataRecording.Clear();
+    }
+
+
+    //-------------  Time Travel Related Functions: Echoes --------------//
+
+    public TBInput getNextEchoRecording()
+    {
+        if (echoInputRecording.Count == 0) return new TBInput(0f, 0f, 0f, 0f, false, false, false, false, false);
+        else return echoInputRecording.Dequeue();
+    }
+
+    public Queue<TBInput> getAllInputEchoRecording()
+    {
+        return echoInputRecording;
+    }
+
+    public List<positionalData> getPositionEchoRecording()
+    {
+        return echoPositionalDataRecording;
     }
 
 }
