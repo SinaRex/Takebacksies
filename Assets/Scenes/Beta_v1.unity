@@ -321,7 +321,7 @@ PrefabInstance:
     - target: {fileID: 187512621207034648, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: jumpSpeed
-      value: 8
+      value: 10.4
       objectReference: {fileID: 0}
     - target: {fileID: 187512621207159193, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
@@ -451,7 +451,7 @@ PrefabInstance:
     - target: {fileID: 187512621207034655, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: recordingDuration
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 187512621197586039, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
@@ -681,7 +681,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1ffd8212a18274e6f83c3b3e03d9e031, type: 2}
+  - {fileID: 2100000, guid: 2d4fb6a661bc88f4da96d330002f3b35, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -701,7 +701,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 2
+  m_Time: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -1398,7 +1398,7 @@ PrefabInstance:
     - target: {fileID: 187512621207034648, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: jumpSpeed
-      value: 8
+      value: 10.4
       objectReference: {fileID: 0}
     - target: {fileID: 187512621207159193, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
@@ -1503,7 +1503,7 @@ PrefabInstance:
     - target: {fileID: 187512621207034655, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: recordingDuration
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 187512621197586039, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
@@ -2731,7 +2731,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 2
+  m_Time: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -2912,7 +2912,7 @@ PrefabInstance:
     - target: {fileID: 1298080249560244392, guid: f44eaf97f3c5540c7acfe5519370d0e0,
         type: 3}
       propertyPath: recordingDuration
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f44eaf97f3c5540c7acfe5519370d0e0, type: 3}

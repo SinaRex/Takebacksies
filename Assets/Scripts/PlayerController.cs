@@ -94,32 +94,53 @@ public class PlayerController : MonoBehaviour
 
 
         //----------- Process Player Inputs --------------
+        if (playerManager.GetState() != PlayerState.GroundAttack && playerManager.GetState() != PlayerState.Parrying && playerManager.GetState() != PlayerState.InHitStun)
+        {
+            //Parry 
+            if (playerInput.ParryButton && parryCooldownTimer <= 0)
+            {
+                parryCooldownTimer = parryCooldown;
+                playerManager.StartParrying(parryDuration);
+                GetComponent<Animator>().SetTrigger("Parry");
+            }
+            else if (playerInput.NormalButton && playerManager.GetState() == PlayerState.Dashing)
+                transform.GetComponent<MoveList>().Dash_Attack();
 
-        //Parry 
-        if (playerInput.ParryButton && parryCooldownTimer <= 0) {
-            parryCooldownTimer = parryCooldown;
-            playerManager.StartParrying(parryDuration);
-            GetComponent<Animator>().SetTrigger("Parry");
+            //Neutral Attack
+            else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
+                transform.GetComponent<MoveList>().jab();
+
+            //Side Attack
+            else if ((playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) || (Mathf.Abs(horizontalFightDirection) > 0.5))
+            {
+                Orientation attackDirection = horizontalFightDirection > 0 ? Orientation.Right : Orientation.Left;
+
+                if (isGrounded) transform.GetComponent<MoveList>().Forward_Normal(); //Forward Smash
+                else
+                { // Decide between forward air and backair
+                    if (playerManager.getPlayerOrientation() == attackDirection) transform.GetComponent<MoveList>().Forward_Air(); //Forward Air
+                    else transform.GetComponent<MoveList>().Back_Air(); //Back Air
+                }
+            }
+
+            //Up Attack
+            else if ((playerInput.NormalButton && (verticalDirection > 0.5)) || verticalFightDirection > 0.5)
+            {
+                if (isGrounded) transform.GetComponent<MoveList>().Up_Normal();
+                else transform.GetComponent<MoveList>().Up_Air();
+            }
+
+            //Down Attack
+            else if ((playerInput.NormalButton && (verticalDirection < -0.5)) || verticalFightDirection < -0.5)
+            {
+                if (isGrounded) transform.GetComponent<MoveList>().Down_Normal();
+                else transform.GetComponent<MoveList>().Down_Air();
+            }
+
+            if (playerInput.SpecialButton) ;
+               // transform.GetComponent<MoveList>().Neutral_Special();
+
         }
-        else if (playerInput.NormalButton && playerManager.GetState() == PlayerState.Dashing)
-            transform.GetComponent<MoveList>().Dash_Attack();
-
-        else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
-            transform.GetComponent<MoveList>().jab();
-
-        else if ((playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) || (Mathf.Abs(horizontalFightDirection) > 0.5))
-            transform.GetComponent<MoveList>().Forward_Normal();
-
-        else if ((playerInput.NormalButton && (verticalDirection > 0.5)) || verticalFightDirection > 0.5)
-            transform.GetComponent<MoveList>().Up_Normal();
-
-        else if ((playerInput.NormalButton && (verticalDirection < -0.5)) || verticalFightDirection < -0.5)
-            transform.GetComponent<MoveList>().Down_Normal();
-
-        if (playerInput.SpecialButton) 
-            transform.GetComponent<MoveList>().Neutral_Special();
-
-
         //FIXME: BETA. Do not want echoes to move conventionally
         if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo) return;
 
@@ -132,9 +153,15 @@ public class PlayerController : MonoBehaviour
             //FIXME: Make paramterizable
             //playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);
             if (Mathf.Abs(horizontalDirection * movementSpeed) > Mathf.Abs(playerBody.velocity.x))
-                playerBody.velocity = new Vector3(/*playerBody.velocity.x*/ horizontalDirection * movementSpeed, jumpSpeed * 1.3f, 0f); //FIXME UPDATED
+                playerBody.velocity = new Vector3(/*playerBody.velocity.x*/ horizontalDirection * movementSpeed, jumpSpeed, 0f); //FIXME UPDATED
             else
-                playerBody.velocity = new Vector3(playerBody.velocity.x, jumpSpeed * 1.3f, 0f);
+                playerBody.velocity = new Vector3(playerBody.velocity.x, jumpSpeed /* *1.3f */, 0f);
+
+            //FIXME: FIXES JUMPING ROTATIONS
+            if (horizontalFightDirection > 0.25) playerManager.setPlayerOrientation(Orientation.Right);
+            else if (horizontalFightDirection < -0.25) playerManager.setPlayerOrientation(Orientation.Left);
+            else if (horizontalDirection > 0) playerManager.setPlayerOrientation(Orientation.Right);
+            else if (horizontalDirection < 0) playerManager.setPlayerOrientation(Orientation.Left);
         }
 
 

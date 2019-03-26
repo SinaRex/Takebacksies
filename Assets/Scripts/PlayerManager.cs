@@ -148,11 +148,11 @@ public class PlayerManager : MonoBehaviour
         horizontalFightInput = transform.GetComponent<PlayerController>().getHorizontalFightInput();
 
         Orientation oldOrientation = playerOrientation; // SMOOTH TURNING
-        //FIXME: This is jank
-        if (_state != PlayerState.ArialAttack && _state != PlayerState.GroundAttack && _state != PlayerState.Parrying && _state != PlayerState.TimeTravelling)
+        //FIXME: FIXES JUMPING ROTATIONS
+        if (_state != PlayerState.ArialAttack /*&& _state != PlayerState.Airborne */ && _state != PlayerState.GroundAttack && _state != PlayerState.Parrying && _state != PlayerState.TimeTravelling)
         {
-            if (horizontalFightInput > 0.25) playerOrientation = Orientation.Right;
-            else if (horizontalFightInput < -0.25) playerOrientation = Orientation.Left;
+            if (horizontalFightInput > 0.25 && _state != PlayerState.Airborne) playerOrientation = Orientation.Right;
+            else if (horizontalFightInput < -0.25 && _state != PlayerState.Airborne) playerOrientation = Orientation.Left;
             else if (horizontalInput > 0) playerOrientation = Orientation.Right;
             else if (horizontalInput < 0) playerOrientation = Orientation.Left;
         }
@@ -255,7 +255,7 @@ public class PlayerManager : MonoBehaviour
                 //FIXME: Add landing lag transition State
                 if (isDead) nextState = PlayerState.Dead;
                 else if (hitStunTimer > 0) { nextState = PlayerState.InHitStun; GetComponent<MoveList>().interruptMove(); }
-                else if (isGrounded) { nextState = PlayerState.Idle; GetComponent<MoveList>().interruptMove(); }
+                else if (isGrounded) { nextState = PlayerState.Idle; GetComponent<MoveList>().interruptMove(); StopAttacking(); }
                 else if (attackingTimer > 0) nextState = PlayerState.ArialAttack;
                 else nextState = PlayerState.Airborne;
                 break;
@@ -422,7 +422,10 @@ public class PlayerManager : MonoBehaviour
     public void StartAttacking(float attackLength) {
         attackingTimer = attackLength;
     }
-
+    public void StopAttacking()
+    {
+        attackingTimer = 0;
+    }
     public void StartParrying(float parryLength)
     {
         parryTimer = parryLength;
