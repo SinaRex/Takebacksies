@@ -21,7 +21,7 @@ public class scrollingObjects : MonoBehaviour
     void Update()
     {
 
-        if (transform.position.x <= -50)
+        if (transform.position.x <= -10)
         { 
 
         transform.position = resetPosition;
