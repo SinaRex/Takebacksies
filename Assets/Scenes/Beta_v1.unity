@@ -1494,7 +1494,7 @@ PrefabInstance:
         type: 3}
       propertyPath: echoMat
       value: 
-      objectReference: {fileID: 2100000, guid: 59c2426e47954432fa14483e042c076b, type: 2}
+      objectReference: {fileID: 2100000, guid: 2104e48c798cd044ca06af97d1dfe12d, type: 2}
     - target: {fileID: 187512621207034655, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: characterPrefab
