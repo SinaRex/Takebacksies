@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //-----------Update control paramters----------------
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Stage"));
+        isGrounded = (Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Stage")) || Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Platform")));
         if (isGrounded) extraJumpsLeft = 3;
 
         if (echoCooldownTimer > 0) echoCooldownTimer -= Time.fixedDeltaTime;
@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
 
 
         //----------- Process Player Inputs --------------
+
         if (playerManager.GetState() != PlayerState.GroundAttack && playerManager.GetState() != PlayerState.Parrying && playerManager.GetState() != PlayerState.InHitStun)
         {
             //Parry 
@@ -164,6 +165,8 @@ public class PlayerController : MonoBehaviour
             else if (horizontalDirection < 0) playerManager.setPlayerOrientation(Orientation.Left);
         }
 
+        if (verticalDirection < 0) gameObject.layer = 14; //PushboxHalf
+        else gameObject.layer = 9; //Pushbox
 
         //Time-travel
         if (playerInput.RewindButton && (playerManager.GetWhichPlayer() != PlayerIdentity.Echo) && playerManager.getTimeJuice() > 3) {
