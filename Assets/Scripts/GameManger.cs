@@ -11,6 +11,10 @@ public class GameManger : MonoBehaviour
     /* Maximum lives that each player can have*/
     public int maxLives = 3;
 
+    /* Count the win times for player1 and player2 */
+    public int wincount1 = 0;
+    public int wincount2 = 0;
+
     /* Respawn Duration*/
     public int respawnDuration = 2;
 
@@ -33,8 +37,10 @@ public class GameManger : MonoBehaviour
     private enum whichPlayer {Player1, Player2, Echo1, Echo2}
 
     /* UI */
-    public Text timerLabel;
+    //public Text timeLabel;
+    public Text winCount;
     public Text gameOverText;
+    public Text winner;
 
     /* GameOver Tracking */
     private bool isGameOver = false;
@@ -75,7 +81,16 @@ public class GameManger : MonoBehaviour
                             players[i].GetComponent<PlayerManager>().Respawn();
                             if (playersLives[i] <= 0)
                             {
-                                StartCoroutine(GameOver());
+                                if (i == 0)
+                                {
+                                    wincount2 += 1;
+                                }
+                                else
+                                {
+                                    wincount1 += 1;
+                                }
+                                winCount.text = string.Format("{0} : {1}", wincount1, wincount2);
+                                //StartCoroutine(GameOver());
                             }
                             FindObjectOfType<HealthUIManager>().updateUI();
                             players[i].GetComponent<PlayerManager>().SetIsDying(true);
@@ -113,9 +128,11 @@ public class GameManger : MonoBehaviour
         gameTimerRemaining -= Time.deltaTime;
 
         //Updating UI
-        var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
-        var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
-        timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+
+
+        //var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
+        //var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
+        //timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
 
         //Game over when time is done
         if (gameTimerRemaining < 0)
@@ -142,6 +159,18 @@ public class GameManger : MonoBehaviour
         gameOverText.gameObject.SetActive(true);
         isGameOver = true;
 
+        if (wincount1 < wincount2)
+        {
+            winner.text = "Player 2 Wins!";
+        }else if (wincount1 > wincount2)
+        {
+            winner.text = "Player 1 Wins!";
+        }
+        else
+        {
+            winner.text = "Draw!";
+        }
+
         for (int i = 0; i < players.Count; i++)
         {
             players[i].GetComponent<PlayerManager>().Die();
@@ -159,7 +188,7 @@ public class GameManger : MonoBehaviour
             clone.GetComponent<PlayerManager>().Die();
         }
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(6);
 
         gameTimerRemaining = 3000f;
         isGameOver = false;
