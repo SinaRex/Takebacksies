@@ -90,7 +90,7 @@ public class GameManger : MonoBehaviour
                                     wincount1 += 1;
                                 }
                                 winCount.text = string.Format("{0} : {1}", wincount1, wincount2);
-                                //StartCoroutine(GameOver());
+                                StartCoroutine(GameOver());
                             }
                             FindObjectOfType<HealthUIManager>().updateUI();
                             players[i].GetComponent<PlayerManager>().SetIsDying(true);
