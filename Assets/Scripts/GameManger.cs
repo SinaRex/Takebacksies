@@ -128,8 +128,6 @@ public class GameManger : MonoBehaviour
         gameTimerRemaining -= Time.deltaTime;
 
         //Updating UI
-
-
         //var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
         //var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
         //timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
