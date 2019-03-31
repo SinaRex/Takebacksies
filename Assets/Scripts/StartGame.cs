@@ -28,5 +28,4 @@ public class StartGame : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         SceneManager.LoadScene("MapSelectScene");
     }
-
 }
