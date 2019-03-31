@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
 
     private ControllerHandler controllerHandler;
 
+    Orientation attackDirection;
+
     // Echo related variables
     public GameObject characterPrefab = null;
 
@@ -51,25 +53,25 @@ public class PlayerController : MonoBehaviour
 
         m_rewinders = FindObjectsOfType<Rewind3DObject>();
         playerBody = gameObject.GetComponent<Rigidbody>();
+        playerManager = transform.GetComponent<PlayerManager>();
 
         isRewinding = false;
         //Control the fall speed
         //Physics.gravity = new Vector3(0, -15.0F, 0);
     }
 
-    private void FixedUpdate()
+    //We should get our inputs in Update, not Fixed update
+    void FixedUpdate()
     {
         //----------Get Player manager related information ---------------
         playerManager = transform.GetComponent<PlayerManager>();
-
         if (playerManager.playerIdentity != PlayerIdentity.Echo)
         {
             // Managing Movement Inputs
             if (playerManager.playerIdentity == PlayerIdentity.Player1) playerInput = controllerHandler.input1;
             else playerInput = controllerHandler.input2;
         }
-        else {
-            //playerInput = playerManager.getNextEchoRecording();
+        else { 
             updateEchoPositionAndInput();
         }
 
@@ -108,12 +110,18 @@ public class PlayerController : MonoBehaviour
 
             //Neutral Attack
             else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
-                transform.GetComponent<MoveList>().jab();
+            {
+                if (isGrounded) transform.GetComponent<MoveList>().jab();
+                else transform.GetComponent<MoveList>().jab();
+            }
 
             //Side Attack
             else if ((playerInput.NormalButton && (Mathf.Abs(horizontalDirection) > 0.5)) || (Mathf.Abs(horizontalFightDirection) > 0.5))
             {
-                Orientation attackDirection = horizontalFightDirection > 0 ? Orientation.Right : Orientation.Left;
+                if (Mathf.Abs(horizontalFightDirection) > 0)
+                    attackDirection = horizontalFightDirection > 0 ? Orientation.Right : Orientation.Left;
+                else
+                    attackDirection = horizontalDirection > 0 ? Orientation.Right : Orientation.Left;
 
                 if (isGrounded) transform.GetComponent<MoveList>().Forward_Normal(); //Forward Smash
                 else

@@ -45,6 +45,13 @@ public class GameManger : MonoBehaviour
     /* GameOver Tracking */
     private bool isGameOver = false;
 
+    //FIXME: Used for syncing player inputs to FixedUpdate
+    void Awake()
+    {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 50;
+    }
+
     /**
      * Start is called before the first frame update
      */
@@ -55,7 +62,6 @@ public class GameManger : MonoBehaviour
         playersLives.Add(maxLives);
         players.Add(GameObject.Find("Player2"));
         playersLives.Add(maxLives);
-
         // TODO: Initialize the map related stuff (e.g. respawnPlatforms) 
     }
 
@@ -90,7 +96,7 @@ public class GameManger : MonoBehaviour
                                     wincount1 += 1;
                                 }
                                 winCount.text = string.Format("{0} : {1}", wincount1, wincount2);
-                                //StartCoroutine(GameOver());
+                                 StartCoroutine(GameOver());
                             }
                             FindObjectOfType<HealthUIManager>().updateUI();
                             players[i].GetComponent<PlayerManager>().SetIsDying(true);
@@ -171,6 +177,7 @@ public class GameManger : MonoBehaviour
             winner.text = "Draw!";
         }
 
+
         for (int i = 0; i < players.Count; i++)
         {
             players[i].GetComponent<PlayerManager>().Die();
@@ -180,7 +187,6 @@ public class GameManger : MonoBehaviour
         }
 
 
-        //FIXME UBISOFT
         //Destroy all remaining clones after a gameover
         clones = GameObject.FindGameObjectsWithTag("Clone");
         foreach (GameObject clone in clones)
@@ -188,7 +194,10 @@ public class GameManger : MonoBehaviour
             clone.GetComponent<PlayerManager>().Die();
         }
 
+
+
         yield return new WaitForSeconds(6);
+
 
         gameTimerRemaining = 3000f;
         isGameOver = false;

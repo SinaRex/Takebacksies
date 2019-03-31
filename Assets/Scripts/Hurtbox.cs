@@ -16,7 +16,7 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
         AttatchedCharacter = transform.root;
 
         //Cannot be hit while time travelling
-        if (AttatchedCharacter.GetComponent<PlayerManager>().GetState() == PlayerState.TimeTravelling) return;
+        if (AttatchedCharacter.GetComponent<PlayerManager>().GetState() == PlayerState.Respawning/*TimeTravelling*/ ) return;
 
         //If hit during parry, reflect attack
         if (AttatchedCharacter.GetComponent<PlayerManager>().GetState() == PlayerState.Parrying) {
