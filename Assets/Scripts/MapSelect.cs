@@ -29,22 +29,25 @@ public class MapSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveModels();
 
         if (Input.GetButtonDown("SpecialButton1"))
         {
-            p1Ready = true;
+            p1Ready = false;
+            p1Model.GetComponent<Animator>().SetTrigger("Cancel");
         }
         else if (Input.GetButtonDown("Jump1")){
-            p1Ready = false;
+            p1Ready = true;
+            p1Model.GetComponent<Animator>().SetTrigger("ShowUp");
         }
 
         if (Input.GetButtonDown("SpecialButton2")){
-            p2Ready = true;
+            p2Model.GetComponent<Animator>().SetTrigger("Cancel");
+            p2Ready = false;
         }
         else if (Input.GetButtonDown("Jump2"))
         {
-            p2Ready = false;
+            p2Model.GetComponent<Animator>().SetTrigger("ShowUp");
+            p2Ready = true;
         }
 
         if(p1Ready && p2Ready)
@@ -92,21 +95,22 @@ public class MapSelect : MonoBehaviour
 
     void PlayStage(int stageNum)
     {
-        switch (stageNum)
-        {
-            case 0:
-                //TODO: Load original stage scene that is up to date
-                SceneManager.LoadScene("Beta_v1");
-                break;
-            case 1:
-                //TODO: Load dino stage scene that is up to date
-                SceneManager.LoadScene("DinoStage");
-                break;
-            case 2:
-                //TODO: Load cave stage scene that is up to date
-                SceneManager.LoadScene("CaveStage");
-                break;
-        }
+        StartCoroutine(StartLevel(stageNum));
+        //switch (stageNum)
+        //{
+        //    case 0:
+        //        //TODO: Load original stage scene that is up to date
+        //        SceneManager.LoadScene("Beta_v1");
+        //        break;
+        //    case 1:
+        //        //TODO: Load dino stage scene that is up to date
+        //        SceneManager.LoadScene("DinoStage");
+        //        break;
+        //    case 2:
+        //        //TODO: Load cave stage scene that is up to date
+        //        SceneManager.LoadScene("CaveStage");
+        //        break;
+        //}
     }
 
     void OnSelectChange(int index)
@@ -140,25 +144,37 @@ public class MapSelect : MonoBehaviour
         }
     }
 
-    void MoveModels()
+    private IEnumerator StartLevel(int stageNum)
     {
-        if(p1Ready && p1Model.transform.position.y < 10.64f)
+        switch (stageNum)
         {
-            p1Model.transform.position = new Vector3(p1Model.transform.position.x, p1Model.transform.position.y + 0.25f, p1Model.transform.position.z);
-        }
-        else if(!p1Ready && p1Model.transform.position.y > 5.5f)
-        {
-            p1Model.transform.position = new Vector3(p1Model.transform.position.x, p1Model.transform.position.y - 0.25f, p1Model.transform.position.z);
-        }
+            case 0:
+                //TODO: Load original stage scene that is up to date
+                p1Model.GetComponent<Animator>().SetBool("Beta_v1", true);
+                p2Model.GetComponent<Animator>().SetBool("Beta_v1", true);
 
-        if (p2Ready && p2Model.transform.position.y < 10.64f)
-        {
-            p2Model.transform.position = new Vector3(p2Model.transform.position.x, p2Model.transform.position.y + 0.25f, p2Model.transform.position.z);
+                yield return new WaitForSeconds(4.5f);
+                SceneManager.LoadScene("Beta_v1");
+                break;
+            case 1:
+                //TODO: Load dino stage scene that is up to date
+                p1Model.GetComponent<Animator>().SetBool("Dino", true);
+                p2Model.GetComponent<Animator>().SetBool("Dino", true);
+
+                yield return new WaitForSeconds(4.5f);
+                SceneManager.LoadScene("DinoStage");
+                break;
+            case 2:
+                //TODO: Load cave stage scene that is up to date
+                p1Model.GetComponent<Animator>().SetBool("Cave", true);
+                p2Model.GetComponent<Animator>().SetBool("Cave", true);
+
+                yield return new WaitForSeconds(4.5f);
+                SceneManager.LoadScene("CaveStage");
+                break;
         }
-        else if (!p2Ready && p2Model.transform.position.y > 5.5f)
-        {
-            p2Model.transform.position = new Vector3(p2Model.transform.position.x, p2Model.transform.position.y - 0.25f, p2Model.transform.position.z);
-        }
+        yield return new WaitForFixedUpdate();
 
     }
+
 }
