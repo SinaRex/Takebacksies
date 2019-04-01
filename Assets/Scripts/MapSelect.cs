@@ -13,9 +13,12 @@ public class MapSelect : MonoBehaviour
     public RawImage originalBorder;
     public RawImage dinoBorder;
     public RawImage caveBorder;
+    public GameObject p1Model, p2Model;
+    private Vector3 p1ModelPosition, p2ModelPosition;
     private float inputDelay = 0.15f;
     private float nextInput = 0f;
-    private int selected = 2; //Index of Selected Stage i.e. 0 for original, 1 for dino, 2 for cave
+    private int selected = 0; //Index of Selected Stage i.e. 0 for original, 1 for dino, 2 for cave
+    private bool p1Ready, p2Ready = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,10 +29,29 @@ public class MapSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        MoveModels();
+
         if (Input.GetButtonDown("SpecialButton1"))
+        {
+            p1Ready = true;
+        }
+        else if (Input.GetButtonDown("Jump1")){
+            p1Ready = false;
+        }
+
+        if (Input.GetButtonDown("SpecialButton2")){
+            p2Ready = true;
+        }
+        else if (Input.GetButtonDown("Jump2"))
+        {
+            p2Ready = false;
+        }
+
+        if(p1Ready && p2Ready)
         {
             PlayStage(selected);
         }
+
         if (Time.time > nextInput)
         {
             nextInput = Time.time + inputDelay;
@@ -77,11 +99,11 @@ public class MapSelect : MonoBehaviour
                 SceneManager.LoadScene("Beta_v1");
                 break;
             case 1:
-                //TODO: Load original stage scene that is up to date
+                //TODO: Load dino stage scene that is up to date
                 SceneManager.LoadScene("DinoStage");
                 break;
             case 2:
-                //TODO: Load original stage scene that is up to date
+                //TODO: Load cave stage scene that is up to date
                 SceneManager.LoadScene("CaveStage");
                 break;
         }
@@ -118,4 +140,25 @@ public class MapSelect : MonoBehaviour
         }
     }
 
+    void MoveModels()
+    {
+        if(p1Ready && p1Model.transform.position.y < 10.64f)
+        {
+            p1Model.transform.position = new Vector3(p1Model.transform.position.x, p1Model.transform.position.y + 0.25f, p1Model.transform.position.z);
+        }
+        else if(!p1Ready && p1Model.transform.position.y > 5.5f)
+        {
+            p1Model.transform.position = new Vector3(p1Model.transform.position.x, p1Model.transform.position.y - 0.25f, p1Model.transform.position.z);
+        }
+
+        if (p2Ready && p2Model.transform.position.y < 10.64f)
+        {
+            p2Model.transform.position = new Vector3(p2Model.transform.position.x, p2Model.transform.position.y + 0.25f, p2Model.transform.position.z);
+        }
+        else if (!p2Ready && p2Model.transform.position.y > 5.5f)
+        {
+            p2Model.transform.position = new Vector3(p2Model.transform.position.x, p2Model.transform.position.y - 0.25f, p2Model.transform.position.z);
+        }
+
+    }
 }
