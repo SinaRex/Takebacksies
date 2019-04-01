@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657922, g: 0.4964127, b: 0.5748164, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465794, g: 0.4964128, b: 0.5748169, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -122,6 +122,10 @@ PrefabInstance:
     - target: {fileID: 100004, guid: 0105118a3fa334e08814d5ae679f0679, type: 3}
       propertyPath: m_Name
       value: dinoOnly
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 0105118a3fa334e08814d5ae679f0679, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 0105118a3fa334e08814d5ae679f0679, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8227,12 +8231,12 @@ PrefabInstance:
         type: 3}
       propertyPath: p1
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1376345286}
     - target: {fileID: 7813792863399029566, guid: eb0f7c424b5184da58df556ffb9c74d9,
         type: 3}
       propertyPath: p2
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 641630906}
     - target: {fileID: 7813792863399029566, guid: eb0f7c424b5184da58df556ffb9c74d9,
         type: 3}
       propertyPath: XBound
@@ -9049,12 +9053,12 @@ PrefabInstance:
         type: 3}
       propertyPath: p1
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1376345275}
     - target: {fileID: 5236899706622662189, guid: cdc4cc522bb5943ffb10558bac5e1d8f,
         type: 3}
       propertyPath: p2
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 641630896}
     - target: {fileID: 5236899706622662189, guid: cdc4cc522bb5943ffb10558bac5e1d8f,
         type: 3}
       propertyPath: p1Animator
