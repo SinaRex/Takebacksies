@@ -26,7 +26,6 @@ public class StartGame : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         foreGround.GetComponent<Animator>().SetTrigger("ForeStart");
         yield return new WaitForSeconds(2.0f);
-        SceneManager.LoadScene("Beta_v1");
+        SceneManager.LoadScene("MapSelectScene");
     }
-
 }
