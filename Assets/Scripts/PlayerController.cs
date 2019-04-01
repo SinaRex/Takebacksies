@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //-----------Update control paramters----------------
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Stage"));
+        isGrounded = (Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Stage")) || Physics.Raycast(transform.position, Vector3.down, groundingDistance, LayerMask.GetMask("Platform")));
         if (isGrounded) extraJumpsLeft = 3;
 
         if (echoCooldownTimer > 0) echoCooldownTimer -= Time.fixedDeltaTime;
@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
 
 
         //----------- Process Player Inputs --------------
+
         if (playerManager.GetState() != PlayerState.GroundAttack && playerManager.GetState() != PlayerState.Parrying && playerManager.GetState() != PlayerState.InHitStun)
         {
             //Parry 
@@ -141,6 +142,11 @@ public class PlayerController : MonoBehaviour
                // transform.GetComponent<MoveList>().Neutral_Special();
 
         }
+
+
+        if (verticalDirection < 0 && playerManager.GetState() != PlayerState.GroundAttack) gameObject.layer = 14; //PushboxHalf
+        else gameObject.layer = 9; //Pushbox
+
         //FIXME: BETA. Do not want echoes to move conventionally
         if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo) return;
 
@@ -163,7 +169,6 @@ public class PlayerController : MonoBehaviour
             else if (horizontalDirection > 0) playerManager.setPlayerOrientation(Orientation.Right);
             else if (horizontalDirection < 0) playerManager.setPlayerOrientation(Orientation.Left);
         }
-
 
         //Time-travel
         if (playerInput.RewindButton && (playerManager.GetWhichPlayer() != PlayerIdentity.Echo) && playerManager.getTimeJuice() > 3) {

@@ -391,6 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIdentity: 0
+  characterPrefab: {fileID: 0}
   echoMat: {fileID: 0}
   recordingDuration: 3
 --- !u!114 &187512621207034648

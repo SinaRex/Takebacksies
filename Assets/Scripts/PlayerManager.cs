@@ -157,7 +157,7 @@ public class PlayerManager : MonoBehaviour
             else if (horizontalInput < 0) playerOrientation = Orientation.Left;
         }
 
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<PlayerController>().groundingDistance, LayerMask.GetMask("Stage"));
+        isGrounded = (Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<PlayerController>().groundingDistance, LayerMask.GetMask("Stage")) || Physics.Raycast(transform.position, Vector3.down, transform.GetComponent<PlayerController>().groundingDistance, LayerMask.GetMask("Platform")));
 
         //-------------------Managing Counters ------------------//
         if (hitStunTimer > 0f) hitStunTimer -= Time.deltaTime;
