@@ -33,6 +33,7 @@ public class GameManger : MonoBehaviour
     /* Respawn Platform (DRAG AND DROP)*/
     public GameObject respawnPlatform;
 
+
     /* Enum */
     private enum whichPlayer {Player1, Player2, Echo1, Echo2}
 
@@ -41,6 +42,7 @@ public class GameManger : MonoBehaviour
     public Text winCount;
     public Text gameOverText;
     public Text winner;
+    public GameObject circleTransition;
 
     /* GameOver Tracking */
     private bool isGameOver = false;
@@ -57,6 +59,7 @@ public class GameManger : MonoBehaviour
         playersLives.Add(maxLives);
 
         // TODO: Initialize the map related stuff (e.g. respawnPlatforms) 
+        StartCoroutine(TransitOut());
     }
 
 
@@ -294,7 +297,17 @@ public class GameManger : MonoBehaviour
 
 
     }
+    IEnumerator TransitOut()
+    {
+        if (circleTransition)
+        {
+            circleTransition.SetActive(true);
+            circleTransition.GetComponent<Animator>().SetTrigger("TransitOut");
+            yield return new WaitForSeconds(0.5f);
+            circleTransition.SetActive(false);
+        }
 
+    }
 
     /** =============== START: PlayZone & BlastZone Logic =================*/
 

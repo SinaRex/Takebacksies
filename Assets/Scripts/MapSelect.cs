@@ -14,6 +14,7 @@ public class MapSelect : MonoBehaviour
     public RawImage dinoBorder;
     public RawImage caveBorder;
     public GameObject p1Model, p2Model;
+    public GameObject circleTransition;
     private Vector3 p1ModelPosition, p2ModelPosition;
     private float inputDelay = 0.15f;
     private float nextInput = 0f;
@@ -96,21 +97,6 @@ public class MapSelect : MonoBehaviour
     void PlayStage(int stageNum)
     {
         StartCoroutine(StartLevel(stageNum));
-        //switch (stageNum)
-        //{
-        //    case 0:
-        //        //TODO: Load original stage scene that is up to date
-        //        SceneManager.LoadScene("Beta_v1");
-        //        break;
-        //    case 1:
-        //        //TODO: Load dino stage scene that is up to date
-        //        SceneManager.LoadScene("DinoStage");
-        //        break;
-        //    case 2:
-        //        //TODO: Load cave stage scene that is up to date
-        //        SceneManager.LoadScene("CaveStage");
-        //        break;
-        //}
     }
 
     void OnSelectChange(int index)
@@ -146,34 +132,33 @@ public class MapSelect : MonoBehaviour
 
     private IEnumerator StartLevel(int stageNum)
     {
+        string sceneToLoad = "";
         switch (stageNum)
         {
             case 0:
                 //TODO: Load original stage scene that is up to date
                 p1Model.GetComponent<Animator>().SetBool("Beta_v1", true);
                 p2Model.GetComponent<Animator>().SetBool("Beta_v1", true);
-
-                yield return new WaitForSeconds(4.5f);
-                SceneManager.LoadScene("Beta_v1");
+                sceneToLoad = "Beta_v1";
                 break;
             case 1:
                 //TODO: Load dino stage scene that is up to date
                 p1Model.GetComponent<Animator>().SetBool("Dino", true);
                 p2Model.GetComponent<Animator>().SetBool("Dino", true);
-
-                yield return new WaitForSeconds(4.5f);
-                SceneManager.LoadScene("DinoStage");
+                sceneToLoad = "DinoStage";
                 break;
             case 2:
                 //TODO: Load cave stage scene that is up to date
                 p1Model.GetComponent<Animator>().SetBool("Cave", true);
                 p2Model.GetComponent<Animator>().SetBool("Cave", true);
-
-                yield return new WaitForSeconds(4.5f);
-                SceneManager.LoadScene("CaveStage");
+                sceneToLoad = "CaveStage";
                 break;
         }
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(3.5f);
+        circleTransition.SetActive(true);
+        circleTransition.GetComponent<Animator>().SetTrigger("Transit");
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(sceneToLoad);
 
     }
 
