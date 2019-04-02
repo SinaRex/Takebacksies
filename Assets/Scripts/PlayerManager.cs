@@ -57,6 +57,7 @@ public class PlayerManager : MonoBehaviour
     private Transform lastHitBy = null;
 
     //Echo Related Variables
+    public bool enableClones = true;
     private GameObject timeclone = null;
     public GameObject characterPrefab = null;
 
@@ -123,7 +124,7 @@ public class PlayerManager : MonoBehaviour
 
         //---------------  Time Travel Management --------------//
         //transform.GetComponent<TimeTravelManager>().UpdatePersistentClone();
-        if (playerIdentity != PlayerIdentity.Echo) {
+        if (enableClones && playerIdentity != PlayerIdentity.Echo) {
             if (_state != PlayerState.Dead && _state != PlayerState.Respawning)
             {
                 if (characterEcho == null)
