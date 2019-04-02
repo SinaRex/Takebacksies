@@ -38,12 +38,24 @@ public class GameManger : MonoBehaviour
 
     /* UI */
     //public Text timeLabel;
-    public Text winCount;
+    public Text textCount1;
+    public Text textCount2;
     public Text gameOverText;
     public Text winner;
-
+    public Image count1;
+    public Image count2;
+    public Image count3;
+    public Image count4;
+    public Image count5;
+    public Image count6;
+    public Image count7;
+    public Image count8;
+    public Image count9;
+    public Image count10;
     /* GameOver Tracking */
     private bool isGameOver = false;
+
+
 
     //FIXME: Used for syncing player inputs to FixedUpdate
     void Awake()
@@ -65,15 +77,13 @@ public class GameManger : MonoBehaviour
         // TODO: Initialize the map related stuff (e.g. respawnPlatforms) 
     }
 
-
     /**
      * Update is called for each frame.
      */
     private void Update()
     {
         // This slows down the time for debugging
-         //Time.timeScale = 0.4f;
-
+        //Time.timeScale = 0.4f;
         for (int i = 0; i < players.Count; i++)
         {
 
@@ -95,7 +105,70 @@ public class GameManger : MonoBehaviour
                                 {
                                     wincount1 += 1;
                                 }
-                                winCount.text = string.Format("{0}         {1}", wincount1, wincount2);
+
+                                switch (wincount1)
+                                {
+                                    case 1:
+                                        count1.color = new Color(count1.color.r, count1.color.g, count1.color.b, 1.0f);
+                                        break;
+                                    case 2:
+                                        count1.color = new Color(count1.color.r, count1.color.g, count1.color.b, 1.0f);
+                                        count2.color = new Color(count2.color.r, count2.color.g, count2.color.b, 1.0f);
+                                        break;
+                                    case 3:
+                                        count1.color = new Color(count1.color.r, count1.color.g, count1.color.b, 1.0f);
+                                        count2.color = new Color(count2.color.r, count2.color.g, count2.color.b, 1.0f);
+                                        count3.color = new Color(count3.color.r, count3.color.g, count3.color.b, 1.0f);
+                                        break;
+                                    case 4:
+                                        count1.color = new Color(count1.color.r, count1.color.g, count1.color.b, 1.0f);
+                                        count2.color = new Color(count2.color.r, count2.color.g, count2.color.b, 1.0f);
+                                        count3.color = new Color(count3.color.r, count3.color.g, count3.color.b, 1.0f);
+                                        count4.color = new Color(count4.color.r, count4.color.g, count4.color.b, 1.0f);
+                                        break;
+                                    case 5:
+                                        count1.color = new Color(count1.color.r, count1.color.g, count1.color.b, 1.0f);
+                                        count2.color = new Color(count2.color.r, count2.color.g, count2.color.b, 1.0f);
+                                        count3.color = new Color(count3.color.r, count3.color.g, count3.color.b, 1.0f);
+                                        count4.color = new Color(count4.color.r, count4.color.g, count4.color.b, 1.0f);
+                                        count5.color = new Color(count5.color.r, count5.color.g, count5.color.b, 1.0f);
+                                        break;
+                                    default:
+                                        textCount1.text = string.Format("{0}", wincount1);
+                                        break;
+                                }
+
+                                switch (wincount2)
+                                {
+                                    case 1:
+                                        count6.color = new Color(count6.color.r, count6.color.g, count6.color.b, 1.0f);
+                                        break;
+                                    case 2:
+                                        count6.color = new Color(count6.color.r, count6.color.g, count6.color.b, 1.0f);
+                                        count7.color = new Color(count7.color.r, count7.color.g, count7.color.b, 1.0f);
+                                        break;
+                                    case 3:
+                                        count6.color = new Color(count6.color.r, count6.color.g, count6.color.b, 1.0f);
+                                        count7.color = new Color(count7.color.r, count7.color.g, count7.color.b, 1.0f);
+                                        count8.color = new Color(count8.color.r, count8.color.g, count8.color.b, 1.0f);
+                                        break;
+                                    case 4:
+                                        count6.color = new Color(count6.color.r, count6.color.g, count6.color.b, 1.0f);
+                                        count7.color = new Color(count7.color.r, count7.color.g, count7.color.b, 1.0f);
+                                        count8.color = new Color(count8.color.r, count8.color.g, count8.color.b, 1.0f);
+                                        count9.color = new Color(count9.color.r, count9.color.g, count9.color.b, 1.0f);
+                                        break;
+                                    case 5:
+                                        count6.color = new Color(count6.color.r, count6.color.g, count6.color.b, 1.0f);
+                                        count7.color = new Color(count7.color.r, count7.color.g, count7.color.b, 1.0f);
+                                        count8.color = new Color(count8.color.r, count8.color.g, count8.color.b, 1.0f);
+                                        count9.color = new Color(count9.color.r, count9.color.g, count9.color.b, 1.0f);
+                                        count10.color = new Color(count10.color.r, count10.color.g, count10.color.b, 1.0f);
+                                        break;
+                                    default:
+                                        textCount2.text = string.Format("{0}", wincount2);
+                                        break;
+                                }
                                 StartCoroutine(GameOver());
                             }
                             FindObjectOfType<HealthUIManager>().updateUI();
