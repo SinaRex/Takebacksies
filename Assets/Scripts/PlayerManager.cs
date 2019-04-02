@@ -397,7 +397,8 @@ public class PlayerManager : MonoBehaviour
         {
             return;
         }
-        GameObject.FindWithTag(BlastSelect).transform.LookAt(new Vector3(0, 1, -5.45f));
+        if (GameObject.FindWithTag(BlastSelect))
+            GameObject.FindWithTag(BlastSelect).transform.LookAt(new Vector3(0, 5, -5.7f));
     }
 
     //-------------------------External Functions-----------------------------//
