@@ -108,6 +108,13 @@ public class GameManger : MonoBehaviour
 
                                 switch (wincount1)
                                 {
+                                    case 0:
+                                        count1.color = new Color(count1.color.r, count1.color.g, count1.color.b, 0.0f);
+                                        count2.color = new Color(count2.color.r, count2.color.g, count2.color.b, 0.0f);
+                                        count3.color = new Color(count3.color.r, count3.color.g, count3.color.b, 0.0f);
+                                        count4.color = new Color(count4.color.r, count4.color.g, count4.color.b, 0.0f);
+                                        count5.color = new Color(count5.color.r, count5.color.g, count5.color.b, 0.0f);
+                                        break;
                                     case 1:
                                         count1.color = new Color(count1.color.r, count1.color.g, count1.color.b, 1.0f);
                                         break;
@@ -134,12 +141,24 @@ public class GameManger : MonoBehaviour
                                         count5.color = new Color(count5.color.r, count5.color.g, count5.color.b, 1.0f);
                                         break;
                                     default:
+                                        count1.color = new Color(count1.color.r, count1.color.g, count1.color.b, 0.0f);
+                                        count2.color = new Color(count2.color.r, count2.color.g, count2.color.b, 0.0f);
+                                        count3.color = new Color(count3.color.r, count3.color.g, count3.color.b, 0.0f);
+                                        count4.color = new Color(count4.color.r, count4.color.g, count4.color.b, 0.0f);
+                                        count5.color = new Color(count5.color.r, count5.color.g, count5.color.b, 0.0f);
                                         textCount1.text = string.Format("{0}", wincount1);
                                         break;
                                 }
 
                                 switch (wincount2)
                                 {
+                                    case 0:
+                                        count6.color = new Color(count6.color.r, count6.color.g, count6.color.b, 0.0f);
+                                        count7.color = new Color(count7.color.r, count7.color.g, count7.color.b, 0.0f);
+                                        count8.color = new Color(count8.color.r, count8.color.g, count8.color.b, 0.0f);
+                                        count9.color = new Color(count9.color.r, count9.color.g, count9.color.b, 0.0f);
+                                        count10.color = new Color(count10.color.r, count10.color.g, count10.color.b, 0.0f);
+                                        break;
                                     case 1:
                                         count6.color = new Color(count6.color.r, count6.color.g, count6.color.b, 1.0f);
                                         break;
@@ -166,6 +185,11 @@ public class GameManger : MonoBehaviour
                                         count10.color = new Color(count10.color.r, count10.color.g, count10.color.b, 1.0f);
                                         break;
                                     default:
+                                        count6.color = new Color(count6.color.r, count6.color.g, count6.color.b, 0.0f);
+                                        count7.color = new Color(count7.color.r, count7.color.g, count7.color.b, 0.0f);
+                                        count8.color = new Color(count8.color.r, count8.color.g, count8.color.b, 0.0f);
+                                        count9.color = new Color(count9.color.r, count9.color.g, count9.color.b, 0.0f);
+                                        count10.color = new Color(count10.color.r, count10.color.g, count10.color.b, 0.0f);
                                         textCount2.text = string.Format("{0}", wincount2);
                                         break;
                                 }
