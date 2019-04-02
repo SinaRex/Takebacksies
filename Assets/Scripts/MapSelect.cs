@@ -31,18 +31,18 @@ public class MapSelect : MonoBehaviour
     {
         MoveModels();
 
-        if (Input.GetButtonDown("SpecialButton1"))
+        if (Input.GetButtonDown("Jump1"))
         {
             p1Ready = true;
         }
-        else if (Input.GetButtonDown("Jump1")){
+        else if (Input.GetButtonDown("SpecialButton1")){
             p1Ready = false;
         }
 
-        if (Input.GetButtonDown("SpecialButton2")){
+        if (Input.GetButtonDown("Jump2")){
             p2Ready = true;
         }
-        else if (Input.GetButtonDown("Jump2"))
+        else if (Input.GetButtonDown("SpecialButton2"))
         {
             p2Ready = false;
         }
@@ -95,19 +95,35 @@ public class MapSelect : MonoBehaviour
         switch (stageNum)
         {
             case 0:
-                //TODO: Load original stage scene that is up to date
-                SceneManager.LoadScene("Beta_v1");
+                Invoke("LoadOriginal", 1.31f);
                 break;
             case 1:
-                //TODO: Load dino stage scene that is up to date
-                SceneManager.LoadScene("DinoStage");
+                Invoke("LoadDinoStage", 1.31f);
                 break;
             case 2:
-                //TODO: Load cave stage scene that is up to date
-                SceneManager.LoadScene("CaveStage");
+                Invoke("LoadCaveStage", 1.31f);
                 break;
         }
     }
+
+    void LoadOriginal()
+    {
+        //TODO: Load original stage scene that is up to date
+        SceneManager.LoadScene("Beta_v1");
+    }
+
+    void LoadDinoStage()
+    {
+        //TODO: Load dino stage scene that is up to date
+        SceneManager.LoadScene("DinoStage");
+    }
+
+    void LoadCaveStage()
+    {
+        //TODO: Load cave stage scene that is up to date
+        SceneManager.LoadScene("CaveStage");
+    }
+
 
     void OnSelectChange(int index)
     {
@@ -159,6 +175,5 @@ public class MapSelect : MonoBehaviour
         {
             p2Model.transform.position = new Vector3(p2Model.transform.position.x, p2Model.transform.position.y - 0.25f, p2Model.transform.position.z);
         }
-
     }
 }

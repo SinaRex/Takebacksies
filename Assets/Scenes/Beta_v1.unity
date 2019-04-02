@@ -1785,7 +1785,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: blast2
       objectReference: {fileID: 0}
-<<<<<<< HEAD
     - target: {fileID: 187512621207034655, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: echoMat
@@ -1797,9 +1796,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 107173996}
     - target: {fileID: 187512621207034655, guid: f11fd44a95dd14e45b233de677c92dd9,
-=======
-    - target: {fileID: 6698229330050844405, guid: f11fd44a95dd14e45b233de677c92dd9,
->>>>>>> 7b8181f9a9e363de1d51012e59fd30b5c0a18393
         type: 3}
       propertyPath: m_Color.rgba
       value: 4294901796
