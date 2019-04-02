@@ -390,7 +390,7 @@ public class PlayerManager : MonoBehaviour
                 return;
             }
             if (GameObject.FindWithTag(BlastSelect))
-                GameObject.FindWithTag(BlastSelect).transform.LookAt(new Vector3(0, 5, -5.7f));
+                GameObject.FindWithTag(BlastSelect).transform.LookAt(new Vector3(0, 5, -6.7f));
 
             Die();
 
