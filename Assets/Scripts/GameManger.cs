@@ -95,8 +95,8 @@ public class GameManger : MonoBehaviour
                                 {
                                     wincount1 += 1;
                                 }
-                                winCount.text = string.Format("{0} : {1}", wincount1, wincount2);
-                                 StartCoroutine(GameOver());
+                                winCount.text = string.Format("{0}         {1}", wincount1, wincount2);
+                                StartCoroutine(GameOver());
                             }
                             FindObjectOfType<HealthUIManager>().updateUI();
                             players[i].GetComponent<PlayerManager>().SetIsDying(true);
@@ -134,8 +134,6 @@ public class GameManger : MonoBehaviour
         gameTimerRemaining -= Time.deltaTime;
 
         //Updating UI
-
-
         //var minutes = gameTimerRemaining / 60 - 1; //Divide the guiTime by sixty to get the minutes.
         //var seconds = gameTimerRemaining % 60 - 1;//Use the euclidean division for the seconds.
         //timerLabel.text = string.Format("{0:00} : {1:00}", minutes, seconds);
