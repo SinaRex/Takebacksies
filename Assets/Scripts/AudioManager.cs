@@ -73,7 +73,7 @@ public class AudioManager : MonoBehaviour
                 PlayDeathSound();
                 break;
             case PlayerState.Dashing:
-                PlayDashingSound(Time.deltaTime / 3);
+                PlayDashingSound(Time.deltaTime * 3);
                 break;
             case PlayerState.Respawning:
                 //if (!audioSource.isPlaying) PlayRespawnRockFormation(0f);

@@ -45,7 +45,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         {"Up-Air",          new moveData(new Vector3(30, 300, 0) , new Vector3(0.1f, 7.2f, 0), 4f   , 0.6f, "default")},
         {"Down-Air",        new moveData(new Vector3(100, 300, 0), new Vector3(0.5f, 3, 0), 3.0f , 1.0f, "default")},
 										
-        {"Neutral-Special", new moveData(new Vector3(200, 100, 0), new Vector3(4, 2, 0), 6.5f, 0.5f, "default")},
+        {"Neutral-Special", new moveData(new Vector3(200, 300, 0), new Vector3(4, 3, 0), 6.5f, 0.5f, "default")},
         {"Forward-Special", new moveData(new Vector3(300, 100, 0), new Vector3(6, 3, 0), 6.5f, 0.5f, "default")},
         {"Down-Special",    new moveData(Vector3.zero, Vector3.zero, 1.0f, 1.0f, "default")},
         {"Up-Special",      new moveData(Vector3.zero, Vector3.zero, 1.0f, 1.0f, "default")},

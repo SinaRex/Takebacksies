@@ -90,7 +90,7 @@ public class PauseMenuController : MonoBehaviour
                 }
                 else if (ControlPause.activeSelf);
                 else if (QuitPause.activeSelf) {
-                    gameManager.isPaused = !gameManager.isPaused;
+                    gameManager.isPaused = false;
                     SceneManager.LoadScene("StartScene");
                 }
 
