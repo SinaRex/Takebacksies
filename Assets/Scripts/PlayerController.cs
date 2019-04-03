@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
             else if (playerInput.NormalButton && (Mathf.Abs(horizontalDirection) < 0.5) && (Mathf.Abs(verticalDirection) < 0.5))
             {
                 if (isGrounded) transform.GetComponent<MoveList>().jab();
-                else transform.GetComponent<MoveList>().jab();
+                else transform.GetComponent<MoveList>().Neutral_Air();
             }
 
             //Side Attack

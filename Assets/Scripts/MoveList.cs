@@ -35,14 +35,14 @@ public class MoveList : MonoBehaviour, IHitboxResponder
 
         {"Jab",             new moveData(new Vector3(30f, 60f, 0), Vector3.zero           , 3.0f , 0.5f, "default")},
         {"Forward-Normal",  new moveData(new Vector3(400, 100, 0), new Vector3(8, 3, 0)   , 10.0f, 0.9f, "default")},
-        {"Down-Normal",     new moveData(new Vector3(0, 800, 0), new Vector3(0, 0, 0)     , 3.0f , 1.5f, "default")},
-        {"Up-Normal",       new moveData(new Vector3(30, 450, 0) , new Vector3(0.1f, 6, 0), 4f   , 0.6f, "default")},
+        {"Down-Normal",     new moveData(new Vector3(0, 800, 0), new Vector3(0, 0, 0)     , 3.0f , 1.4f, "default")},
+        {"Up-Normal",       new moveData(new Vector3(30, 450, 0) , new Vector3(0.1f, 7, 0), 4f   , 0.6f, "default")},
         {"Dash-Attack",     new moveData(new Vector3(100, 300, 0), new Vector3(0.5f, 3, 0), 3.0f , 1.0f, "default")},
 
         {"Neutral-Air",     new moveData(Vector3.zero            , Vector3.zero           , 1.0f , 1.0f, "default")},
         {"Forward-Air",     new moveData(new Vector3(300, 250, 0), new Vector3(4, 2, 0)   , 10.0f, 0.6f, "default")},
         {"Back-Air",        new moveData(new Vector3(-400, 100, 0) , new Vector3(-6, 2, 0), 4f   , 0.75f, "default")},
-        {"Up-Air",          new moveData(new Vector3(30, 150, 0) , new Vector3(0.1f, 7, 0), 4f   , 0.6f, "default")},
+        {"Up-Air",          new moveData(new Vector3(30, 300, 0) , new Vector3(0.1f, 7.2f, 0), 4f   , 0.6f, "default")},
         {"Down-Air",        new moveData(new Vector3(100, 300, 0), new Vector3(0.5f, 3, 0), 3.0f , 1.0f, "default")},
 										
         {"Neutral-Special", new moveData(new Vector3(200, 100, 0), new Vector3(4, 2, 0), 6.5f, 0.5f, "default")},
@@ -141,6 +141,23 @@ public class MoveList : MonoBehaviour, IHitboxResponder
 
 
     //----------------- Aerial Attacks --------------------//
+
+    public void Neutral_Air()
+    {
+        GetComponent<Hitbox>().setResponder(this);
+        GetComponent<PlayerManager>().StartAttacking(0.48f);
+        moveSuccessful = GetComponent<Hitbox>().startHitbox(
+                   new List<Vector3>() { Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero },
+                   new List<Quaternion>() { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90) },
+                   new List<Vector3>() { new Vector3(0.2f, 1.5f, 0.1f), new Vector3(0.2f, 1.5f, 0.1f), new Vector3(0.2f, 1.5f, 0.1f), new Vector3(0.2f, 1.5f, 0.1f), new Vector3(0.2f, 1.5f, 0.1f), new Vector3(0.2f, 1.5f, 0.1f) },
+                   new List<float>() { 0.08f, 0.08f, 0.08f, 0.08f, 0.08f, 0.08f }, 6, "Neutral-Special");
+        if (moveSuccessful)
+        {
+            playerAnimator.SetTrigger("Special");
+            GetComponent<AudioManager>().PlayBackAir();
+        }
+
+    }
 
     public void Back_Air()
     {

@@ -25,7 +25,7 @@ public class scrollingObjects : MonoBehaviour
         { 
 
         transform.position = resetPosition;
-        print(transform.position.x);
+       // print(transform.position.x);
 
         }
        

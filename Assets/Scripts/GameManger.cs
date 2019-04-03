@@ -51,6 +51,10 @@ public class GameManger : MonoBehaviour
     public Text winner;
     public GameObject circleTransition;
 
+    public GameObject winface1;
+    public GameObject winface2;
+
+
     public Image count1;
     public Image count2;
     public Image count3;
@@ -265,18 +269,21 @@ public class GameManger : MonoBehaviour
     private IEnumerator GameOver()
     {
 
-        gameOverText.gameObject.SetActive(true);
+        //gameOverText.gameObject.SetActive(true);
         isGameOver = true;
 
 
-        if (wincount1 < wincount2)
+        if (playersLives[0] < playersLives[1])
         {
             p2Deathsplosion.SetActive(false);
-            winner.text = "Player 2 Wins!";
-        }else if (wincount1 > wincount2)
+            winner.text = "Kragg Wins!";
+            winface2.SetActive(true);
+        }
+        else if (playersLives[0] > playersLives[1])
         {
             p1Deathsplosion.SetActive(false);
-            winner.text = "Player 1 Wins!";
+            winner.text = "Fred Wins!";
+            winface1.SetActive(true);
         }
         else
         {
@@ -304,13 +311,15 @@ public class GameManger : MonoBehaviour
         yield return new WaitForSeconds(2);
         p1Deathsplosion.SetActive(true);
         p2Deathsplosion.SetActive(true);
-        yield return new WaitForSeconds(4);
 
+        yield return new WaitForSeconds(0.5f);
+        winface1.SetActive(false);
+        winface2.SetActive(false);
 
         gameTimerRemaining = 3000f;
         isGameOver = false;
         gameOverText.gameObject.SetActive(false);
-        winner.gameObject.SetActive(false);
+        winner.text = "";
 
 
 
