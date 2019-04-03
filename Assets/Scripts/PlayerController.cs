@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
         if (playerManager.GetState() != PlayerState.GroundAttack && playerManager.GetState() != PlayerState.Parrying && playerManager.GetState() != PlayerState.InHitStun)
         {
             //Parry 
-            if (playerInput.ParryButton && parryCooldownTimer <= 0)
+            if (playerInput.SpecialButton/*ParryButton*/ && parryCooldownTimer <= 0)
             {
                 parryCooldownTimer = parryCooldown;
                 playerManager.StartParrying(parryDuration);
