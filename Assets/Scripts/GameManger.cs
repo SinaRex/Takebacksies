@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class GameManger : MonoBehaviour
 {
+
+    public bool isPaused = false;    
+
     /* Can be changed in Unity Editor */
     public float gameTimerRemaining = 1200f;
 
@@ -83,7 +86,10 @@ public class GameManger : MonoBehaviour
     private void Update()
     {
         // This slows down the time for debugging
-        //Time.timeScale = 0.4f;
+        if (isPaused) Time.timeScale = 0f;
+        else Time.timeScale = 1f;
+
+
         for (int i = 0; i < players.Count; i++)
         {
 
