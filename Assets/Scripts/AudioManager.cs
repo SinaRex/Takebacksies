@@ -48,7 +48,8 @@ public class AudioManager : MonoBehaviour
 
     private AudioSource audioSource;
     private PlayerManager playerManager;
-    private float jumpingFrameCounter = 0f;
+    private float frameCounter = 0f;
+    private bool once = false;
     // Factor of how much echo must be quieter.
     private float echoFactor = 3; 
 
@@ -75,10 +76,11 @@ public class AudioManager : MonoBehaviour
                 PlayDashingSound(Time.deltaTime);
                 break;
             case PlayerState.Respawning:
-                PlayRespawnRockFormation();
+                if (!audioSource.isPlaying) PlayRespawnRockFormation(0f);
                 break;
             default:
                 audioSource.loop = false;
+                once = false;
                 break;
         }
     }
@@ -162,9 +164,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayDashingSound(float frameNumUntillNextClip)
     {
-        if (jumpingFrameCounter >= frameNumUntillNextClip)
+        if (frameCounter >= frameNumUntillNextClip)
         {
-            jumpingFrameCounter = 0f; // reset frame counter for jumping
+            frameCounter = 0f; // reset frame counter for jumping
 
             if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo)
                 audioSource.volume = 0.25f/3; 
@@ -179,7 +181,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            jumpingFrameCounter += Time.deltaTime;
+            frameCounter += Time.deltaTime;
         }
 
     }
@@ -191,11 +193,24 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    public void PlayRespawnRockFormation()
+    public void PlayRespawnRockFormation(float frameNumUntillNextClip)
     {
-        audioSource.clip = rockFormationClip;
-        audioSource.volume = 0.8f;
-        audioSource.Play();
+        if (frameCounter >= frameNumUntillNextClip)
+        {
+            frameCounter = 0f; // reset frame counter for jumping
+
+            audioSource.clip = rockFormationClip;
+            audioSource.volume = 0.3f;
+            if (!once) audioSource.Play(); once = true;
+
+            // Reset the volume back
+            //audioSource.volume = 1f;
+        }
+        else
+        {
+            frameCounter += Time.deltaTime;
+        }
+
     }
 
 
@@ -245,12 +260,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBackAir()
     {
-        if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo)
-            PlayTwoAudios(backAirClips, backAirGruntClips,
-                        0.8f / echoFactor, 0f / echoFactor);
-        else
-            PlayTwoAudios(backAirClips, backAirGruntClips,
-                            1f, 0f);
+        //if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo)
+        //    PlayTwoAudios(backAirClips, backAirGruntClips,
+        //                0.8f / echoFactor, 0f / echoFactor);
+        //else
+        //PlayTwoAudios(backAirClips, backAirGruntClips,
+        //1f, 0f);
+        PlayForwardNormalSound();
     }
 
 
