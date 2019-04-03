@@ -40,7 +40,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         {"Dash-Attack",     new moveData(new Vector3(100, 300, 0), new Vector3(0.5f, 3, 0), 3.0f , 1.0f, "default")},
 
         {"Neutral-Air",     new moveData(Vector3.zero            , Vector3.zero           , 1.0f , 1.0f, "default")},
-        {"Forward-Air",     new moveData(new Vector3(200, 100, 0), new Vector3(4, 2, 0)   , 10.0f, 0.6f, "default")},
+        {"Forward-Air",     new moveData(new Vector3(300, 250, 0), new Vector3(4, 2, 0)   , 10.0f, 0.6f, "default")},
         {"Back-Air",        new moveData(new Vector3(-400, 100, 0) , new Vector3(-6, 2, 0), 4f   , 0.75f, "default")},
         {"Up-Air",          new moveData(new Vector3(30, 150, 0) , new Vector3(0.1f, 7, 0), 4f   , 0.6f, "default")},
         {"Down-Air",        new moveData(new Vector3(100, 300, 0), new Vector3(0.5f, 3, 0), 3.0f , 1.0f, "default")},
@@ -71,7 +71,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         moveSuccessful = GetComponent<Hitbox>().startHitbox(
                     new List<Vector3>() {Vector3.zero, new Vector3(0.25f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0.25f, 0, 0), Vector3.zero }, 
                     new List<Quaternion>() {transform.rotation, transform.rotation, transform.rotation, transform.rotation, transform.rotation },
-                    new List<Vector3>() { new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.1f, 0.1f), new Vector3(1f, 0.1f, 0.1f), new Vector3(0.5f, 0.1f, 0.1f), new Vector3(0f, 0f, 0f) }, 
+                    new List<Vector3>() { Vector3.zero, new Vector3(0.5f, 0.1f, 0.1f), new Vector3(1f, 0.1f, 0.1f), new Vector3(0.5f, 0.1f, 0.1f), Vector3.zero }, 
                     new List<float>() { 0.1f, 0.05f, 0.05f, 0.05f, 0.3f }, 5, "Jab"); // How long the move lasts/ how long it is between consecutive moves
         if (moveSuccessful)
         {
@@ -90,7 +90,8 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Vector3>() {Vector3.zero,  new Vector3(-0.6f, 0.7f, 0), new Vector3(0, 0.9f, 0), new Vector3(0.7f, 0.7f, 0), new Vector3(0.9f, 0f, 0), Vector3.zero },
                     new List<Quaternion>() {transform.rotation, Quaternion.Euler(0, 0, 45), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90), transform.rotation },
                     new List<Vector3>() { Vector3.zero, new Vector3(0.1f, 0.8f, 0.1f), new Vector3(0.2f, 0.8f, 0.1f), new Vector3(0.2f, 0.8f, 0.1f), new Vector3(0.2f, 0.8f, 0.1f), Vector3.zero },
-                    new List<float>() {0.26f, 0.1f, 0.06f, 0.06f, 0.06f, 0.2f }, 6, "Forward-Normal");
+                    new List<float>() {(2f/2.8f)*0.26f, (2f / 2.8f) * 0.1f, (2f / 2.8f) * 0.06f, (2f / 2.8f) * 0.06f, (2f / 2.8f) * 0.06f, (2f / 2.8f) * 0.2f }, 6, "Forward-Normal");
+
         if (moveSuccessful)
         {
             playerAnimator.SetTrigger("Forward-Normal");
@@ -107,7 +108,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         moveSuccessful = GetComponent<Hitbox>().startHitbox(
                     new List<Vector3>() { Vector3.zero, new Vector3(0, 0.4f, 0), new Vector3(0, 0.5f, 0), new Vector3(0, 0.8f, 0), Vector3.zero },
                     new List<Quaternion>() { transform.rotation, transform.rotation, transform.rotation, transform.rotation, transform.rotation},
-                    new List<Vector3>() { new Vector3(0f, 0f, 0f), new Vector3(1f, 0.65f, 0.1f), new Vector3(0.5f, 0.65f, 0.1f), new Vector3(0.9f, 0.1f, 0.1f), new Vector3(0f, 0f, 0f) },
+                    new List<Vector3>() { Vector3.zero, new Vector3(1f, 0.65f, 0.1f), new Vector3(0.5f, 0.65f, 0.1f), new Vector3(0.9f, 0.1f, 0.1f), Vector3.zero },
                     new List<float>() { 0.1f, 0.05f, 0.05f, 0.05f, 0.05f, 0.2f }, 5, "Up-Normal");
 
         if (moveSuccessful)

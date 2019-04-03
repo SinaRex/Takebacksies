@@ -57,6 +57,7 @@ public class PlayerManager : MonoBehaviour
     private Transform lastHitBy = null;
 
     //Echo Related Variables
+    public bool enableClones = true;
     private GameObject timeclone = null;
     public GameObject characterPrefab = null;
 
@@ -123,11 +124,12 @@ public class PlayerManager : MonoBehaviour
 
         //---------------  Time Travel Management --------------//
         //transform.GetComponent<TimeTravelManager>().UpdatePersistentClone();
-        if (playerIdentity != PlayerIdentity.Echo) {
+        if (enableClones && playerIdentity != PlayerIdentity.Echo) {
             if (_state != PlayerState.Dead && _state != PlayerState.Respawning)
             {
                 if (characterEcho == null)
                 {
+                    transform.GetChild(2).transform.GetChild(1).gameObject.GetComponent<Renderer>().enabled = true;
                     createEcho(new Queue<TBInput>(controllerHandler.getRecording(playerIdentity)), positionalDataRecording);
                 }
                 else
@@ -614,6 +616,7 @@ public class PlayerManager : MonoBehaviour
         Behaviour halo = (Behaviour)echoModel.GetComponent("Halo");
         halo.enabled = true;
 
+        transform.GetComponent<Rigidbody>().isKinematic = true;
         gameObject.tag = "Clone";
     }
 
