@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
 
     /* Audio Clips */
     public AudioClip deathClip;
+    public AudioClip rockFormationClip;
     public List<AudioClip> dashingClips;
     /* Jumpting*/
     public List<AudioClip> jumpGruntClips;
@@ -72,6 +73,9 @@ public class AudioManager : MonoBehaviour
                 break;
             case PlayerState.Dashing:
                 PlayDashingSound(Time.deltaTime);
+                break;
+            case PlayerState.Respawning:
+                PlayRespawnRockFormation();
                 break;
             default:
                 audioSource.loop = false;
@@ -185,6 +189,13 @@ public class AudioManager : MonoBehaviour
     {
         PlayTwoAudios(jumpGruntClips, jumpClips, 0.25f, 0.25f);
 
+    }
+
+    public void PlayRespawnRockFormation()
+    {
+        audioSource.clip = rockFormationClip;
+        audioSource.volume = 0.8f;
+        audioSource.Play();
     }
 
 
