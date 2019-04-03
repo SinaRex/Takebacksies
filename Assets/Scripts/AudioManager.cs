@@ -73,10 +73,10 @@ public class AudioManager : MonoBehaviour
                 PlayDeathSound();
                 break;
             case PlayerState.Dashing:
-                PlayDashingSound(Time.deltaTime);
+                PlayDashingSound(Time.deltaTime / 3);
                 break;
             case PlayerState.Respawning:
-                if (!audioSource.isPlaying) PlayRespawnRockFormation(0f);
+                //if (!audioSource.isPlaying) PlayRespawnRockFormation(0f);
                 break;
             default:
                 audioSource.loop = false;
@@ -234,10 +234,10 @@ public class AudioManager : MonoBehaviour
     {
         if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo)
             PlayTwoAudios(forwardNoramlClips, forwardNormalGruntClips, 
-                        0.8f / echoFactor, 0.25f / echoFactor);
+                        0.4f / echoFactor, 0.25f / echoFactor);
         else
             PlayTwoAudios(forwardNoramlClips, forwardNormalGruntClips, 
-                            0.8f, 0.25f); 
+                            0.4f, 0.25f); 
     }
 
 
