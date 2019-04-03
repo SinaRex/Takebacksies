@@ -399,25 +399,6 @@ public class PlayerManager : MonoBehaviour
                 
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    string BlastSelect;
-    //    if (playerIdentity == PlayerIdentity.Player1)
-    //    {
-    //        BlastSelect = "blast1";
-    //    }
-    //    else if (playerIdentity == PlayerIdentity.Player2)
-    //    {
-    //        BlastSelect = "blast2";
-    //    }
-    //    else
-    //    {
-    //        return;
-    //    }
-    //    if (GameObject.FindWithTag(BlastSelect))
-    //    GameObject.FindWithTag(BlastSelect).transform.LookAt(new Vector3(0, 5, -5.7f));
-    //}
-
     //-------------------------External Functions-----------------------------//
     //Getters, Setters, and incrementers for character variables and inputs
 

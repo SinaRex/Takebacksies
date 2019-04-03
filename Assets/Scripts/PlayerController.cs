@@ -154,7 +154,12 @@ public class PlayerController : MonoBehaviour
         if ((playerInput.jumpButton) && (extraJumpsLeft > 0))
         {
             //Limit extra jumps in the air
-            if (!isGrounded) extraJumpsLeft--;
+            if (!isGrounded)
+            {
+                // AUDIO: 
+                GetComponent<AudioManager>().PlayJumpingSound();
+                extraJumpsLeft--;
+            }
 
             //FIXME: Make paramterizable
             //playerBody.velocity = (Vector3.up * jumpSpeed * 1.3f);

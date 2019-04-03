@@ -87,7 +87,11 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Quaternion>() {transform.rotation, Quaternion.Euler(0, 0, 45), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90), transform.rotation },
                     new List<Vector3>() { Vector3.zero, new Vector3(0.1f, 0.8f, 0.1f), new Vector3(0.2f, 0.8f, 0.1f), new Vector3(0.2f, 0.8f, 0.1f), new Vector3(0.2f, 0.8f, 0.1f), Vector3.zero },
                     new List<float>() {0.26f, 0.1f, 0.06f, 0.06f, 0.06f, 0.2f }, 6, "Forward-Normal");
-        if (moveSuccessful) playerAnimator.SetTrigger("Forward-Normal");
+        if (moveSuccessful)
+        {
+            playerAnimator.SetTrigger("Forward-Normal");
+
+        }
 
     }
 
@@ -197,6 +201,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         {
             playerAnimator.SetTrigger("Down-Air");
             StartCoroutine(SlideForward(0.66f));
+            GetComponent<AudioManager>().PlayDashAttackSound();
         }
 
     }
