@@ -32,6 +32,8 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
         AttatchedCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero;
         AttatchedCharacter.GetComponent<Rigidbody>().AddForce(totalKnockback);
 
+        // -------- Sound/Visual FX --------
+        GetComponent<AudioManager>().PlayHurtSound();
         GetComponent<Animator>().SetTrigger("Flinch");
 
         //Set current Attacker as the last player that hit you

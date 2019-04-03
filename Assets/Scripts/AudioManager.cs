@@ -17,24 +17,24 @@ public class AudioManager : MonoBehaviour
     /* Forward Normal*/
     public List<AudioClip> forwardNormalGruntClips;
     public List<AudioClip> forwardNoramlClips;
-    /* Up Noraml*/
-    public List<AudioClip> upNormalGruntClips;
-    public List<AudioClip> upNormalClips;
-    /* Down Normal*/
+    /* FIXME: Up Noraml (Used Jab)*/
+    //public List<AudioClip> upNormalGruntClips;
+    //public List<AudioClip> upNormalClips;
+    /* FIXME: Down Normal  (used mixed audio instead two audios) */
     public List<AudioClip> downNoramlGruntClips;
     public List<AudioClip> downNoramlClips;
-    /* Back Air*/
-    public List<AudioClip> backAirGruntClips;
+    /* FIXME: Back Air (Using only BackAirClips)*/
+    public List<AudioClip> backAirGruntClips; // Not using this
     public List<AudioClip> backAirClips;
-    /* Forward Air*/
-    public List<AudioClip> forwardAirGruntClips;
-    public List<AudioClip> forwardAirClips;
-    /* Up Air*/
-    public List<AudioClip> upAirGruntClips;
-    public List<AudioClip> upAirClips;
-    /* Down Air*/
-    public List<AudioClip> downAirGruntClips;
-    public List<AudioClip> downAirClips;
+    /* FIXME: Forward Air (Using forwardNoramal)*/
+    //public List<AudioClip> forwardAirGruntClips;
+    //public List<AudioClip> forwardAirClips;
+    /*FIXME: Up Air using jab*/
+    //public List<AudioClip> upAirGruntClips;
+    //public List<AudioClip> upAirClips;
+    /* FIXME: Down Air (Using Down Normal)*/
+    //public List<AudioClip> downAirGruntClips;
+    //public List<AudioClip> downAirClips;
     /* Dash Attack*/
     public List<AudioClip> dashAttackGruntClips;
     public List<AudioClip> dashAttackclips;
@@ -108,8 +108,10 @@ public class AudioManager : MonoBehaviour
         // To play another audio simultaniously
         AudioSource newAud = GetNewAudioSource();
 
-        audioSource.clip = clips1[Random.Range(0, clips1.Count)];
-        newAud.clip = clips2[Random.Range(0, clips2.Count)];
+        if (clips1.Count > 0)
+            audioSource.clip = clips1[Random.Range(0, clips1.Count)];
+        if (clips2.Count > 0)
+            newAud.clip = clips2[Random.Range(0, clips2.Count)];
         audioSource.volume = volume1;
         newAud.volume = volume2;
 
@@ -181,8 +183,14 @@ public class AudioManager : MonoBehaviour
 
     public void PlayJumpingSound()
     {
-        PlayTwoAudios(jumpGruntClips, jumpClips, 0.25f, 0.09f);
+        PlayTwoAudios(jumpGruntClips, jumpClips, 0.25f, 0.25f);
 
+    }
+
+
+    public void PlayHurtSound()
+    {
+        PlayTwoAudios(gettingHurtClips, gettingHurtGruntClipst, 0.30f, 0.25f);
     }
 
 
@@ -209,31 +217,42 @@ public class AudioManager : MonoBehaviour
 
     public void PlayUpNormal()
     {
-
+        PlayJabSound();
     }
 
 
     public void PlayDownNormal()
     {
-
+        if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo)
+            PlayTwoAudios(downNoramlClips, downNoramlGruntClips,
+                        0.8f / echoFactor, 0.25f / echoFactor);
+        else
+            PlayTwoAudios(downNoramlClips, downNoramlGruntClips,
+                            0.8f, 1f);
     }
 
 
     public void PlayBackAir()
     {
-
+        if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo)
+            PlayTwoAudios(backAirClips, backAirGruntClips,
+                        0.8f / echoFactor, 0f / echoFactor);
+        else
+            PlayTwoAudios(backAirClips, backAirGruntClips,
+                            1f, 0f);
     }
 
 
     public void PlayForwardAir()
     {
+        PlayForwardNormalSound();
 
     }
 
 
     public void PlayUpAir()
     {
-
+        PlayJabSound();
     }
 
 

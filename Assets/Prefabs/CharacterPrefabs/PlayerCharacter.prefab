@@ -524,6 +524,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathClip: {fileID: 8300000, guid: 474c0c67098c943db8859a8ea41de623, type: 3}
+  hurtClip: []
+  ouchClip: []
   dashingClips:
   - {fileID: 8300000, guid: db7ce561f94e64f64bd58a042062a6f7, type: 3}
   - {fileID: 8300000, guid: 8095d5ddff8cb47748475bfa952ea0ce, type: 3}
@@ -531,12 +533,45 @@ MonoBehaviour:
   jumpGruntClips:
   - {fileID: 8300000, guid: 23b3459dcd03e48b780937675aaee344, type: 3}
   jumpClips:
-  - {fileID: 8300000, guid: 675457400baef4cd981b2f2f9ce0a0d7, type: 3}
-  - {fileID: 8300000, guid: 1cda5bde74e33412aa45c4ee7c2c1c6d, type: 3}
+  - {fileID: 8300000, guid: e0f0bc689eeca4c51bfbcd0b80b6e290, type: 3}
+  - {fileID: 8300000, guid: ee816242940144ff4b09da9d893d1bb3, type: 3}
+  - {fileID: 8300000, guid: f9c523ee15f894a72bbe4a7743281800, type: 3}
+  jabGruntClips:
+  - {fileID: 8300000, guid: 64f013c8fb40941fba50b5d58a0aafca, type: 3}
+  - {fileID: 8300000, guid: 31c8e4f7916f64779ae8973cbef4d7b0, type: 3}
+  - {fileID: 8300000, guid: d5f794639ea844256bdf4ce0037a2ba8, type: 3}
+  jabClips:
+  - {fileID: 8300000, guid: 0672904a88f554ef2a36cd86026f6140, type: 3}
+  forwardNormalGruntClips:
+  - {fileID: 8300000, guid: 45bdf6760c8b2407fb3d2aa5c46ce689, type: 3}
+  - {fileID: 8300000, guid: 05fab1f92889346149fea394f69451f9, type: 3}
+  - {fileID: 8300000, guid: 1ed40c2fe6c404a2d94db2c8c8573ff0, type: 3}
+  - {fileID: 8300000, guid: 40ad5f71423b544fd92241d55503e9e2, type: 3}
+  forwardNoramlClips:
+  - {fileID: 8300000, guid: abeecae83f82c41639387bebf4393a90, type: 3}
+  downNoramlGruntClips: []
+  downNoramlClips:
+  - {fileID: 8300000, guid: f77de2e1ee9c0448ba8e03d97c865a8a, type: 3}
+  backAirGruntClips: []
+  backAirClips:
+  - {fileID: 8300000, guid: 6b0046536ac5a4d4aaac4da3ea2378b4, type: 3}
   dashAttackGruntClips:
   - {fileID: 8300000, guid: a5b6df165969e41ce8278e8ec753cdf3, type: 3}
   dashAttackclips:
   - {fileID: 8300000, guid: 78f98187d6f5d4ee991d744944632188, type: 3}
+  gettingHurtGruntClipst:
+  - {fileID: 8300000, guid: d1f988189be3b40ae9887776619dfd39, type: 3}
+  - {fileID: 8300000, guid: 7aa4913c650564a8ea50068061939c41, type: 3}
+  - {fileID: 8300000, guid: e38488640907542948ddfc1e0ca2e4fc, type: 3}
+  - {fileID: 8300000, guid: 7de0783ce836e4aab86069fd809f6440, type: 3}
+  - {fileID: 8300000, guid: b61d674b7638d4c6fa11a021aadc3d1b, type: 3}
+  - {fileID: 8300000, guid: f762601d92dfd408883983603dee09db, type: 3}
+  gettingHurtClips:
+  - {fileID: 8300000, guid: 54f7e3d82aae140a8b09bd3c52fe35ff, type: 3}
+  - {fileID: 8300000, guid: b7bfb269b1ec4484aae2b383fc7caada, type: 3}
+  - {fileID: 8300000, guid: 60f306803b2034865985616dc03d3444, type: 3}
+  - {fileID: 8300000, guid: bb15fe9bbeca64a8382a0345744792c9, type: 3}
+  - {fileID: 8300000, guid: 62286f839afd140529dea95854ed8ca7, type: 3}
   audioSourcePrefab: {fileID: 9195106531160804259, guid: 7809b173414a2492b989d1f7de8542ee,
     type: 3}
 --- !u!1 &187512621207068079
