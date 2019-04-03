@@ -12,12 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Beta_v1.unity
     guid: ff913729d162a4646961241e9a98c9a1
   - enabled: 1
-    path: Assets/Scenes/MapSelectScene.unity
-    guid: 6800bca82581345a18bd8cf10e273d49
-  - enabled: 1
-    path: Assets/Scenes/DinoStage.unity
-    guid: ef302d405aad24e42804025ab46f3237
-  - enabled: 1
     path: Assets/Scenes/CaveStage.unity
     guid: 7cd8ff83841cc46f5bd6e86a162e5caf
+  - enabled: 1
+    path: Assets/Scenes/MapSelectScene.unity
+    guid: d8f4d61d93d3f45498d21e596bb245bd
+  - enabled: 1
+    path: Assets/Scenes/DinoStage.unity
+    guid: 947021dd937a841ed8f0094c51b1e898
   m_configObjects: {}

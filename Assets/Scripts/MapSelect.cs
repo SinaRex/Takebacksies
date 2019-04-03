@@ -31,7 +31,7 @@ public class MapSelect : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetButtonDown("Jump1"))
+        if (Input.GetButtonDown("SpecialButton1"))
         {
             p1Ready = false;
             p1Model.GetComponent<Animator>().SetTrigger("Cancel");
@@ -45,7 +45,7 @@ public class MapSelect : MonoBehaviour
             p2Model.GetComponent<Animator>().SetTrigger("Cancel");
             p2Ready = false;
         }
-        else if (Input.GetButtonDown("SpecialButton2"))
+        else if (Input.GetButtonDown("Jump2"))
         {
             p2Model.GetComponent<Animator>().SetTrigger("ShowUp");
             p2Ready = true;

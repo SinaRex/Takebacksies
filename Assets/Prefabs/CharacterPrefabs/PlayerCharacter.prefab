@@ -490,6 +490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIdentity: 0
+  enableClones: 1
   characterPrefab: {fileID: 0}
   echoMat: {fileID: 0}
   recordingDuration: 3
@@ -10691,7 +10692,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.4
+      scalar: 0.41
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -10744,7 +10745,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -10860,8 +10861,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 4
-      minScalar: 3
+      scalar: 1.06
+      minScalar: 0.9
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -11322,7 +11323,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 2.0622494
+      value: 0.31736168
       mode: 0
       spread: 0
       speed:
@@ -11547,7 +11548,7 @@ ParticleSystem:
     m_BurstCount: 1
     m_Bursts:
     - serializedVersion: 2
-      time: 0
+      time: 0.56
       countCurve:
         serializedVersion: 2
         minMaxState: 0
@@ -20177,7 +20178,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4044622590157344472}
   m_LocalRotation: {x: 0.000000030943184, y: -0.7071068, z: -0.7071068, w: -0.000000030943184}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5197006416383261327}
@@ -20267,7 +20268,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.18
+      scalar: 0.34
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -20374,7 +20375,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 2
       minColor: {r: 1, g: 0.7351268, b: 0, a: 1}
-      maxColor: {r: 1, g: 0.95887905, b: 0.7311321, a: 0.5254902}
+      maxColor: {r: 1, g: 0.95887905, b: 0.7311321, a: 0.8117647}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -21123,7 +21124,7 @@ ParticleSystem:
     m_BurstCount: 1
     m_Bursts:
     - serializedVersion: 2
-      time: 0
+      time: 0.56
       countCurve:
         serializedVersion: 2
         minMaxState: 0
@@ -21185,7 +21186,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 7
+      scalar: 1.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2

@@ -43,12 +43,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66600a4aa34ec4857b032ba88018fccc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
   gameTimerRemaining: 800
   maxLives: 3
+  wincount1: 0
+  wincount2: 0
   respawnDuration: 2
   invincibeDuration: 2
+  p1Deathsplosion: {fileID: 0}
+  p2Deathsplosion: {fileID: 0}
   playersLives: 
   respawnPlatform: {fileID: 8418154293799864347, guid: dc36891932fc144969906e175be673c5,
     type: 3}
-  timerLabel: {fileID: 0}
+  textCount1: {fileID: 0}
+  textCount2: {fileID: 0}
   gameOverText: {fileID: 0}
+  winner: {fileID: 0}
+  circleTransition: {fileID: 0}
+  count1: {fileID: 0}
+  count2: {fileID: 0}
+  count3: {fileID: 0}
+  count4: {fileID: 0}
+  count5: {fileID: 0}
+  count6: {fileID: 0}
+  count7: {fileID: 0}
+  count8: {fileID: 0}
+  count9: {fileID: 0}
+  count10: {fileID: 0}
