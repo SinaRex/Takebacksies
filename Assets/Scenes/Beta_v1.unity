@@ -495,26 +495,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: jabClips.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: jabGruntClips.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: forwardNormalGruntClips.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: forwardNoramlClips.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
       propertyPath: forwardSmashGruntClips.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: c72d5e564d06940d5ae90618c194d901, type: 3}
@@ -525,49 +505,79 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: da64cb878022b44f495da3a7f127e28a, type: 3}
     - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: jabClips.Array.data[0]
+      propertyPath: downNoramlGruntClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 0672904a88f554ef2a36cd86026f6140, type: 3}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
+      objectReference: {fileID: 8300000, guid: 888f3541a2b1649be9b9900ce86de773, type: 3}
+    - target: {fileID: 5405543341254662532, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: jabGruntClips.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 64f013c8fb40941fba50b5d58a0aafca, type: 3}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912924143163479540, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: jabGruntClips.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 31c8e4f7916f64779ae8973cbef4d7b0, type: 3}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912924143163479540, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: jabGruntClips.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: d5f794639ea844256bdf4ce0037a2ba8, type: 3}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
+      propertyPath: m_LocalPosition.y
+      value: -0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3459847257802080233, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: forwardNormalGruntClips.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 45bdf6760c8b2407fb3d2aa5c46ce689, type: 3}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
+      propertyPath: SizeModule.curve.scalar
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3459847257802080233, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: forwardNormalGruntClips.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 05fab1f92889346149fea394f69451f9, type: 3}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.8117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3459847257802080233, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: forwardNormalGruntClips.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: 1ed40c2fe6c404a2d94db2c8c8573ff0, type: 3}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 3459847257802080233, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: forwardNormalGruntClips.Array.data[3]
-      value: 
-      objectReference: {fileID: 8300000, guid: 40ad5f71423b544fd92241d55503e9e2, type: 3}
-    - target: {fileID: 2902972620064169971, guid: f11fd44a95dd14e45b233de677c92dd9,
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].time
+      value: 0.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418715941936084502, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
-      propertyPath: forwardNoramlClips.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: abeecae83f82c41639387bebf4393a90, type: 3}
+      propertyPath: InitialModule.size3D
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418715941936084502, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418715941936084502, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 1.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418715941936084502, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.31736168
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418715941936084502, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418715941936084502, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2418715941936084502, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].time
+      value: 0.56
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f11fd44a95dd14e45b233de677c92dd9, type: 3}
 --- !u!1 &107173996 stripped
@@ -713,7 +723,7 @@ PrefabInstance:
     - target: {fileID: 2583321627894067407, guid: 099109542acae462dad240935472468d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2583321627894067407, guid: 099109542acae462dad240935472468d,
         type: 3}
@@ -2038,6 +2048,16 @@ PrefabInstance:
       propertyPath: dashingClip.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5405543341254662532, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912924143163479540, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f11fd44a95dd14e45b233de677c92dd9, type: 3}
 --- !u!1001 &831030781
@@ -2431,7 +2451,7 @@ PrefabInstance:
     - target: {fileID: 2583321627894067407, guid: 099109542acae462dad240935472468d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2583321627894067407, guid: 099109542acae462dad240935472468d,
         type: 3}
