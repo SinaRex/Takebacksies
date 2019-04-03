@@ -133,7 +133,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
             playerAnimator.SetTrigger("Down-Normal");
             GetComponent<AudioManager>().PlayDownNormal();
             // Also play the particle effect which is index 3 in prefab
-            transform.GetChild(3).GetComponent<ParticleSystem>().Play();
+            transform.GetChild(4).GetComponent<ParticleSystem>().Play();
         }
 
     }
