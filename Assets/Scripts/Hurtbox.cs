@@ -32,6 +32,8 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
         AttatchedCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero;
         AttatchedCharacter.GetComponent<Rigidbody>().AddForce(totalKnockback);
 
+        // -------- Sound/Visual FX --------
+        GetComponent<AudioManager>().PlayHurtSound();
         GetComponent<Animator>().SetTrigger("Flinch");
 
         //Set current Attacker as the last player that hit you
@@ -46,7 +48,7 @@ public class Hurtbox : MonoBehaviour, IAttackResponder
     // Hit Spark
     private IEnumerator MakeHitSparks(float hitStun, float percent)
     {
-        transform.GetChild(3).GetComponent<ParticleSystem>().Play();
+        transform.GetChild(4).GetComponent<ParticleSystem>().Play();
         GameObject playerModel = transform.GetChild(2).gameObject;// get CharacterModel gameobject
         //playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material.color = Color.red;
         LerpColorPercent(playerModel.transform.GetChild(1).gameObject.GetComponent<Renderer>().material, percent);

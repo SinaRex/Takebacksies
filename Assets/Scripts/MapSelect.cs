@@ -14,6 +14,7 @@ public class MapSelect : MonoBehaviour
     public RawImage dinoBorder;
     public RawImage caveBorder;
     public GameObject p1Model, p2Model;
+    public GameObject circleTransition;
     private Vector3 p1ModelPosition, p2ModelPosition;
     private float inputDelay = 0.15f;
     private float nextInput = 0f;
@@ -22,29 +23,32 @@ public class MapSelect : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    { 
         OnSelectChange(selected);
     }
 
     // Update is called once per frame
     void Update()
     {
-        MoveModels();
 
         if (Input.GetButtonDown("Jump1"))
         {
-            p1Ready = true;
-        }
-        else if (Input.GetButtonDown("SpecialButton1")){
             p1Ready = false;
+            p1Model.GetComponent<Animator>().SetTrigger("Cancel");
+        }
+        else if (Input.GetButtonDown("Jump1")){
+            p1Ready = true;
+            p1Model.GetComponent<Animator>().SetTrigger("ShowUp");
         }
 
-        if (Input.GetButtonDown("Jump2")){
-            p2Ready = true;
+        if (Input.GetButtonDown("SpecialButton2")){
+            p2Model.GetComponent<Animator>().SetTrigger("Cancel");
+            p2Ready = false;
         }
         else if (Input.GetButtonDown("SpecialButton2"))
         {
-            p2Ready = false;
+            p2Model.GetComponent<Animator>().SetTrigger("ShowUp");
+            p2Ready = true;
         }
 
         if(p1Ready && p2Ready)
@@ -92,18 +96,7 @@ public class MapSelect : MonoBehaviour
 
     void PlayStage(int stageNum)
     {
-        switch (stageNum)
-        {
-            case 0:
-                Invoke("LoadOriginal", 1.31f);
-                break;
-            case 1:
-                Invoke("LoadDinoStage", 1.31f);
-                break;
-            case 2:
-                Invoke("LoadCaveStage", 1.31f);
-                break;
-        }
+        StartCoroutine(StartLevel(stageNum));
     }
 
     void LoadOriginal()
@@ -156,24 +149,38 @@ public class MapSelect : MonoBehaviour
         }
     }
 
-    void MoveModels()
+    private IEnumerator StartLevel(int stageNum)
     {
-        if(p1Ready && p1Model.transform.position.y < 10.64f)
+        string sceneToLoad = "";
+        switch (stageNum)
         {
-            p1Model.transform.position = new Vector3(p1Model.transform.position.x, p1Model.transform.position.y + 0.25f, p1Model.transform.position.z);
+            case 0:
+                //TODO: Load original stage scene that is up to date
+                p1Model.GetComponent<Animator>().SetBool("Beta_v1", true);
+                p2Model.GetComponent<Animator>().SetBool("Beta_v1", true);
+                sceneToLoad = "Beta_v1";
+                break;
+            case 1:
+                //TODO: Load dino stage scene that is up to date
+                p1Model.GetComponent<Animator>().SetBool("Dino", true);
+                p2Model.GetComponent<Animator>().SetBool("Dino", true);
+                sceneToLoad = "DinoStage";
+                break;
+            case 2:
+                //TODO: Load cave stage scene that is up to date
+                p1Model.GetComponent<Animator>().SetBool("Cave", true);
+                p2Model.GetComponent<Animator>().SetBool("Cave", true);
+                sceneToLoad = "CaveStage";
+                break;
         }
-        else if(!p1Ready && p1Model.transform.position.y > 5.5f)
-        {
-            p1Model.transform.position = new Vector3(p1Model.transform.position.x, p1Model.transform.position.y - 0.25f, p1Model.transform.position.z);
-        }
+        yield return new WaitForSeconds(3.5f);
+        circleTransition.SetActive(true);
+        circleTransition.GetComponent<Animator>().SetTrigger("Transit");
+        yield return new WaitForSeconds(1f);
+        if (GameObject.FindGameObjectsWithTag("MusicSeamless").Length > 0)
+            Destroy(GameObject.FindGameObjectsWithTag("MusicSeamless")[0]);
+        SceneManager.LoadScene(sceneToLoad);
 
-        if (p2Ready && p2Model.transform.position.y < 10.64f)
-        {
-            p2Model.transform.position = new Vector3(p2Model.transform.position.x, p2Model.transform.position.y + 0.25f, p2Model.transform.position.z);
-        }
-        else if (!p2Ready && p2Model.transform.position.y > 5.5f)
-        {
-            p2Model.transform.position = new Vector3(p2Model.transform.position.x, p2Model.transform.position.y - 0.25f, p2Model.transform.position.z);
-        }
     }
+
 }

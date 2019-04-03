@@ -24,6 +24,9 @@ public class GameManger : MonoBehaviour
     /* Invinciblity Duration*/
     public int invincibeDuration = 2;
 
+    /* Deathplosions */
+    public GameObject p1Deathsplosion, p2Deathsplosion;
+
     /* List of players GameObject*/
     private List<GameObject> players = new List<GameObject>();
 
@@ -35,6 +38,7 @@ public class GameManger : MonoBehaviour
 
     /* Respawn Platform (DRAG AND DROP)*/
     public GameObject respawnPlatform;
+
 
     /* Enum */
     private enum whichPlayer {Player1, Player2, Echo1, Echo2}
@@ -55,6 +59,8 @@ public class GameManger : MonoBehaviour
     public Image count8;
     public Image count9;
     public Image count10;
+    public GameObject circleTransition;
+
     /* GameOver Tracking */
     private bool isGameOver = false;
 
@@ -78,6 +84,7 @@ public class GameManger : MonoBehaviour
         players.Add(GameObject.Find("Player2"));
         playersLives.Add(maxLives);
         // TODO: Initialize the map related stuff (e.g. respawnPlatforms) 
+        StartCoroutine(TransitOut());
     }
 
     /**
@@ -255,29 +262,28 @@ public class GameManger : MonoBehaviour
      * or if it's a tie. Then probably have a button to go 
      * back to the menu.
      */
-    //private void GameOver()
-    //{
-    //    // TODO: have a nice UI implementation to do this.
-    //    Debug.Log("GameOver");
-    //    gameOverText.gameObject.SetActive( true);
-    //}
     private IEnumerator GameOver()
     {
+
         gameOverText.gameObject.SetActive(true);
         isGameOver = true;
 
+
         if (wincount1 < wincount2)
         {
+            p2Deathsplosion.SetActive(false);
             winner.text = "Player 2 Wins!";
         }else if (wincount1 > wincount2)
         {
+            p1Deathsplosion.SetActive(false);
             winner.text = "Player 1 Wins!";
         }
         else
         {
+            p1Deathsplosion.SetActive(false);
+            p2Deathsplosion.SetActive(false);
             winner.text = "Draw!";
         }
-
 
         for (int i = 0; i < players.Count; i++)
         {
@@ -295,14 +301,17 @@ public class GameManger : MonoBehaviour
             clone.GetComponent<PlayerManager>().Die();
         }
 
-
-
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(2);
+        p1Deathsplosion.SetActive(true);
+        p2Deathsplosion.SetActive(true);
+        yield return new WaitForSeconds(4);
 
 
         gameTimerRemaining = 3000f;
         isGameOver = false;
         gameOverText.gameObject.SetActive(false);
+        winner.gameObject.SetActive(false);
+
 
 
     }
@@ -406,7 +415,17 @@ public class GameManger : MonoBehaviour
 
 
     }
+    IEnumerator TransitOut()
+    {
+        if (circleTransition)
+        {
+            circleTransition.SetActive(true);
+            circleTransition.GetComponent<Animator>().SetTrigger("TransitOut");
+            yield return new WaitForSeconds(0.5f);
+            circleTransition.SetActive(false);
+        }
 
+    }
 
     /** =============== START: PlayZone & BlastZone Logic =================*/
 

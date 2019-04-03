@@ -14,6 +14,8 @@ TagManager:
   - ButtomWall
   - blast2
   - Clone
+  - AudioPrefab
+  - MusicSeamless
   layers:
   - Default
   - TransparentFX
