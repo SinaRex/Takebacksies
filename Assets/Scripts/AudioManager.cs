@@ -11,9 +11,36 @@ public class AudioManager : MonoBehaviour
     /* Jumpting*/
     public List<AudioClip> jumpGruntClips;
     public List<AudioClip> jumpClips;
+    /* FIXME: Jab might be change with something else */
+    public List<AudioClip> jabGruntClips;
+    public List<AudioClip> jabClips;
+    /* Forward Normal*/
+    public List<AudioClip> forwardNormalGruntClips;
+    public List<AudioClip> forwardNoramlClips;
+    /* Up Noraml*/
+    public List<AudioClip> upNormalGruntClips;
+    public List<AudioClip> upNormalClips;
+    /* Down Normal*/
+    public List<AudioClip> downNoramlGruntClips;
+    public List<AudioClip> downNoramlClips;
+    /* Back Air*/
+    public List<AudioClip> backAirGruntClips;
+    public List<AudioClip> backAirClips;
+    /* Forward Air*/
+    public List<AudioClip> forwardAirGruntClips;
+    public List<AudioClip> forwardAirClips;
+    /* Up Air*/
+    public List<AudioClip> upAirGruntClips;
+    public List<AudioClip> upAirClips;
+    /* Down Air*/
+    public List<AudioClip> downAirGruntClips;
+    public List<AudioClip> downAirClips;
     /* Dash Attack*/
     public List<AudioClip> dashAttackGruntClips;
     public List<AudioClip> dashAttackclips;
+    /* Getting Hurt*/
+    public List<AudioClip> gettingHurtGruntClipst;
+    public List<AudioClip> gettingHurtClips;
 
     /* This for playing multiple audio simultaniously*/
     public GameObject audioSourcePrefab;
@@ -21,6 +48,9 @@ public class AudioManager : MonoBehaviour
     private AudioSource audioSource;
     private PlayerManager playerManager;
     private float jumpingFrameCounter = 0f;
+    // Factor of how much echo must be quieter.
+    private float echoFactor = 3; 
+
 
     // Start is called before the first frame update
     private void Awake()
@@ -28,6 +58,7 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         playerManager = GetComponent<PlayerManager>();
     }
+
 
     // Update is called once per frame
     void Update()
@@ -40,13 +71,14 @@ public class AudioManager : MonoBehaviour
                 PlayDeathSound();
                 break;
             case PlayerState.Dashing:
-                PlayDashingSound(0.05f);
+                PlayDashingSound(Time.deltaTime);
                 break;
             default:
                 audioSource.loop = false;
                 break;
         }
     }
+
 
     private void CleanAudioPrefabs()
     {
@@ -57,8 +89,8 @@ public class AudioManager : MonoBehaviour
                 Destroy(audio);
             }
         }
-       
     }
+
 
     private AudioSource GetNewAudioSource()
     {
@@ -67,6 +99,7 @@ public class AudioManager : MonoBehaviour
                 Quaternion.identity);
         return newAudio.GetComponent<AudioSource>();
     }
+
 
     // Playing two Audios
     private void PlayTwoAudios(List<AudioClip> clips1, List<AudioClip> clips2, 
@@ -83,6 +116,7 @@ public class AudioManager : MonoBehaviour
         newAud.Play();
         audioSource.Play();
     }
+
 
     // If you need to play more than 2 audios at the same use this
     private void PlayMultipleAudios(List<List<AudioClip>> listOfClips, List<List<float>> clipVolumes)
@@ -114,7 +148,7 @@ public class AudioManager : MonoBehaviour
     /*** ============== AUDIO METHODS ============== **/
     public void PlayDeathSound()
     {
-        audioSource.volume = 1f;
+        audioSource.volume = 0.25f;
         audioSource.clip = deathClip;
         audioSource.Play();
     }
@@ -144,11 +178,70 @@ public class AudioManager : MonoBehaviour
 
     }
 
+
     public void PlayJumpingSound()
     {
         PlayTwoAudios(jumpGruntClips, jumpClips, 0.25f, 0.09f);
 
     }
+
+
+    public void PlayJabSound()
+    {
+        if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo)
+            PlayTwoAudios(jabClips, jabGruntClips, 
+                        1/echoFactor, 0.25f/echoFactor);
+        else
+            PlayTwoAudios(jabClips, jabGruntClips, 1, 0.25f);
+    }
+
+
+    public void PlayForwardNormalSound()
+    {
+        if (playerManager.GetWhichPlayer() == PlayerIdentity.Echo)
+            PlayTwoAudios(forwardNoramlClips, forwardNormalGruntClips, 
+                        0.8f / echoFactor, 0.25f / echoFactor);
+        else
+            PlayTwoAudios(forwardNoramlClips, forwardNormalGruntClips, 
+                            0.8f, 0.25f); 
+    }
+
+
+    public void PlayUpNormal()
+    {
+
+    }
+
+
+    public void PlayDownNormal()
+    {
+
+    }
+
+
+    public void PlayBackAir()
+    {
+
+    }
+
+
+    public void PlayForwardAir()
+    {
+
+    }
+
+
+    public void PlayUpAir()
+    {
+
+    }
+
+
+    public void PlayDownAirSound()
+    {
+        PlayDashAttackSound();
+    }
+
 
     public void PlayDashAttackSound()
     {

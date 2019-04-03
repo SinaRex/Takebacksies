@@ -73,7 +73,11 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Quaternion>() {transform.rotation, transform.rotation, transform.rotation, transform.rotation, transform.rotation },
                     new List<Vector3>() { new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.1f, 0.1f), new Vector3(1f, 0.1f, 0.1f), new Vector3(0.5f, 0.1f, 0.1f), new Vector3(0f, 0f, 0f) }, 
                     new List<float>() { 0.1f, 0.05f, 0.05f, 0.05f, 0.3f }, 5, "Jab"); // How long the move lasts/ how long it is between consecutive moves
-        if(moveSuccessful) playerAnimator.SetTrigger("Jab");
+        if (moveSuccessful)
+        {
+            playerAnimator.SetTrigger("Jab"); 
+            GetComponent<AudioManager>().PlayJabSound();
+        }
 
     }
 
@@ -90,7 +94,7 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         if (moveSuccessful)
         {
             playerAnimator.SetTrigger("Forward-Normal");
-
+            GetComponent<AudioManager>().PlayForwardNormalSound();
         }
 
     }
@@ -106,8 +110,11 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Vector3>() { new Vector3(0f, 0f, 0f), new Vector3(1f, 0.65f, 0.1f), new Vector3(0.5f, 0.65f, 0.1f), new Vector3(0.9f, 0.1f, 0.1f), new Vector3(0f, 0f, 0f) },
                     new List<float>() { 0.1f, 0.05f, 0.05f, 0.05f, 0.05f, 0.2f }, 5, "Up-Normal");
 
-        if (moveSuccessful) playerAnimator.SetTrigger("Up-Normal");
-
+        if (moveSuccessful)
+        {
+            playerAnimator.SetTrigger("Up-Normal");
+            GetComponent<AudioManager>().PlayUpNormal();
+        }
 
     }
 
@@ -121,7 +128,11 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Quaternion>() { transform.rotation, transform.rotation, transform.rotation, transform.rotation, transform.rotation},
                     new List<Vector3>() { Vector3.zero, new Vector3(0.8f, 0.3f, 0.1f), new Vector3(1.6f, 0.3f, 0.1f), new Vector3(0.5f, 0.3f, 0.1f), Vector3.zero},
                     new List<float>() { 0.4f, 0.06f, 0.06f, 0.06f, 0.2f }, 5, "Down-Normal");
-        if (moveSuccessful) playerAnimator.SetTrigger("Down-Normal");
+        if (moveSuccessful)
+        {
+            playerAnimator.SetTrigger("Down-Normal");
+            GetComponent<AudioManager>().PlayDownNormal();
+        }
 
     }
 
@@ -136,8 +147,12 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Vector3>() { Vector3.zero, new Vector3(-0.25f, 0, 0), new Vector3(-0.5f, 0, 0), new Vector3(-0.25f, 0, 0), Vector3.zero },
                     new List<Quaternion>() { transform.rotation, transform.rotation, transform.rotation, transform.rotation, transform.rotation },
                     new List<Vector3>() { new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.65f, 0.1f), new Vector3(1f, 0.65f, 0.1f), new Vector3(0.5f, 0.65f, 0.1f), new Vector3(0f, 0f, 0f) },
-                    new List<float>() { 0.1f, 0.05f, 0.05f, 0.05f, 0.3f }, 5, "Back-Air"); 
-        if (moveSuccessful) playerAnimator.SetTrigger("Back-Air");
+                    new List<float>() { 0.1f, 0.05f, 0.05f, 0.05f, 0.3f }, 5, "Back-Air");
+        if (moveSuccessful)
+        {
+            playerAnimator.SetTrigger("Back-Air");
+            GetComponent<AudioManager>().PlayBackAir();
+        }
 
     }
 
@@ -151,7 +166,12 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Quaternion>() { transform.rotation, Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, -45), Quaternion.Euler(0, 0, -90), Quaternion.Euler(0, 0, -135), transform.rotation },
                     new List<Vector3>() { Vector3.zero, new Vector3(0.2f, 0.8f, 0.1f), new Vector3(0.2f, 0.8f, 0.1f), new Vector3(0.2f, 0.8f, 0.1f), new Vector3(0.2f, 0.8f, 0.1f), Vector3.zero },
                     new List<float>() { 0.0f, 0.1f, 0.06f, 0.06f, 0.06f, 0.2f }, 6, "Forward-Air");
-        if (moveSuccessful) playerAnimator.SetTrigger("Forward-Air");
+        if (moveSuccessful)
+        {
+            playerAnimator.SetTrigger("Forward-Air");
+            GetComponent<AudioManager>().PlayForwardAir();
+        }
+
 
     }
 
@@ -166,7 +186,11 @@ public class MoveList : MonoBehaviour, IHitboxResponder
             new List<Vector3>() { Vector3.zero, new Vector3(1.0f, 0.2f, 0.1f), new Vector3(1.0f, 0.2f, 0.1f), new Vector3(1.0f, 0.2f, 0.1f), new Vector3(1.0f, 0.2f, 0.1f), new Vector3(1.0f, 0.2f, 0.1f), new Vector3(1.0f, 0.2f, 0.1f), Vector3.zero },
             new List<float>() { 0.08f, 0.08f, 0.08f, 0.08f, 0.08f, 0.08f, 0.08f, 0.15f }, 8, "Up-Air");
 
-        if (moveSuccessful) playerAnimator.SetTrigger("Up-Air");
+        if (moveSuccessful)
+        {
+            playerAnimator.SetTrigger("Up-Air");
+            GetComponent<AudioManager>().PlayUpAir();
+        }
 
 
     }
@@ -181,7 +205,12 @@ public class MoveList : MonoBehaviour, IHitboxResponder
                     new List<Quaternion>() { transform.rotation, transform.rotation, transform.rotation, transform.rotation, transform.rotation },
                     new List<Vector3>() { Vector3.zero, new Vector3(0.5f, 0.7f, 0.1f), new Vector3(0.5f, 0.5f, 0.1f), new Vector3(1.0f, 1.0f, 0.1f), Vector3.zero },
                     new List<float>() { 0.1f, 0.06f, 0.06f, 0.06f, 0.2f }, 5, "Down-Air");
-        if (moveSuccessful) playerAnimator.SetTrigger("Down-Air");
+        if (moveSuccessful)
+        {
+            playerAnimator.SetTrigger("Down-Air");
+            GetComponent<AudioManager>().PlayDownAirSound();
+        }
+
 
     }
 

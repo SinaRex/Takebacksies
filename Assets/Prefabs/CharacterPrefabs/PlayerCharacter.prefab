@@ -534,9 +534,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 675457400baef4cd981b2f2f9ce0a0d7, type: 3}
   - {fileID: 8300000, guid: 1cda5bde74e33412aa45c4ee7c2c1c6d, type: 3}
   dashAttackGruntClips:
-  - {fileID: 8300000, guid: c72d5e564d06940d5ae90618c194d901, type: 3}
+  - {fileID: 8300000, guid: a5b6df165969e41ce8278e8ec753cdf3, type: 3}
   dashAttackclips:
-  - {fileID: 8300000, guid: da64cb878022b44f495da3a7f127e28a, type: 3}
+  - {fileID: 8300000, guid: 78f98187d6f5d4ee991d744944632188, type: 3}
   audioSourcePrefab: {fileID: 9195106531160804259, guid: 7809b173414a2492b989d1f7de8542ee,
     type: 3}
 --- !u!1 &187512621207068079

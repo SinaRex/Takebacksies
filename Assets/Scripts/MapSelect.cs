@@ -23,7 +23,7 @@ public class MapSelect : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    { 
         OnSelectChange(selected);
     }
 
@@ -158,6 +158,8 @@ public class MapSelect : MonoBehaviour
         circleTransition.SetActive(true);
         circleTransition.GetComponent<Animator>().SetTrigger("Transit");
         yield return new WaitForSeconds(1f);
+        if (GameObject.FindGameObjectsWithTag("MusicSeamless").Length > 0)
+            Destroy(GameObject.FindGameObjectsWithTag("MusicSeamless")[0]);
         SceneManager.LoadScene(sceneToLoad);
 
     }
