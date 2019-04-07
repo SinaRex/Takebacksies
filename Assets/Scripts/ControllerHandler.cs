@@ -52,6 +52,7 @@ public class ControllerHandler : MonoBehaviour
         recordingCount2 = 0;
     }
 
+
     void FixedUpdate()
     {
         input1.MoveAxisX = Input.GetAxis("MoveAxisX1");

@@ -8,15 +8,24 @@ public class StartGame : MonoBehaviour
     public GameObject foreGround;
     public GameObject backGround;
 
+    void Start() {
+        Time.timeScale = 1f;
+    }
+
     void Update() {
+        Time.timeScale = 1f;
         if (Input.anyKey) {
             ChangeScene();
         }
+        if (Input.GetButton("Jump1") || Input.GetButton("Jump2"))
+        {
+            ChangeScene();
+        }
+
     }
 
     public void ChangeScene()
     {
- 
         StartCoroutine(CharacterSelector());
     }
 
