@@ -8,6 +8,11 @@ public class StartGame : MonoBehaviour
     public GameObject foreGround;
     public GameObject backGround;
 
+    private void Start()
+    {
+        Time.timeScale = 1;
+    }
+
     void Update() {
         if (Input.anyKey) {
             ChangeScene();
