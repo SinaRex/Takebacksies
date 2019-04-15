@@ -78,7 +78,6 @@ public class PlayerManager : MonoBehaviour
     private const float threshold = 0.9f;
 
     //Echo Related Variables
-    public bool enableClones = true;
     public GameObject characterPrefab = null;
 
 
@@ -128,11 +127,23 @@ public class PlayerManager : MonoBehaviour
     {
         //---------------  Time Travel Management --------------//
 
-        if (playerIdentity == PlayerIdentity.Echo) updateEchoInputChildRecording();
+        if (playerIdentity == PlayerIdentity.Echo) {
+            updateEchoInputChildRecording();
+
+            MAXCLONES = getEchoRoot().GetComponent<PlayerManager>().MAXCLONES;
+
+            if (echoLevel > MAXCLONES) {
+                Die();
+            }
+            else if(echoLevel < MAXCLONES) //Only clones with echoLevel >= MAXCLONES do not have trail renderers
+                transform.GetChild(2).GetComponent<TrailRenderer>().enabled = true;
+            else
+                transform.GetChild(2).GetComponent<TrailRenderer>().enabled = false;
+        }
 
 
         //transform.GetComponent<TimeTravelManager>().UpdatePersistentClone();
-        if (enableClones && echoLevel < MAXCLONES/*playerIdentity != PlayerIdentity.Echo*/) {
+        if ( echoLevel < MAXCLONES/*playerIdentity != PlayerIdentity.Echo*/) {
             if (_state != PlayerState.Dead && _state != PlayerState.Respawning)
             {
 
@@ -149,6 +160,9 @@ public class PlayerManager : MonoBehaviour
                 }
             }
         }
+
+
+
 
         //---------------  Updating UI --------------//
         FindObjectOfType<TimeJuiceUI>().updateUI(playerIdentity, timeJuice / maxTimeJuice);
