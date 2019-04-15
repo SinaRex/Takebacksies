@@ -130,7 +130,7 @@ public class Hitbox : MonoBehaviour {
         {
             //Do not count collisions with yourself. May need to FIXME
             if (c.transform.root == transform || c.transform.root.GetComponent<PlayerManager>().GetWhichPlayer() == PlayerIdentity.Echo 
-                || c.transform.root == transform.root.GetComponent<PlayerManager>().getEchoParent() || hitboxSize == Vector3.zero)
+                || c.transform.root == transform.root.GetComponent<PlayerManager>().getEchoRoot() || hitboxSize == Vector3.zero)
                 continue;
 
             //FIXME: for now, just apply knock back, will compartmentalize this later

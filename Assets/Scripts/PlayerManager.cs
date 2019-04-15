@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 
 public enum PlayerState
 {
@@ -56,11 +56,6 @@ public class PlayerManager : MonoBehaviour
     public PlayerIdentity playerIdentity; // TODO: change this to private
     private Transform lastHitBy = null;
 
-    //Echo Related Variables
-    public bool enableClones = true;
-    private GameObject timeclone = null;
-    public GameObject characterPrefab = null;
-
     //Movement Variables
     private bool isGrounded;
     private float horizontalInput;
@@ -82,19 +77,27 @@ public class PlayerManager : MonoBehaviour
     //Constant Variables
     private const float threshold = 0.9f;
 
+    //Echo Related Variables
+    public bool enableClones = true;
+    public GameObject characterPrefab = null;
+
+
     //Variables used inside character echoes 
     private Transform echoParent = null;
     private Queue<TBInput> echoInputRecording;
     private List<positionalData> echoPositionalDataRecording;
     public Material echoMat;
+    public int MAXCLONES = 1;
+    private int echoLevel = 0;
 
 
     //Time Travel Variables
-    public int recordingDuration = 3;
+    private int recordingDuration = 1;
     private int recordingLimit;
     private int recordingCount;
     private GameObject characterEcho = null;
     private List<positionalData> positionalDataRecording = new List<positionalData>();
+    private Queue<TBInput> echoInputChildRecording = new Queue<TBInput>();
 
 
 
@@ -103,7 +106,6 @@ public class PlayerManager : MonoBehaviour
 
     //Controller
     private ControllerHandler controllerHandler;
-
 
     void Start()
     {
@@ -117,24 +119,33 @@ public class PlayerManager : MonoBehaviour
         recordingLimit = recordingDuration * 50;
 
         playerAnimator = GetComponent<Animator>();
+
+        //MAXCLONES = GameModeSelector.PlayerCloneCount;
     }
+
 
     void FixedUpdate()
     {
-
         //---------------  Time Travel Management --------------//
+
+        if (playerIdentity == PlayerIdentity.Echo) updateEchoInputChildRecording();
+
+
         //transform.GetComponent<TimeTravelManager>().UpdatePersistentClone();
-        if (enableClones && playerIdentity != PlayerIdentity.Echo) {
+        if (enableClones && echoLevel < MAXCLONES/*playerIdentity != PlayerIdentity.Echo*/) {
             if (_state != PlayerState.Dead && _state != PlayerState.Respawning)
             {
+
+                Queue<TBInput> inputQueue = (playerIdentity == PlayerIdentity.Echo) ? new Queue<TBInput>(echoInputChildRecording) : new Queue<TBInput>(controllerHandler.getRecording(playerIdentity));
+
                 if (characterEcho == null)
                 {
                     transform.GetChild(2).transform.GetChild(1).gameObject.GetComponent<Renderer>().enabled = true;
-                    createEcho(new Queue<TBInput>(controllerHandler.getRecording(playerIdentity)), positionalDataRecording);
+                    createEcho(inputQueue, positionalDataRecording);
                 }
                 else
                 {
-                    characterEcho.GetComponent<PlayerManager>().updateEcho(transform, new Queue<TBInput>(controllerHandler.getRecording(playerIdentity)), positionalDataRecording);
+                    characterEcho.GetComponent<PlayerManager>().updateEcho(transform, inputQueue, positionalDataRecording);
                 }
             }
         }
@@ -145,7 +156,6 @@ public class PlayerManager : MonoBehaviour
 
 
         //---------------  Character/Input Management --------------//
-
         horizontalInput = transform.GetComponent<PlayerController>().getHorizontalInput();
         horizontalFightInput = transform.GetComponent<PlayerController>().getHorizontalFightInput();
 
@@ -571,6 +581,19 @@ public class PlayerManager : MonoBehaviour
         return echoParent;
     }
 
+    public Transform getEchoRoot(){
+
+        if (playerIdentity != PlayerIdentity.Echo) return null;
+
+        Transform echoParentIterator = echoParent;
+
+        while (echoParentIterator.GetComponent<PlayerManager>().GetWhichPlayer() == PlayerIdentity.Echo) {
+            echoParentIterator = echoParentIterator.GetComponent<PlayerManager>().getEchoParent();
+        }
+
+        return echoParentIterator;
+    }
+
     public GameObject getCharacterEcho() {
         return characterEcho;
     }
@@ -585,23 +608,25 @@ public class PlayerManager : MonoBehaviour
     {
 
         characterEcho = Instantiate(characterPrefab, transform.position, transform.rotation);
-        characterEcho.GetComponent<PlayerManager>().setupEcho(transform, inputRecording, inputPositionalDataRecording);
+        characterEcho.GetComponent<PlayerManager>().setupEcho(transform, inputRecording, inputPositionalDataRecording, echoLevel+1);
 
     }
 
 
     //-------------  Time Travel Related Functions: Echos --------------//
 
-    public void setupEcho(Transform inputEchoParent, Queue<TBInput> inputEchoRecording, List<positionalData> inputPositionalData)
+    public void setupEcho(Transform inputEchoParent, Queue<TBInput> inputEchoRecording, List<positionalData> inputPositionalData, int inputEchoLevel)
     {
         playerIdentity = PlayerIdentity.Echo;
         echoParent = inputEchoParent;
+        echoLevel = inputEchoLevel;
         echoInputRecording = new Queue<TBInput>(inputEchoRecording);
         echoPositionalDataRecording = new List<positionalData>(inputPositionalData);
         playerPercent = 200;
 
         // *** Set the material to the special one ****//
-        transform.GetChild(2).GetComponent<TrailRenderer>().enabled = false;
+        if(echoLevel == MAXCLONES)
+            transform.GetChild(2).GetComponent<TrailRenderer>().enabled = false;
         GameObject echoModel = transform.GetChild(2).gameObject;// get CharacterModel gameobject
         Renderer echoRenderer = echoModel.transform.GetChild(1).gameObject.GetComponent<Renderer>();
 
@@ -652,6 +677,22 @@ public class PlayerManager : MonoBehaviour
     public void resetPositionalData() {
         recordingCount = 0;
         positionalDataRecording.Clear();
+    }
+
+    private void updateEchoInputChildRecording() {
+
+        if (echoInputRecording.Count >= recordingLimit)
+        {
+            if (echoInputChildRecording.Count < recordingLimit)
+            {
+                echoInputChildRecording.Enqueue(echoInputRecording.ElementAt(0));
+            }
+            else
+            {
+                echoInputChildRecording.Dequeue();
+                echoInputChildRecording.Enqueue(echoInputRecording.ElementAt(0));
+            }
+        }
     }
 
 
