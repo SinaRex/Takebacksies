@@ -20,6 +20,7 @@ public class MapSelect : MonoBehaviour
     private float nextInput = 0f;
     private int selected = 0; //Index of Selected Stage i.e. 0 for original, 1 for dino, 2 for cave
     private bool p1Ready, p2Ready = false;
+    private bool startStage = false;
 
     // Start is called before the first frame update
     void Start()
@@ -30,36 +31,49 @@ public class MapSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetButtonDown("SpecialButton1"))
+        if (!startStage)
         {
-            p1Ready = false;
-            p1Model.GetComponent<Animator>().SetTrigger("Cancel");
-        }
-        else if (Input.GetButtonDown("Jump1")){
-            p1Ready = true;
-            p1Model.GetComponent<Animator>().SetTrigger("ShowUp");
+            if (Input.GetButtonDown("SpecialButton1"))
+            {
+                p1Ready = false;
+                p1Model.GetComponent<Animator>().SetBool("Cancel", true);
+                p1Model.GetComponent<Animator>().SetBool("ShowUp", false);
+            }
+            else if (Input.GetButtonDown("Jump1"))
+            {
+                p1Ready = true;
+                p1Model.GetComponent<Animator>().SetBool("Cancel", false);
+                p1Model.GetComponent<Animator>().SetBool("ShowUp", true);
+            }
+
+            if (Input.GetButtonDown("SpecialButton2"))
+            {
+                p2Ready = false;
+                p2Model.GetComponent<Animator>().SetBool("Cancel", true);
+                p2Model.GetComponent<Animator>().SetBool("ShowUp", false);
+
+            }
+            else if (Input.GetButtonDown("Jump2"))
+            {
+                p2Model.GetComponent<Animator>().SetBool("Cancel", false);
+                p2Model.GetComponent<Animator>().SetBool("ShowUp", true);
+                p2Ready = true;
+            }
+
         }
 
-        if (Input.GetButtonDown("SpecialButton2")){
-            p2Model.GetComponent<Animator>().SetTrigger("Cancel");
-            p2Ready = false;
-        }
-        else if (Input.GetButtonDown("Jump2"))
-        {
-            p2Model.GetComponent<Animator>().SetTrigger("ShowUp");
-            p2Ready = true;
-        }
+
 
         if(p1Ready && p2Ready)
         {
+            startStage = true;
             PlayStage(selected);
         }
 
-        if (Time.time > nextInput)
+        if (Time.time > nextInput && !p1Ready && !p2Ready)
         {
             nextInput = Time.time + inputDelay;
-            if (Input.GetAxis("MoveAxisX1") > 0)
+            if (Input.GetAxis("MoveAxisX1") > 0 || Input.GetAxis("MoveAxisX2") > 0)
             {
                 switch (selected)
                 {
@@ -75,7 +89,7 @@ public class MapSelect : MonoBehaviour
                 }
                 OnSelectChange(selected);
             }
-            if (Input.GetAxis("MoveAxisX1") < 0)
+            if (Input.GetAxis("MoveAxisX1") < 0 || Input.GetAxis("MoveAxisX2") < 0)
             {
                 switch (selected)
                 {
