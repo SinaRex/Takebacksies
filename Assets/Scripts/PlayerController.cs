@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         controllerHandler = GameObject.Find("ControllerHandler").GetComponent<ControllerHandler>();
 
         m_rewinders = FindObjectsOfType<Rewind3DObject>();

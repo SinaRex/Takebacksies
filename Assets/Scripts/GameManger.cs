@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class GameManger : MonoBehaviour
 {
@@ -17,6 +20,8 @@ public class GameManger : MonoBehaviour
     /* Count the win times for player1 and player2 */
     public int wincount1 = 0;
     public int wincount2 = 0;
+
+    public int MaxWins = 2;
 
     /* Respawn Duration*/
     public int respawnDuration = 2;
@@ -48,11 +53,15 @@ public class GameManger : MonoBehaviour
     public Text textCount1;
     public Text textCount2;
     public Text gameOverText;
-    public Text winner;
+    public Text RoundWinner;
+    public Text GameWinner;
     public GameObject circleTransition;
 
     public GameObject winface1;
     public GameObject winface2;
+
+    public GameObject rematchtButton;
+    public GameObject rageQuitbutton;
 
 
     public Image count1;
@@ -66,7 +75,9 @@ public class GameManger : MonoBehaviour
     public Image count9;
     public Image count10;
     /* GameOver Tracking */
+    private bool isRoundOver = false;
     private bool isGameOver = false;
+    private bool restartButtonsEnabled = false;
 
 
 
@@ -87,6 +98,11 @@ public class GameManger : MonoBehaviour
         playersLives.Add(maxLives);
         players.Add(GameObject.Find("Player2"));
         playersLives.Add(maxLives);
+
+        //FIXME LEVELUP
+        MaxWins = GameModeSelector.MaxWinCount;
+
+
         // TODO: Initialize the map related stuff (e.g. respawnPlatforms) 
         StartCoroutine(TransitOut());
     }
@@ -97,8 +113,21 @@ public class GameManger : MonoBehaviour
     private void Update()
     {
         // This slows down the time for debugging
-        if (isPaused) Time.timeScale = 0f;
+        if (isPaused || restartButtonsEnabled) Time.timeScale = 0f;
         else Time.timeScale = 1f;
+
+
+        //If the game is over, process these inputs:
+        if (restartButtonsEnabled) {
+            
+            if(Input.GetButtonDown("Jump1") || Input.GetButtonDown("Jump2")) // Restart this scene
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
+            else if (Input.GetButtonDown("SpecialButton1") || Input.GetButtonDown("SpecialButton2")) //Quit to main menu
+                SceneManager.LoadScene("StartScene");
+
+
+
+        }
 
 
         for (int i = 0; i < players.Count; i++)
@@ -110,8 +139,11 @@ public class GameManger : MonoBehaviour
                     if (players[i].GetComponent<PlayerManager>().GetWhichPlayer() != PlayerIdentity.Echo) {
                         if (!players[i].GetComponent<PlayerManager>().IsDying())
                         {
-                            if(!isGameOver) playersLives[i] -= 1;
+                            if (!isRoundOver) playersLives[i] -= 1;
+
+                            //FIXME LEVELUP
                             players[i].GetComponent<PlayerManager>().Respawn();
+
                             if (playersLives[i] <= 0)
                             {
                                 if (i == 0)
@@ -210,8 +242,13 @@ public class GameManger : MonoBehaviour
                                         textCount2.text = string.Format("{0}", wincount2);
                                         break;
                                 }
-                                StartCoroutine(GameOver());
+
+                                //Decide Whether to end the round or the Game
+                                if(wincount1 < MaxWins && wincount2 < MaxWins) StartCoroutine(RoundOver());
+                                else StartCoroutine(GameOver());
                             }
+
+
                             FindObjectOfType<HealthUIManager>().updateUI();
                             players[i].GetComponent<PlayerManager>().SetIsDying(true);
                         }
@@ -255,7 +292,7 @@ public class GameManger : MonoBehaviour
         //Game over when time is done
         if (gameTimerRemaining < 0)
         {
-            StartCoroutine(GameOver());
+            StartCoroutine(RoundOver());
             //GameOver();
         }
     }
@@ -266,39 +303,51 @@ public class GameManger : MonoBehaviour
      * or if it's a tie. Then probably have a button to go 
      * back to the menu.
      */
-    private IEnumerator GameOver()
+    private IEnumerator RoundOver()
     {
 
         //gameOverText.gameObject.SetActive(true);
-        isGameOver = true;
-
+        isRoundOver = true;
 
         if (playersLives[0] < playersLives[1])
         {
             p2Deathsplosion.SetActive(false);
-            winner.text = "Kragg Wins!";
-            winface2.SetActive(true);
+            RoundWinner.text = String.Format("Round {0}: <color=#18005C>Kragg!</color>", (wincount1+wincount2));//Kragg Wins!";
+            //winface2.SetActive(true);
         }
         else if (playersLives[0] > playersLives[1])
         {
             p1Deathsplosion.SetActive(false);
-            winner.text = "Fred Wins!";
-            winface1.SetActive(true);
+            RoundWinner.text = String.Format("Round {0}: <color=#D4AA2F>Fred!</color>", (wincount1 + wincount2)); // Fred Wins!";
+            //winface1.SetActive(true);
         }
         else
         {
             p1Deathsplosion.SetActive(false);
             p2Deathsplosion.SetActive(false);
-            winner.text = "Draw!";
+            RoundWinner.text = "Draw!";
         }
+
+
+        //yield return new WaitForSeconds(2f);
+
+        //Destroy all remaining clones after a gameover
+        clones = GameObject.FindGameObjectsWithTag("Clone");
+        foreach (GameObject clone in clones)
+        {
+            clone.GetComponent<PlayerManager>().Die();
+        }
+
 
         for (int i = 0; i < players.Count; i++)
         {
-            players[i].GetComponent<PlayerManager>().Die();
+            if (players[i].GetComponent<PlayerManager>().GetState() != PlayerState.Dead
+                && players[i].GetComponent<PlayerManager>().GetState() != PlayerState.Respawning) players[i].GetComponent<PlayerManager>().Die();
             players[i].GetComponent<PlayerManager>().Respawn();
             players[i].GetComponent<PlayerManager>().SetTimeJuice(0);
             playersLives[i] = 3;
         }
+
 
 
         //Destroy all remaining clones after a gameover
@@ -317,14 +366,45 @@ public class GameManger : MonoBehaviour
         winface2.SetActive(false);
 
         gameTimerRemaining = 3000f;
-        isGameOver = false;
+        isRoundOver = false;
         gameOverText.gameObject.SetActive(false);
-        winner.text = "";
+        RoundWinner.text = "";
 
 
 
     }
 
+
+    private IEnumerator GameOver()
+    {
+        isGameOver = true;
+        isPaused = false;
+
+        if (wincount1 < wincount2)
+        {
+            p2Deathsplosion.SetActive(false);
+            GameWinner.text = "<color=#18005C>Kragg</color> Wins!";
+            GameWinner.GetComponent<Outline>().enabled = false;
+            winface2.SetActive(true);
+        }
+        else if (wincount1 > wincount2)
+        {
+            p1Deathsplosion.SetActive(false);
+            GameWinner.text = "<color=#D4AA2F>Fred</color> Wins!";
+            GameWinner.GetComponent<Outline>().enabled = true; ;
+            winface1.SetActive(true);
+        }
+
+        yield return new WaitForSecondsRealtime(2.5f);
+
+        restartButtonsEnabled = true;
+
+        rematchtButton.SetActive(true);
+        rageQuitbutton.SetActive(true);
+
+        //isGameOver = false;
+
+    }
 
     /**
      * Respawn animation where the player is respawned on the top of a platform
@@ -335,7 +415,7 @@ public class GameManger : MonoBehaviour
         player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 
         // Play the blast animation.
-        player.GetComponentInChildren<ParticleSystem>().Play();
+        //player.GetComponentInChildren<ParticleSystem>().Play();
         //StartCoroutine(MakePlayerInvincible());
 
         // Wait two (or customized) seconds before respawning.
@@ -439,4 +519,14 @@ public class GameManger : MonoBehaviour
     /** =============== START: PlayZone & BlastZone Logic =================*/
 
     /** =============== END: PlayZone & BlastZone Logic ======================*/
+
+
+    /** =============== Public Functions ======================*/
+
+    public bool isitGameOver() {
+        return isGameOver;
+    }
+
+
+
 }

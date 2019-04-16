@@ -119,7 +119,7 @@ public class PlayerManager : MonoBehaviour
 
         playerAnimator = GetComponent<Animator>();
 
-        //MAXCLONES = GameModeSelector.PlayerCloneCount;
+        MAXCLONES = GameModeSelector.PlayerCloneCount;
     }
 
 
@@ -135,7 +135,7 @@ public class PlayerManager : MonoBehaviour
             if (echoLevel > MAXCLONES) {
                 Die();
             }
-            else if(echoLevel < MAXCLONES) //Only clones with echoLevel >= MAXCLONES do not have trail renderers
+            else if(echoLevel < MAXCLONES && (getEchoRoot().GetComponent<PlayerManager>().GetState() != PlayerState.Dead && getEchoRoot().GetComponent<PlayerManager>().GetState()  != PlayerState.Respawning)) //Only clones with echoLevel >= MAXCLONES do not have trail renderers
                 transform.GetChild(2).GetComponent<TrailRenderer>().enabled = true;
             else
                 transform.GetChild(2).GetComponent<TrailRenderer>().enabled = false;
@@ -466,6 +466,9 @@ public class PlayerManager : MonoBehaviour
     {
         if (playerIdentity == PlayerIdentity.Echo) Destroy(gameObject);
         else isDead = true;
+
+        // FIXME LEVELUP Play the blast animation.
+        transform.GetComponentInChildren<ParticleSystem>().Play();
 
         //FIXME: beta
         transform.GetChild(2).GetComponent<TrailRenderer>().Clear();

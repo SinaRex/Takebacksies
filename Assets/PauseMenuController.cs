@@ -27,13 +27,14 @@ public class PauseMenuController : MonoBehaviour
 
     private void Start()
     {
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (Input.GetButtonDown("Pause1") && (!gameManager.isPaused || pausingPlayer == PlayerIdentity.Player1)) {
+        if (Input.GetButtonDown("Pause1") && (!gameManager.isPaused || pausingPlayer == PlayerIdentity.Player1) && (!gameManager.isitGameOver())) {
             gameManager.isPaused = !gameManager.isPaused;
             highlightIndex = 0;
             MainPause.SetActive(true);
@@ -41,7 +42,7 @@ public class PauseMenuController : MonoBehaviour
             QuitPause.SetActive(false);
             pausingPlayer = PlayerIdentity.Player1;
         }
-        else if (Input.GetButtonDown("Pause2") && (!gameManager.isPaused || pausingPlayer == PlayerIdentity.Player2))
+        else if (Input.GetButtonDown("Pause2") && (!gameManager.isPaused || pausingPlayer == PlayerIdentity.Player2) && (!gameManager.isitGameOver()))
         {
             gameManager.isPaused = !gameManager.isPaused;
             highlightIndex = 0;

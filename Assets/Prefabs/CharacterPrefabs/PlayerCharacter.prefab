@@ -490,10 +490,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIdentity: 0
-  enableClones: 1
   characterPrefab: {fileID: 0}
   echoMat: {fileID: 0}
-  recordingDuration: 3
+  MAXCLONES: 1
 --- !u!114 &187512621207034648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24952,7 +24951,7 @@ Halo:
   m_Enabled: 0
   m_Color:
     serializedVersion: 2
-    rgba: 4281959556
+    rgba: 4294901796
   m_Size: 1
 --- !u!1 &6383918323831766964
 GameObject:
