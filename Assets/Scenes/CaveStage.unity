@@ -6129,7 +6129,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.96, y: 1, z: 21.57}
+  m_Size: {x: 7.96, y: 1, z: 21}
   m_Center: {x: -1.9334877, y: 0, z: 0}
 --- !u!1 &478290695
 GameObject:
@@ -6922,15 +6922,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4594881683767190273, guid: cdc4cc522bb5943ffb10558bac5e1d8f,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 5236899706622662358, guid: cdc4cc522bb5943ffb10558bac5e1d8f,
         type: 3}
       propertyPath: m_Name
       value: HUD
+      objectReference: {fileID: 0}
+    - target: {fileID: 4594881683767190273, guid: cdc4cc522bb5943ffb10558bac5e1d8f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5430973555894821477, guid: cdc4cc522bb5943ffb10558bac5e1d8f,
         type: 3}
@@ -8142,6 +8142,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 6698229330050844405, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6945408527424217365, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: m_TagString
@@ -8172,11 +8177,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 848115a27f6bd475abe51b04979714e6, type: 2}
-    - target: {fileID: 6698229330050844405, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f11fd44a95dd14e45b233de677c92dd9, type: 3}
 --- !u!1 &1065602015
@@ -19671,6 +19671,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 6698229330050844405, guid: f11fd44a95dd14e45b233de677c92dd9,
+        type: 3}
+      propertyPath: m_Color.rgba
+      value: 4278226605
+      objectReference: {fileID: 0}
     - target: {fileID: 6032344041953879840, guid: f11fd44a95dd14e45b233de677c92dd9,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -19695,11 +19700,6 @@ PrefabInstance:
         type: 3}
       propertyPath: lengthInSec
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6698229330050844405, guid: f11fd44a95dd14e45b233de677c92dd9,
-        type: 3}
-      propertyPath: m_Color.rgba
-      value: 4278226605
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f11fd44a95dd14e45b233de677c92dd9, type: 3}
