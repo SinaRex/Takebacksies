@@ -48,6 +48,7 @@ public class MapSelect : MonoBehaviour
         {
             if (Input.GetButtonDown("SpecialButton1"))
             {
+                if (!p1Ready && !p2Ready) QuitBackToMain();
                 p1Ready = false;
                 p1Model.GetComponent<Animator>().SetBool("Cancel", true);
                 p1Model.GetComponent<Animator>().SetBool("ShowUp", false);
@@ -61,6 +62,7 @@ public class MapSelect : MonoBehaviour
 
             if (Input.GetButtonDown("SpecialButton2"))
             {
+                if (!p1Ready && !p2Ready) QuitBackToMain();
                 p2Ready = false;
                 p2Model.GetComponent<Animator>().SetBool("Cancel", true);
                 p2Model.GetComponent<Animator>().SetBool("ShowUp", false);
@@ -202,6 +204,9 @@ public class MapSelect : MonoBehaviour
         SceneManager.LoadScene("CaveStage");
     }
 
+    void QuitBackToMain() {
+        SceneManager.LoadScene("StartScene");
+    }
 
     void OnSelectChange(int index)
     {
