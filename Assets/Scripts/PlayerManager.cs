@@ -486,6 +486,8 @@ public class PlayerManager : MonoBehaviour
         //FIXME: this should probably not be here lol FIXME
         resetPositionalData();
 
+        if (GameModeSelector.NineLives) MAXCLONES++;
+
         //FIXME: beta
         transform.GetChild(2).GetComponent<TrailRenderer>().enabled = true;
 
@@ -729,6 +731,10 @@ public class PlayerManager : MonoBehaviour
     public List<positionalData> getPositionEchoRecording()
     {
         return echoPositionalDataRecording;
+    }
+
+    public void resetCloneCount() {
+        MAXCLONES = (GameModeSelector.NineLives) ? 0 : GameModeSelector.PlayerCloneCount;
     }
 
 }

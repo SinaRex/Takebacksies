@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class GameModeSelector
 {
+    private static bool nineLives = true;
     private static int playerCloneCount = 1;
     private static int maxWinCount = 2;
 
@@ -28,6 +29,18 @@ public static class GameModeSelector
         set
         {
             maxWinCount = value;
+        }
+    }
+
+    public static bool NineLives
+    {
+        get
+        {
+            return nineLives;
+        }
+        set
+        {
+            nineLives = value;
         }
     }
 }

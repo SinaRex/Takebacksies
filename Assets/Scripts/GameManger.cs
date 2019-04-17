@@ -345,6 +345,7 @@ public class GameManger : MonoBehaviour
                 && players[i].GetComponent<PlayerManager>().GetState() != PlayerState.Respawning) players[i].GetComponent<PlayerManager>().Die();
             players[i].GetComponent<PlayerManager>().Respawn();
             players[i].GetComponent<PlayerManager>().SetTimeJuice(0);
+            players[i].GetComponent<PlayerManager>().resetCloneCount();
             playersLives[i] = 3;
         }
 
