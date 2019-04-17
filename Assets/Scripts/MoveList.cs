@@ -36,13 +36,13 @@ public class MoveList : MonoBehaviour, IHitboxResponder
         {"Jab",             new moveData(new Vector3(30f, 60f, 0), Vector3.zero           , 3.0f , 0.5f, "default")},
         {"Forward-Normal",  new moveData(new Vector3(400, 100, 0), new Vector3(8, 3, 0)   , 10.0f, 0.9f, "default")},
         {"Down-Normal",     new moveData(new Vector3(0, 800, 0), new Vector3(0, 0, 0)     , 3.0f , 1.4f, "default")},
-        {"Up-Normal",       new moveData(new Vector3(30, 450, 0) , new Vector3(0.1f, 7, 0), 4f   , 0.6f, "default")},
+        {"Up-Normal",       new moveData(new Vector3(30, 450, 0) , new Vector3(0.1f, 8, 0), 4f   , 0.6f, "default")},
         {"Dash-Attack",     new moveData(new Vector3(100, 300, 0), new Vector3(0.5f, 3, 0), 3.0f , 1.0f, "default")},
 
         {"Neutral-Air",     new moveData(Vector3.zero            , Vector3.zero           , 1.0f , 1.0f, "default")},
         {"Forward-Air",     new moveData(new Vector3(300, 250, 0), new Vector3(4, 2, 0)   , 10.0f, 0.6f, "default")},
         {"Back-Air",        new moveData(new Vector3(-400, 100, 0) , new Vector3(-6, 2, 0), 4f   , 0.75f, "default")},
-        {"Up-Air",          new moveData(new Vector3(30, 300, 0) , new Vector3(0.1f, 7.2f, 0), 4f   , 0.6f, "default")},
+        {"Up-Air",          new moveData(new Vector3(30, 330, 0) , new Vector3(0.1f, 8f, 0), 4f   , 0.6f, "default")},
         {"Down-Air",        new moveData(new Vector3(100, 300, 0), new Vector3(0.5f, 3, 0), 3.0f , 1.0f, "default")},
 										
         {"Neutral-Special", new moveData(new Vector3(200, 300, 0), new Vector3(4, 3, 0), 6.5f, 0.5f, "default")},

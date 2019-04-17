@@ -73,7 +73,7 @@ public class AudioManager : MonoBehaviour
                 PlayDeathSound();
                 break;
             case PlayerState.Dashing:
-                PlayDashingSound(Time.deltaTime * 3);
+                if(Time.timeScale != 0) PlayDashingSound(Time.deltaTime * 5);
                 break;
             case PlayerState.Respawning:
                 //if (!audioSource.isPlaying) PlayRespawnRockFormation(0f);
@@ -298,5 +298,24 @@ public class AudioManager : MonoBehaviour
       
     }
     /*** ============== AUDIO METHODS ============== **/
+
+    public void PauseAudio() {
+
+        if (audioSource.isPlaying)
+        {
+            audioSource.Pause();
+            CleanAudioPrefabs();
+        }
+        else
+        {
+
+            audioSource.UnPause();
+        }
+    }
+
+    public void UnpauseAudio()
+    {
+        audioSource.UnPause();
+    }
 
 }

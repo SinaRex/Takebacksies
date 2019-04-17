@@ -21,6 +21,7 @@ public class ledgeController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (currentMovee == other) return;
+        if (currentMovee != null) player.GetComponent<Rigidbody>().isKinematic = false;
 
         currentMovee = other;
         player = currentMovee.transform.root;
