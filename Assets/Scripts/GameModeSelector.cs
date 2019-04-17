@@ -5,7 +5,7 @@ using UnityEngine;
 public static class GameModeSelector
 {
     private static int playerCloneCount = 1;
-    private static int maxWinCount = 1;
+    private static int maxWinCount = 2;
 
     public static int PlayerCloneCount
     {

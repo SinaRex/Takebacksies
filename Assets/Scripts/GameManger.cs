@@ -431,11 +431,11 @@ public class GameManger : MonoBehaviour
             platform.GetComponent<Rigidbody>().isKinematic = false;
 
             // Move the player and platform down!
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 25; i++)
             {
                 yield return new WaitForFixedUpdate();
-                platform.GetComponent<Rigidbody>().AddForce(new Vector3(0, -4.8f, 0));
-                player.GetComponent<Rigidbody>().AddForce(new Vector3(0, -4.8f, 0));
+                platform.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0f, 0));
+                player.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0f, 0));
             }
             platform.GetComponent<Rigidbody>().isKinematic = true;
 
@@ -528,5 +528,36 @@ public class GameManger : MonoBehaviour
     }
 
 
+    public void MuteSound() {
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].GetComponent<AudioManager>().PauseAudio();
+        }
+
+        clones = GameObject.FindGameObjectsWithTag("Clone");
+
+        foreach (GameObject clone in clones)
+        {
+            clone.GetComponent<AudioManager>().PauseAudio();
+        }
+    }
+
+    public void UnmuteSound()
+    {
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].GetComponent<AudioManager>().UnpauseAudio();
+        }
+
+        clones = GameObject.FindGameObjectsWithTag("Clone");
+
+        foreach (GameObject clone in clones)
+        {
+            clone.GetComponent<AudioManager>().UnpauseAudio();
+        }
+
+    }
 
 }
