@@ -983,7 +983,7 @@ PrefabInstance:
     - target: {fileID: 5179235408500349792, guid: 3ad426da86b1044e2a0df3c1e60b15e7,
         type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: MusicSeamless
       objectReference: {fileID: 0}
     - target: {fileID: 5179235408500349794, guid: 3ad426da86b1044e2a0df3c1e60b15e7,
         type: 3}
