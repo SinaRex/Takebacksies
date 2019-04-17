@@ -136,6 +136,7 @@ public class ModeSelection : MonoBehaviour
     {
         if (index != -1)
         {
+            Debug.Log("Hello");
             actualSun.SetActive(false);
             sunSelector.enabled = true;
         }
@@ -190,6 +191,9 @@ public class ModeSelection : MonoBehaviour
 
     void SelectText(Text text)
     {
+        RectTransform rt = text.transform.GetComponent<RectTransform>();
+        float width = rt.sizeDelta.x * rt.localScale.x;
+        float height = rt.sizeDelta.y * rt.localScale.y;
         Vector3 toLerp = text.transform.position - new Vector3(text.rectTransform.sizeDelta.x / 2, -6, 0);
         sunSelector.rectTransform.position = Vector3.Lerp(sunSelector.rectTransform.position, toLerp, 0.4f);
         text.fontSize = (int)Mathf.Lerp(text.fontSize, 46f, 0.8f);
