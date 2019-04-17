@@ -275,6 +275,23 @@ public class MapSelect : MonoBehaviour
                 sceneToLoad = "CaveStage";
                 break;
         }
+
+        switch (selectedDowns)
+        {
+            case 0:
+                GameModeSelector.MaxWinCount = 3;
+                break;
+            case 1:
+                GameModeSelector.MaxWinCount = 5;            
+                break;
+            case 2:
+                GameModeSelector.MaxWinCount = 7;
+                break;
+            case 3:
+                GameModeSelector.MaxWinCount = 90;//FIXME MAKE INIFITE
+                break;
+        }
+
         yield return new WaitForSeconds(3.5f);
         circleTransition.SetActive(true);
         circleTransition.GetComponent<Animator>().SetTrigger("Transit");
