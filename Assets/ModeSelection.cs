@@ -16,7 +16,7 @@ public class ModeSelection : MonoBehaviour
 
 
     public GameObject actualSun;
-    public GameObject sunSelector;
+    public Image sunSelector;
 
     private int selected = -1;
     private float inputDelay = 0.15f;
@@ -93,7 +93,7 @@ public class ModeSelection : MonoBehaviour
         if (index != -1)
         {
             actualSun.SetActive(false);
-            sunSelector.SetActive(true);
+            sunSelector.enabled = true;
         }
 
         switch (index)
@@ -103,7 +103,6 @@ public class ModeSelection : MonoBehaviour
                 ResetText(mode2Text);
                 ResetText(mode3Text);
                 ResetText(mode4Text);
-                sunSelector.transform.position = Vector3.Lerp();
                 break;
             case 1:
                 ResetText(mode1Text);
@@ -116,12 +115,14 @@ public class ModeSelection : MonoBehaviour
                 ResetText(mode2Text);
                 SelectText(mode3Text);
                 ResetText(mode4Text);
+
                 break;
             case 3:
                 ResetText(mode1Text);
                 ResetText(mode2Text);
                 ResetText(mode3Text);
                 SelectText(mode4Text);
+
                 break;
         }
         StartCoroutine(ResetDebounce());
@@ -136,6 +137,8 @@ public class ModeSelection : MonoBehaviour
 
     void SelectText(Text text)
     {
+        Vector3 toLerp = text.transform.position - new Vector3(text.rectTransform.sizeDelta.x / 2, -6, 0);
+        sunSelector.rectTransform.position = Vector3.Lerp(sunSelector.rectTransform.position, toLerp, 0.4f);
         text.fontSize = (int)Mathf.Lerp(text.fontSize, 46f, 0.8f);
         text.rectTransform.sizeDelta = Vector2.Lerp(text.rectTransform.sizeDelta,
         new Vector2(text.rectTransform.sizeDelta.x, 100), 0.8f);
