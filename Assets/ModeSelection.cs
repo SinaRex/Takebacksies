@@ -33,7 +33,7 @@ public class ModeSelection : MonoBehaviour
         // Preserve the Scene
 
         if (Input.GetButtonDown("Jump1") || Input.GetButtonDown("Jump2")) {
-            //GameObject.FindGameObjectsWithTag("StartSeamless")[0].SetActive(false);
+
             SceneManager.LoadScene("MapSelectScene");
         }
 

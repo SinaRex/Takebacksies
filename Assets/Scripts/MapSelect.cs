@@ -205,7 +205,7 @@ public class MapSelect : MonoBehaviour
     }
 
     void QuitBackToMain() {
-        SceneManager.LoadScene("StartScene");
+        SceneManager.LoadScene("GameModeScene");
     }
 
     void OnSelectChange(int index)

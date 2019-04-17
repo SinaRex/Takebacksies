@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DinoStage.unity
     guid: 947021dd937a841ed8f0094c51b1e898
+  - enabled: 1
+    path: Assets/Scenes/GameModeScene.unity
+    guid: 1a5afa874f4cc4104b98963d991599ad
   m_configObjects: {}
