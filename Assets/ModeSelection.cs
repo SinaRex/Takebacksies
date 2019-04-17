@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ModeSelection : MonoBehaviour
 {
@@ -29,6 +30,15 @@ public class ModeSelection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Preserve the Scene
+
+        if (Input.GetButtonDown("Jump1") || Input.GetButtonDown("Jump2")) {
+            //GameObject.FindGameObjectsWithTag("StartSeamless")[0].SetActive(false);
+            SceneManager.LoadScene("MapSelectScene");
+        }
+
+
+
         if (!deBounce1)
         {
             // Player 1
@@ -159,7 +169,16 @@ public class ModeSelection : MonoBehaviour
 
                 break;
         }
-        StartCoroutine(ResetDebounce());
+
+        if (Input.GetAxisRaw("MoveAxisY1") == 0)
+        {
+            deBounce1 = false;
+        }
+
+        if (Input.GetAxisRaw("MoveAxisY2") == 0)
+        {
+            deBounce2 = false;
+        }
     }
 
     void ResetText(Text text)
@@ -179,16 +198,4 @@ public class ModeSelection : MonoBehaviour
 
     }
 
-    IEnumerator ResetDebounce()
-    {
-        yield return new WaitForSeconds(0f);
-        if (Input.GetAxisRaw("MoveAxisY1") ==  0)
-        {
-            deBounce1 = false;
-        }
-
-        if (Input.GetAxisRaw("MoveAxisY2") == 0) {
-            deBounce2 = false;
-        }
-    }
 }

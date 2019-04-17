@@ -16,6 +16,7 @@ TagManager:
   - Clone
   - AudioPrefab
   - MusicSeamless
+  - StartSeamless
   layers:
   - Default
   - TransparentFX
