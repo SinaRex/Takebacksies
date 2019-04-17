@@ -38,8 +38,11 @@ public class MapSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        roundSlab.GetComponent<Animator>().SetBool("Shrink", false);
-        roundSlab.GetComponent<Animator>().SetBool("Enlarge", false);
+
+        if (isUp) roundSlab.transform.localScale = Vector3.Lerp(roundSlab.transform.localScale, new Vector3(.5f, .5f, .5f), 0.7f);
+        else roundSlab.transform.localScale = Vector3.Lerp(roundSlab.transform.localScale, new Vector3(1, 1, 1), 0.7f);
+
+
 
         if (!startStage && isUp)
         {
@@ -119,8 +122,6 @@ public class MapSelect : MonoBehaviour
             if (Mathf.Abs(Input.GetAxis("MoveAxisY1")) > 0 || Mathf.Abs(Input.GetAxis("MoveAxisY2")) > 0)
             {
                 isUp = !isUp;
-                roundSlab.GetComponent<Animator>().SetBool("Enlarge", true);
-                roundSlab.GetComponent<Animator>().SetBool("Shrink", false);
                 OnSelectChange(-1);
 
             }
@@ -171,8 +172,7 @@ public class MapSelect : MonoBehaviour
             if (Mathf.Abs(Input.GetAxis("MoveAxisY1")) > 0 || Mathf.Abs(Input.GetAxis("MoveAxisY2")) > 0)
             {
                 isUp = !isUp;
-                roundSlab.GetComponent<Animator>().SetBool("Shrink", true);
-                roundSlab.GetComponent<Animator>().SetBool("Enlarge", false);
+                roundSlab.transform.localScale = Vector3.Lerp(roundSlab.transform.localScale, new Vector3(.5f, .5f, .5f), 1f);
                 OnSelectChange(selectedUp);
 
             }
