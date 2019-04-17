@@ -18,74 +18,108 @@ public class ModeSelection : MonoBehaviour
     public GameObject actualSun;
     public Image sunSelector;
 
+    public GameObject p1;
+    public GameObject p2;
+
     private int selected = -1;
     private float inputDelay = 0.15f;
     private float nextInput = 0f;
-    private bool deBounce = false;
+    private bool deBounce1 = false;
+    private bool deBounce2 = false;
     // Update is called once per frame
     void Update()
     {
-        if (!deBounce)
+        if (!deBounce1)
         {
-            if (Input.GetAxisRaw("MoveAxisY1") > 0 || Input.GetAxis("MoveAxisY2") > 0 || Input.GetKeyDown(KeyCode.UpArrow))
+            // Player 1
+            if (Input.GetAxis("MoveAxisY1") < 0 || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                deBounce = true;
-                switch (selected)
-                {
-                    case -1:
-                        selected = 3;
-                        break;
-                    case 0:
-                        selected = 3;
-                        break;
-                    case 1:
-                        selected = 0;
-                        break;
-                    case 2:
-                        selected = 1;
-                        break;
-                    case 3:
-                        selected = 2;
-                        break;
-                    default:
-                        selected = -1;
-                        break;
-                }
-
-
+                p1.GetComponent<Animator>().SetTrigger("ChangeMode");
+                deBounce1 = true;
+                ChangeSelectUp();
             }
 
-            if (Input.GetAxisRaw("MoveAxisY1") < 0 || Input.GetAxis("MoveAxisY2") < 0 || Input.GetKeyDown(KeyCode.DownArrow))
+            if (Input.GetAxis("MoveAxisY1") > 0 || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                deBounce = true;
-                switch (selected)
-                {
-                    case -1:
-                        selected = 0;
-                        break;
-                    case 0:
-                        selected = 1;
-                        break;
-                    case 1:
-                        selected = 2;
-                        break;
-                    case 2:
-                        selected = 3;
-                        break;
-                    case 3:
-                        selected = 0;
-                        break;
-                    default:
-                        selected = -1;
-                        break;
-                }
-
-
+                p1.GetComponent<Animator>().SetTrigger("ChangeMode");
+                deBounce1 = true;
+                ChangeSelectDown();
             }
+
+        }
+
+        if (!deBounce2)
+        {
+            // player 2
+            if (Input.GetAxis("MoveAxisY2") < 0 || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                p2.GetComponent<Animator>().SetTrigger("ChangeMode");
+                deBounce2 = true;
+                ChangeSelectUp();
+            }
+
+            if (Input.GetAxis("MoveAxisY2") > 0 || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                p2.GetComponent<Animator>().SetTrigger("ChangeMode");
+                deBounce2 = true;
+                ChangeSelectDown();
+            }
+
         }
 
         OnSelectChange(selected);
 
+    }
+
+    void ChangeSelectUp()
+    {
+        switch (selected)
+        {
+            case -1:
+                selected = 3;
+                break;
+            case 0:
+                selected = 3;
+                break;
+            case 1:
+                selected = 0;
+                break;
+            case 2:
+                selected = 1;
+                break;
+            case 3:
+                selected = 2;
+                break;
+            default:
+                selected = -1;
+                break;
+        }
+
+    }
+
+    void ChangeSelectDown()
+    {
+        switch (selected)
+        {
+            case -1:
+                selected = 0;
+                break;
+            case 0:
+                selected = 1;
+                break;
+            case 1:
+                selected = 2;
+                break;
+            case 2:
+                selected = 3;
+                break;
+            case 3:
+                selected = 0;
+                break;
+            default:
+                selected = -1;
+                break;
+        }
     }
 
     void OnSelectChange(int index)
@@ -148,9 +182,13 @@ public class ModeSelection : MonoBehaviour
     IEnumerator ResetDebounce()
     {
         yield return new WaitForSeconds(0f);
-        if (Input.GetAxisRaw("MoveAxisY1") == 0)
+        if (Input.GetAxisRaw("MoveAxisY1") ==  0)
         {
-            deBounce = false;
+            deBounce1 = false;
+        }
+
+        if (Input.GetAxisRaw("MoveAxisY2") == 0) {
+            deBounce2 = false;
         }
     }
 }

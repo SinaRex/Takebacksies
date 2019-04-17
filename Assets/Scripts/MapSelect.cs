@@ -18,20 +18,30 @@ public class MapSelect : MonoBehaviour
     private Vector3 p1ModelPosition, p2ModelPosition;
     private float inputDelay = 0.15f;
     private float nextInput = 0f;
-    private int selected = 0; //Index of Selected Stage i.e. 0 for original, 1 for dino, 2 for cave
+    private int selectedUp = 0; //Index of Selected Stage i.e. 0 for original, 1 for dino, 2 for cave
+    private int selectedDowns = 0;
     private bool p1Ready, p2Ready = false;
     private bool startStage = false;
+    private bool isUp = true;
+
+    public List<Image> rounds ;
+    public GameObject roundSlab;
+
 
     // Start is called before the first frame update
     void Start()
-    { 
-        OnSelectChange(selected);
+    {
+        OnRoundChange(selectedDowns);
+        OnSelectChange(selectedUp);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!startStage)
+        roundSlab.GetComponent<Animator>().SetBool("Shrink", false);
+        roundSlab.GetComponent<Animator>().SetBool("Enlarge", false);
+
+        if (!startStage && isUp)
         {
             if (Input.GetButtonDown("SpecialButton1"))
             {
@@ -64,46 +74,107 @@ public class MapSelect : MonoBehaviour
 
 
 
-        if(p1Ready && p2Ready)
+        if (p1Ready && p2Ready)
         {
             startStage = true;
-            PlayStage(selected);
+            PlayStage(selectedUp);
         }
 
-        if (Time.time > nextInput && !p1Ready && !p2Ready)
+        if (Time.time > nextInput && !p1Ready && !p2Ready && isUp)
         {
             nextInput = Time.time + inputDelay;
             if (Input.GetAxis("MoveAxisX1") > 0 || Input.GetAxis("MoveAxisX2") > 0)
             {
-                switch (selected)
+                switch (selectedUp)
                 {
                     case 0:
-                        selected = 1;
+                        selectedUp = 1;
                         break;
                     case 1:
-                        selected = 2;
+                        selectedUp = 2;
                         break;
                     case 2:
-                        selected = 0;
+                        selectedUp = 0;
                         break;
                 }
-                OnSelectChange(selected);
+                OnSelectChange(selectedUp);
             }
             if (Input.GetAxis("MoveAxisX1") < 0 || Input.GetAxis("MoveAxisX2") < 0)
             {
-                switch (selected)
+                switch (selectedUp)
                 {
                     case 0:
-                        selected = 2;
+                        selectedUp = 2;
                         break;
                     case 1:
-                        selected = 0;
+                        selectedUp = 0;
                         break;
                     case 2:
-                        selected = 1;
+                        selectedUp = 1;
                         break;
                 }
-                OnSelectChange(selected);
+                OnSelectChange(selectedUp);
+            }
+
+            if (Mathf.Abs(Input.GetAxis("MoveAxisY1")) > 0 || Mathf.Abs(Input.GetAxis("MoveAxisY2")) > 0)
+            {
+                isUp = !isUp;
+                roundSlab.GetComponent<Animator>().SetBool("Enlarge", true);
+                roundSlab.GetComponent<Animator>().SetBool("Shrink", false);
+                OnSelectChange(-1);
+
+            }
+        }
+
+        if (Time.time > nextInput && !p1Ready && !p2Ready && !isUp)
+        {
+            nextInput = Time.time + inputDelay;
+            if (Input.GetAxis("MoveAxisX1") > 0 || Input.GetAxis("MoveAxisX2") > 0)
+            {
+                switch (selectedDowns)
+                {
+                    case 0:
+                        selectedDowns = 1;
+                        break;
+                    case 1:
+                        selectedDowns = 2;
+                        break;
+                    case 2:
+                        selectedDowns = 3;
+                        break;
+                    case 3:
+                        selectedDowns = 0;
+                        break;
+                }
+                OnRoundChange(selectedDowns);
+            }
+            if (Input.GetAxis("MoveAxisX1") < 0 || Input.GetAxis("MoveAxisX2") < 0)
+            {
+                switch (selectedDowns)
+                {
+                    case 0:
+                        selectedDowns = 3;
+                        break;
+                    case 1:
+                        selectedDowns = 0;
+                        break;
+                    case 2:
+                        selectedDowns = 1;
+                        break;
+                    case 3:
+                        selectedDowns = 2;
+                        break;
+                }
+                OnRoundChange(selectedDowns);
+            }
+
+            if (Mathf.Abs(Input.GetAxis("MoveAxisY1")) > 0 || Mathf.Abs(Input.GetAxis("MoveAxisY2")) > 0)
+            {
+                isUp = !isUp;
+                roundSlab.GetComponent<Animator>().SetBool("Shrink", true);
+                roundSlab.GetComponent<Animator>().SetBool("Enlarge", false);
+                OnSelectChange(selectedUp);
+
             }
         }
     }
@@ -160,6 +231,23 @@ public class MapSelect : MonoBehaviour
                 dinoBorder.enabled = false;
                 caveBorder.enabled = true;
                 break;
+            default:
+                dinoStage.color = new Color(1f, 1f, 1f, 0.6f);
+                originalStage.color = new Color(1f, 1f, 1f, 0.6f);
+                caveStage.color = new Color(1f, 1f, 1f, 0.6f);
+                originalBorder.enabled = false;
+                dinoBorder.enabled = false;
+                caveBorder.enabled = false;
+                break;
+        }
+    }
+
+
+    void OnRoundChange(int index)
+    {
+        for (int i = 0; i < rounds.Count; i++)
+        {
+            rounds[i].enabled = i == index;
         }
     }
 
